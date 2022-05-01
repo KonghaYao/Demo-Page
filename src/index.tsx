@@ -1,4 +1,3 @@
-import { createSignal, lazy } from "solid-js";
 import { render } from "solid-js/web";
 import Main from "./components/Main";
 
