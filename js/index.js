@@ -18,6 +18,7 @@ await initBabel();
 // Solid-js 配置
 import SolidPresets from "https://esm.sh/babel-preset-solid";
 const server = new DynamicServer("_import");
+Babel.registerPreset(SolidPresets);
 const config = {
     // 直接采用 src 目录下的 index.ts 进行打包实验
     input: "./src/index.tsx",
@@ -38,11 +39,25 @@ const config = {
         }),
         babel({
             babelrc: {
-                presets: [SolidPresets],
+                presets: [
+                    [
+                        Babel.availablePresets["typescript"],
+                        {
+                            // 需要使用这种方式兼容 solid 配置
+                            isTSX: true,
+                            allExtensions: true,
+                        },
+                    ],
+                    [SolidPresets, { generate: "dom", hydratable: true }],
+                ],
+                // plugins: [
+                //     Babel.availablePlugins["transform-typescript"],
+                //     Babel.availablePlugins["transform-jsx"],
+                // ],
             },
             extensions: [".tsx", ".ts"],
             log(id) {
-                console.warn("%cbabel ==> " + id, "color:blue");
+                console.log("%cbabel ==> " + id, "color:blue");
             },
         }),
         web_module({

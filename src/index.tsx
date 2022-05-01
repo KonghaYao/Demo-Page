@@ -1,23 +1,23 @@
-import { createSignal, onCleanup } from "solid-js";
+import { createSignal, lazy } from "solid-js";
 import { render } from "solid-js/web";
+import Main from "./components/Main";
 
 const App = () => {
-    const [count, setCount] = createSignal(100);
     return (
-        <div>
+        <section class="h-screen flex flex-col">
             <header>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to reload.
-                </p>
-                <a
-                    href="https://github.com/solidjs/solid"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn Solid
-                </a>
+                <div class="w-full px-8 py-2 bg-gray-400">
+                    <div class="text-2xl">DEMO-PAGES</div>
+                </div>
             </header>
-        </div>
+            <main class="flex-grow bg-gray-100 p-4">
+                <Main></Main>
+            </main>
+        </section>
     );
 };
-render(App, document.body);
+render(
+    () => <App />,
+
+    document.body
+);
