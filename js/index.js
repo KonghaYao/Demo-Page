@@ -50,10 +50,6 @@ const config = {
                     ],
                     [SolidPresets, { generate: "dom", hydratable: true }],
                 ],
-                // plugins: [
-                //     Babel.availablePlugins["transform-typescript"],
-                //     Babel.availablePlugins["transform-jsx"],
-                // ],
             },
             extensions: [".tsx", ".ts"],
             log(id) {

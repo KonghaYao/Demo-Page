@@ -1,7 +1,10 @@
 import { createSignal, lazy, Suspense, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
+
 export default function Home() {
-    const [queryText, setText] = createSignal("");
+    const [queryText, setText] = createSignal(
+        window.location.hash.replace("#", "")
+    );
     function handle(e: Event) {
         const input = e.target as HTMLInputElement;
         setText(input.value);
@@ -9,6 +12,8 @@ export default function Home() {
     const AsyncPage = (pagesName: string) => () => {
         const Page = lazy(() => {
             if (pagesName === "") return Promise.resolve(<div>Loading</div>);
+
+            console.log("%c跳转到" + pagesName, "color:red");
             return import(`../pages/${pagesName}.tsx`);
         });
         return (
