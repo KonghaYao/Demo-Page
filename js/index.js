@@ -10,15 +10,11 @@ import {
 // 导入各种插件
 import { initBabel, babel } from "rollup-web/dist/plugins/babel.js";
 import json from "@rollup/plugin-json";
-import alias from "@rollup/plugin-alias";
-import commonjs from "@rollup/plugin-commonjs";
-import replace from "@rollup/plugin-replace";
 await initBabel();
 
 // Solid-js 配置
-import SolidPresets from "https://esm.sh/babel-preset-solid";
+import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
 const server = new DynamicServer("_import");
-Babel.registerPreset(SolidPresets);
 const config = {
     // 直接采用 src 目录下的 index.ts 进行打包实验
     input: "./src/index.tsx",
@@ -27,19 +23,13 @@ const config = {
     },
     plugins: [
         json(),
-        alias({
-            entries: [{ find: "@", replacement: "./" }],
-        }),
-        commonjs({
-            extensions: [".cjs", ".js"],
-        }),
-        replace({
-            __buildDate__: () => JSON.stringify(3434),
-            __buildVersion: "15",
-        }),
+        // alias({
+        //     entries: [{ find: "@", replacement: "./" }],
+        // }),
         babel({
             babelrc: {
                 presets: [
+                    SolidPresets,
                     [
                         Babel.availablePresets["typescript"],
                         {
@@ -48,10 +38,9 @@ const config = {
                             allExtensions: true,
                         },
                     ],
-                    [SolidPresets, { generate: "dom", hydratable: true }],
                 ],
             },
-            extensions: [".tsx", ".ts"],
+            extensions: [".tsx", ".ts", ""],
             log(id) {
                 console.log("%cbabel ==> " + id, "color:blue");
             },
@@ -60,7 +49,7 @@ const config = {
             // 本地打包
             extensions: [".tsx", ".ts", ".js", ".json"],
             log(url) {
-                console.log("%c网站文件打包 ==> " + url, "color:green");
+                console.log("%c Download ==> " + url, "color:green");
             },
         }),
         sky_module({

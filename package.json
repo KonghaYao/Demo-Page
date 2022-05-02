@@ -1,18 +1,19 @@
 {
-  "name": "web-viewer",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "solid-app-router": "^0.3.2",
-    "solid-js": "^1.3.17"
-  },
-  "devDependencies": {
-    "babel-preset-solid": "^1.3.17"
-  }
+    "name": "web-viewer",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "ws --http2 --spa index.html"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "solid-app-router": "^0.3.2",
+        "solid-js": "^1.3.17"
+    },
+    "devDependencies": {
+        "babel-preset-solid": "^1.3.17",
+        "local-web-server": "^5.2.0"
+    }
 }

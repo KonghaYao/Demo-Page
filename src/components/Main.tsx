@@ -24,7 +24,7 @@ export default function Home() {
     };
 
     return (
-        <section class="bg-gray-100 text-gray-700 p-8">
+        <section class="bg-gray-100 text-gray-700 p-8 overflow-hidden">
             <input type="text" onBlur={handle} />
             <Dynamic component={AsyncPage(queryText())} />
         </section>

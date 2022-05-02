@@ -11,5 +11,6 @@ export const loadScript = async (url: string) => {
         script.onerror = (e) => {
             reject(e);
         };
+        document.body.appendChild(script);
     });
 };
