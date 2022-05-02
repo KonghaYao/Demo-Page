@@ -1,11 +1,7 @@
-# Web-Viewer
+# Demo-Page
 
-## 描述
+## 什么是 Demo-Page
 
-Web-Viewer 无打包开发页面插件是在运行时进行 rollup 打包 ts 和一些插件的快速开发工具。
+DemoPage 是我用于收集可以使用的 NPM 插件的网站，我利用这个网站将众多的插件示例收集在这里，并使用展示。
 
-Web-Viewer 将打包从服务器端转移到浏览器端，通过 https 获取到本地的代码文件并打包，通过 CDN (Skypack 或者是 esm.run) 直接载入原本 node_module 中的库。
-
-Web-Viewer 基于 Rollup 的 Web 版本衍生出了 Rollup 的一套浏览器插件，实现了 Babel， swc 等超级实用的代码插件。
-
-## 如何使用
+> 如现在的官网是使用我的 **浏览器端打包器 Rollup-Web** 进行浏览器打包的，这个 Markdown 文件将会渲染到首页中！

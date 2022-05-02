@@ -57,6 +57,20 @@ const config = {
         }),
         // 这是一种异步导入方案，使用 全局的一个外置 Server 来保证代码的正确执行
         server.createPlugin({}),
+        {
+            name: "css",
+            async load(id) {
+                if (/\.css$/.test(id)) {
+                    const text = await fetch(id).then((res) => res.text());
+
+                    return `const style = document.createElement('style')
+                     style.innerHTML = \`${text}\`
+                    document.body.appendChild(style)
+                
+                `;
+                }
+            },
+        },
     ],
 };
 /** 需要在使用前注册一下这个server */
