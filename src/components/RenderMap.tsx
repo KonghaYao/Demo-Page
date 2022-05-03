@@ -33,6 +33,7 @@ export const RenderMap = (props: { data(): GraphData }) => {
                     // 节点上的标签文本样式配置
                     size: 8,
                     style: {
+                        opacity: 0.9,
                         fill: "#222", // 节点标签文字颜色
                     },
                 },
@@ -40,7 +41,7 @@ export const RenderMap = (props: { data(): GraphData }) => {
             defaultEdge: {
                 // 边样式配置
                 style: {
-                    opacity: 0.6,
+                    opacity: 0.4,
                     stroke: "#aa0000",
                     endArrow: {
                         path: G6.Arrow.triangleRect(7, 7, 7, 3, 5, 15),
@@ -97,5 +98,5 @@ export const RenderMap = (props: { data(): GraphData }) => {
     onCleanup(() => {
         graph.destroy();
     });
-    return <div class="relative" ref={container}></div>;
+    return <div class="relative drop-shadow-md" ref={container}></div>;
 };
