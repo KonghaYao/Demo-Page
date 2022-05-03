@@ -15,14 +15,14 @@ export default function Home() {
             return import(`../pages/${pagesName}.tsx`);
         });
         return (
-            <Suspense>
+            <Suspense fallback={<div>Loading...</div>}>
                 <Page />
             </Suspense>
         );
     };
 
     return (
-        <section class="flex flex-col bg-white text-gray-700 p-8 overflow-hidden">
+        <section class="flex flex-col bg-white text-gray-700 p-4 overflow-hidden h-full">
             <div class="w-full flex py-2 shadow-lg shadow-gray-300 rounded-xl overflow-hidden">
                 <input
                     class="mx-4 flex-grow"

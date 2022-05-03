@@ -145,7 +145,7 @@ export default function Dependence() {
         });
     });
     return (
-        <section class="flex flex-col bg-gray-200 text-gray-700 p-2 overflow-y-auto">
+        <section class="flex flex-col bg-gray-50/20 backdrop-blur text-gray-700 p-2 overflow-y-auto h-full">
             <RenderMap data={dependence}></RenderMap>
         </section>
     );
