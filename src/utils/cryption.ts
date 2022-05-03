@@ -68,7 +68,6 @@ export function Decryption(key: string, file: Uint8Array) {
             51 + CHUNK_SIZE + crypto_secretstream_xchacha20poly1305_ABYTES
         ), //17
     ];
-    console.log(salt);
     const [password] = getKey(key, salt);
     let state = sodium.crypto_secretstream_xchacha20poly1305_init_pull(
         header,

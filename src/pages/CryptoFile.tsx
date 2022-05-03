@@ -6,6 +6,7 @@ import {
     Encryption, // 加密数据
     Decryption, // 解密数据
 } from "../utils/cryption";
+import { timeCounter } from "../utils/timeCounter";
 const sodium: typeof Sodium = (globalThis as any).sodium;
 
 interface ImageShower {
@@ -13,6 +14,7 @@ interface ImageShower {
     desc: string;
     title: string;
     size: number;
+    time: number;
 }
 const renderImage = (shower: ImageShower) => {
     return (
@@ -22,7 +24,9 @@ const renderImage = (shower: ImageShower) => {
             <div class="flex-grow my-2">
                 <img src={shower.url}></img>
             </div>
-            <div class="text-sm text-gray-500">{shower.size} Bytes</div>
+            <div class="text-sm text-gray-500">
+                {shower.size} Bytes 花费时间 {shower.time} ms
+            </div>
         </div>
     );
 };
@@ -38,29 +42,38 @@ export default function CryptoFile() {
     };
     sodium.ready
         .then(async () => {
+            timeCounter("getFile");
             const chunk = await fetch("https://source.unsplash.com/500x300", {
                 cache: "force-cache",
             }).then((res) => res.arrayBuffer());
             const result = new Uint8Array(chunk);
+            const time = timeCounter("getFile")!;
             refreshImages(chunk, {
                 title: "原始数据",
                 desc: "输入的二进制数据",
+                time,
             });
             return result;
         })
         .then((chunk: Uint8Array) => {
+            timeCounter("encrypt")!;
             const result = Encryption("123456", new Uint8Array(chunk));
+            const time = timeCounter("encrypt")!;
             refreshImages(result, {
                 title: "加密后的结果",
                 desc: "文件头+文件（分隔符）文件（结束符号）",
+                time,
             });
             return result;
         })
         .then((encryptedChunk: Uint8Array) => {
+            timeCounter("decrypt")!;
             const result = Decryption("123456", encryptedChunk);
+            const time = timeCounter("decrypt")!;
             refreshImages(result!, {
                 title: "解密后的文件",
                 desc: "解密文件",
+                time,
             });
         });
 
