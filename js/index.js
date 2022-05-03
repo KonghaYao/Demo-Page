@@ -10,6 +10,14 @@ import {
 // 导入各种插件
 import { initBabel, babel } from "rollup-web/dist/plugins/babel.js";
 import json from "@rollup/plugin-json";
+import mitt from "mitt";
+const RollupHub = mitt();
+globalThis.RollupHub = RollupHub;
+/** 这是 drawDependence 的一个bug  2.5.0 */
+import { Buffer } from "https://cdn.skypack.dev/buffer";
+window.Buffer = Buffer;
+
+import { drawDependence } from "rollup-web/dist/plugins/drawDependence.js";
 await initBabel();
 
 // Solid-js 配置
@@ -53,7 +61,7 @@ const config = {
             },
         }),
         sky_module({
-            cdn: "https://cdn.skypack.dev/",
+            cdn: "https://esm.run/",
         }),
         // 这是一种异步导入方案，使用 全局的一个外置 Server 来保证代码的正确执行
         server.createPlugin({}),
@@ -71,6 +79,12 @@ const config = {
                 }
             },
         },
+        drawDependence({
+            log(data, mapper) {
+                RollupHub.emit("drawDependence", data, mapper);
+            },
+            mapperTag: "default",
+        }),
     ],
 };
 /** 需要在使用前注册一下这个server */

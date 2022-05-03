@@ -1,6 +1,6 @@
 import { render } from "solid-js/web";
 import Main from "./components/Main";
-
+import Dependence from "./components/Dependence";
 const App = () => {
     return (
         <section class="h-screen flex flex-col">
@@ -12,6 +12,9 @@ const App = () => {
             <main class="flex-grow bg-gray-100 p-4">
                 <Main></Main>
             </main>
+            <footer>
+                <Dependence></Dependence>
+            </footer>
         </section>
     );
 };
