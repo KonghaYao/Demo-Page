@@ -6,6 +6,7 @@ export default function Home() {
     const [queryText, setText] = createSignal(pageName || "index");
     function handle() {
         setText(input.value);
+        window.location.hash = "#" + input.value;
     }
     const AsyncPage = (pagesName: string) => () => {
         const Page = lazy(() => {
@@ -28,7 +29,7 @@ export default function Home() {
                     type="text"
                     ref={(el) => (input = el)}
                 />
-                <button className="bg-sky-400 text-white px-2" onBlur={handle}>
+                <button className="bg-sky-400 text-white px-2" onClick={handle}>
                     点我加载
                 </button>
             </div>
