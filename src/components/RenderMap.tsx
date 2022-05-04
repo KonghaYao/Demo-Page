@@ -1,6 +1,7 @@
 import { onMount, createEffect, onCleanup } from "solid-js";
 import g6, { Graph, GraphData } from "@antv/g6";
-
+import { ModuleEvents, ModuleState, setModuleState } from "./ModuleStore";
+import { fromEventPattern, throttleTime, tap } from "rxjs";
 const G6: typeof g6 = (globalThis as any).G6;
 
 export const RenderMap = (props: { data(): GraphData }) => {
@@ -73,16 +74,22 @@ export const RenderMap = (props: { data(): GraphData }) => {
                 },
             },
         });
-
         graph.data(props.data());
         graph.render();
-        createEffect(() => {
+
+        // 更新视图
+        const update = () => {
             graph.clear();
             console.log("数据更新", props.data());
 
             graph.data(props.data());
             graph.render();
-        });
+        };
+        fromEventPattern(
+            (handle) => ModuleEvents.on("filterUpdate", handle),
+            (handle) => ModuleEvents.off("filterUpdate", handle)
+        ).pipe(throttleTime(1000), tap(update));
+        createEffect(() => ModuleEvents.emit("filterUpdate", {}));
         if (typeof window !== "undefined")
             window.onresize = () => {
                 if (!graph || graph.get("destroyed")) return;

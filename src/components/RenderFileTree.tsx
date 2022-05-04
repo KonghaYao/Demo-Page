@@ -1,6 +1,7 @@
 import { createMemo, createSignal, For } from "solid-js";
 import { NodeConfig, EdgeConfig } from "@antv/g6";
 import { getIconForFile } from "vscode-icons-js";
+import { ModuleEvents, ModuleState } from "./ModuleStore";
 
 /** 渲染一行文件 */
 const renderRow = (item: NodeConfig & { name: string }) => {
@@ -23,6 +24,7 @@ export const RenderFileTree = (props: {
         nodes: (NodeConfig & { name: string })[];
         edges: EdgeConfig[];
     };
+    update?: () => void;
 }) => {
     const [searchText, setSearchText] = createSignal("");
     const searchRegExp = createMemo(() => {
@@ -36,7 +38,15 @@ export const RenderFileTree = (props: {
     const fileList = createMemo(() => {
         const reg = searchRegExp();
         const data = props.data().nodes;
-        return reg ? data.filter((i) => reg.test(i.name)) : data;
+        const result = reg
+            ? data.filter((node) => {
+                  const isIn = reg.test(node.name);
+                  node.style!.opacity = isIn ? 0.1 : 0.8;
+                  return isIn;
+              })
+            : data;
+        ModuleEvents.emit("filterUpdate", {});
+        return result;
     });
     return (
         <div class="flex-none h-full overflow-hidden absolute z-10 flex flex-col">
