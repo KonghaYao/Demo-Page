@@ -13,9 +13,7 @@ import json from "@rollup/plugin-json";
 import mitt from "mitt";
 const RollupHub = mitt();
 globalThis.RollupHub = RollupHub;
-// /** 这是 drawDependence 的一个bug  2.5.0 */
-// import { Buffer } from "https://cdn.skypack.dev/buffer";
-// window.Buffer = Buffer;
+import postcss from "https://esm.sh/postcss";
 
 import { drawDependence } from "rollup-web/dist/plugins/drawDependence.js";
 await initBabel();
@@ -70,10 +68,9 @@ const config = {
             async load(id) {
                 if (/\.css$/.test(id)) {
                     const text = await fetch(id).then((res) => res.text());
-
+                    const css = await postcss().process(text);
                     return `const style = document.createElement('style')
-                    style.type="text/tailwindcss"
-                     style.innerHTML = \`${text}\`
+                     style.innerHTML = \`${css.css}\`
                     document.body.appendChild(style)
                 
                 `;
