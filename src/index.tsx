@@ -1,7 +1,8 @@
-import { render } from "solid-js/web";
+import { render, Show } from "solid-js/web";
 import "./style/global.css";
 import Main from "./components/Main";
 import Dependence from "./components/Dependence";
+import { ModuleStore } from "./components/ModuleStore";
 const App = () => {
     return (
         <section class="h-screen flex flex-col relative font-song select-none ">
@@ -13,9 +14,11 @@ const App = () => {
             <main class="flex-grow bg-gray-100 p-4">
                 <Main></Main>
             </main>
-            <footer class="absolute bottom-0 w-full h-1/2">
-                <Dependence></Dependence>
-            </footer>
+            <Show when={ModuleStore.dependence.show}>
+                <div class="absolute bottom-0 w-full h-1/2">
+                    <Dependence></Dependence>
+                </div>
+            </Show>
         </section>
     );
 };
