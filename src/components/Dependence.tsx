@@ -1,4 +1,5 @@
-import { createSignal } from "solid-js";
+import { createSignal, Show } from "solid-js";
+import { createStore } from "solid-js/store";
 import "../style/dependence.css";
 import type { NodeConfig, EdgeConfig } from "@antv/g6";
 import { RenderMap } from "./RenderMap";
@@ -54,11 +55,24 @@ export default function Dependence() {
             edges,
         });
     });
+    const [shower, setShower] = createStore({
+        fileTree: false,
+    });
     return (
         <section class="flex flex-col bg-gray-50/20 backdrop-blur text-gray-700 p-2 overflow-y-auto h-full  items-center rounded-md ">
-            <div class="text-xl ">打包依赖关系图</div>
+            <div class="text-xl flex justify-between w-full p-2 items-center">
+                <span
+                    class="material-icons"
+                    onclick={() => setShower({ fileTree: !shower.fileTree })}>
+                    keyboard_arrow_left
+                </span>
+                打包依赖关系图
+                <span class="material-icons">close</span>
+            </div>
             <div class="flex-grow w-full flex overflow-hidden relative">
-                <RenderFileTree data={dependence}></RenderFileTree>
+                <Show when={shower.fileTree}>
+                    <RenderFileTree data={dependence}></RenderFileTree>
+                </Show>
                 <RenderMap data={dependence}></RenderMap>
             </div>
         </section>
