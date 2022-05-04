@@ -1,4 +1,4 @@
-import { createSignal, Show } from "solid-js";
+import { createMemo, createSignal, Show } from "solid-js";
 import { createStore } from "solid-js/store";
 import "../style/dependence.css";
 import type { NodeConfig, EdgeConfig } from "@antv/g6";
@@ -61,14 +61,18 @@ export default function Dependence() {
         <section class="flex flex-col bg-gray-50/20 backdrop-blur text-gray-700 p-2 overflow-y-auto h-full  items-center rounded-md ">
             <div class="text-xl flex justify-between w-full p-2 items-center">
                 <span
-                    class="material-icons"
-                    onclick={() => setShower({ fileTree: !shower.fileTree })}>
-                    keyboard_arrow_left
+                    onclick={() => setShower({ fileTree: !shower.fileTree })}
+                    class="material-icons">
+                    {createMemo(() =>
+                        shower.fileTree
+                            ? "keyboard_arrow_right"
+                            : "keyboard_arrow_left"
+                    )}
                 </span>
                 打包依赖关系图
                 <span class="material-icons">close</span>
             </div>
-            <div class="flex-grow w-full flex overflow-hidden relative">
+            <div class="flex-grow w-full flex overflow-hidden relative justify-center">
                 <Show when={shower.fileTree}>
                     <RenderFileTree data={dependence}></RenderFileTree>
                 </Show>

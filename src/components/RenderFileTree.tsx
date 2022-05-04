@@ -60,7 +60,7 @@ export const RenderFileTree = (props: {
         return data;
     });
     return (
-        <div class="flex-none h-full overflow-hidden absolute z-10 flex flex-col">
+        <div class="flex-none h-full overflow-hidden absolute z-10 flex flex-col backdrop-blur-lg bg-gray-100/60 px-2">
             <input
                 type="search"
                 placeholder="请输入正则表达式"
