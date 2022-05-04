@@ -14,7 +14,6 @@ import mitt from "mitt";
 const RollupHub = mitt();
 globalThis.RollupHub = RollupHub;
 import postcss from "https://esm.sh/postcss";
-
 import { drawDependence } from "rollup-web/dist/plugins/drawDependence.js";
 await initBabel();
 
@@ -69,11 +68,10 @@ const config = {
                 if (/\.css$/.test(id)) {
                     const text = await fetch(id).then((res) => res.text());
                     const css = await postcss().process(text);
-                    return `const style = document.createElement('style')
-                     style.innerHTML = \`${css.css}\`
-                    document.body.appendChild(style)
-                
-                `;
+                    return `
+                    import styleInject from "https://esm.sh/style-inject";
+                    styleInject(\`${css}\`)
+                    `;
                 }
             },
         },

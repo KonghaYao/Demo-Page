@@ -32,13 +32,12 @@ export default function Dependence() {
                 let type = "circle";
                 let fill = "blue";
                 if (value.id.startsWith(window.location.origin)) {
-                    type = "local";
-                    fill = "blue";
                 } else if (isURLString(value.id)) {
                     type = "remote";
                     fill = "green";
                 } else {
-                    console.log(value.id);
+                    type = "local";
+                    fill = "blue";
                 }
                 return {
                     id: uid,
