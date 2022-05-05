@@ -11,6 +11,7 @@
     "dependencies": {
         "@antv/g6": "^4.6.4",
         "mitt": "^3.0.0",
+        "prismjs": "^1.28.0",
         "rehype-stringify": "^9.0.3",
         "remark-frontmatter": "^4.0.1",
         "remark-gfm": "^3.0.1",
@@ -27,6 +28,7 @@
     },
     "devDependencies": {
         "@types/libsodium-wrappers": "^0.7.9",
+        "@types/prismjs": "^1.26.0",
         "local-web-server": "^5.2.0"
     }
 }

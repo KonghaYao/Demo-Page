@@ -3,3 +3,6 @@ export const isURLString = (url: string) => {
         url
     );
 };
+export const isLocal = (url: string) => {
+    return url.startsWith(globalThis.location.origin);
+};

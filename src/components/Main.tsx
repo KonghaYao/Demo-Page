@@ -1,5 +1,7 @@
 import { createSignal, lazy, Suspense, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
+import { CodeViewer } from "./dependencePanel/CodeViewer";
+import { ModuleStore } from "./dependencePanel/ModuleStore";
 export default function Home() {
     const pageName = window.location.hash.replace("#", "");
     let input: HTMLInputElement;
@@ -36,6 +38,11 @@ export default function Home() {
             <div class="flex-grow overflow-y-auto overflow-x-hidden ">
                 <Dynamic component={AsyncPage(queryText())} />
             </div>
+            <Show when={ModuleStore.codeViewer.show}>
+                <div class="absolute w-screen h-screen top-0 left-0 flex justify-center items-center z-50">
+                    <CodeViewer src={ModuleStore.codeViewer.src}></CodeViewer>
+                </div>
+            </Show>
         </section>
     );
 }
