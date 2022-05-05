@@ -1,5 +1,7 @@
 import { createStore } from "solid-js/store";
 import mitt from "mitt";
+
+/** 用于模块间数据通信 */
 export const ModuleEvents = mitt<{
     filterUpdate: {};
 }>();

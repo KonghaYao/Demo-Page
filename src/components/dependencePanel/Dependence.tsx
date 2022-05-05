@@ -1,9 +1,8 @@
 import { createMemo, createSignal, onCleanup, Show } from "solid-js";
-import { createStore } from "solid-js/store";
 import "../style/dependence.css";
 import type { NodeConfig, EdgeConfig } from "@antv/g6";
 import { RenderMap } from "./RenderMap";
-import { isURLString } from "../utils/isURLString";
+import { isURLString } from "../../utils/isURLString";
 import { RenderFileTree } from "./RenderFileTree";
 import { ModuleStore, updateStore } from "./ModuleStore";
 import { fromEventPattern, map } from "rxjs";
@@ -17,6 +16,8 @@ const Update = fromEventPattern(
     (handle) => RollupHub.on("drawDependence", handle),
     (handle) => RollupHub.off("drawDependence", handle)
 );
+
+/** 渲染一个 依赖关系面板，但是必须要全局 RollupHub 支持 */
 export default function Dependence() {
     const [dependence, setDependence] = createSignal({
         nodes: [] as (NodeConfig & { name: string })[],

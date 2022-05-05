@@ -1,8 +1,8 @@
 import { render, Show } from "solid-js/web";
 import "./style/global.css";
 import Main from "./components/Main";
-import Dependence from "./components/Dependence";
-import { ModuleStore } from "./components/ModuleStore";
+import Dependence from "./components/dependencePanel/Dependence";
+import { ModuleStore } from "./components/dependencePanel/ModuleStore";
 const App = () => {
     return (
         <section class="h-screen flex flex-col relative font-song select-none ">
