@@ -49,12 +49,15 @@ export const RenderFileTree = (props: {
                 node.visible = isIn;
                 return isIn;
             }),
-            tap(({ id }) => {
-                edges.forEach((edge) => {
-                    edge.visible = edge.source === id || edge.source === id;
+            toArray(),
+            // 处理边的问题
+            tap((filteredNode) => {
+                const ids = filteredNode.map((i) => i.id);
+                edges.forEach((i) => {
+                    i.visible =
+                        ids.includes(i.source!) && ids.includes(i.target!);
                 });
-            }),
-            toArray()
+            })
         );
     };
     let updater$: Subscription;

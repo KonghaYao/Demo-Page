@@ -1,5 +1,5 @@
 import { createMemo, createSignal, onCleanup, Show } from "solid-js";
-import "../style/dependence.css";
+import "./dependence.css";
 import type { NodeConfig, EdgeConfig } from "@antv/g6";
 import { RenderMap } from "./RenderMap";
 import { isURLString } from "../../utils/isURLString";
