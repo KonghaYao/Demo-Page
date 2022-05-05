@@ -1,8 +1,20 @@
-import { createMemo, createSignal, For } from "solid-js";
+import { createMemo, createSignal, For, onMount } from "solid-js";
 import { NodeConfig, EdgeConfig } from "@antv/g6";
 import { getIconForFile } from "vscode-icons-js";
 import { ModuleEvents } from "./ModuleStore";
-import { fromEventPattern } from "rxjs";
+import {
+    bufferCount,
+    filter,
+    from,
+    fromEvent,
+    fromEventPattern,
+    map,
+    Subject,
+    switchMap,
+    tap,
+    throttleTime,
+    toArray,
+} from "rxjs";
 /** 渲染一行文件 */
 const renderRow = (item: NodeConfig & { name: string }) => {
     return (
@@ -18,7 +30,6 @@ const renderRow = (item: NodeConfig & { name: string }) => {
         </div>
     );
 };
-
 export const RenderFileTree = (props: {
     data(): {
         nodes: (NodeConfig & { name: string })[];
@@ -26,46 +37,50 @@ export const RenderFileTree = (props: {
     };
     update?: () => void;
 }) => {
-    const [searchText, setSearchText] = createSignal("");
-
-    const searchRegExp = createMemo(() => {
-        try {
-            const text = searchText();
-            return text ? new RegExp(text) : null;
-        } catch (e) {
-            return null;
-        }
-    });
-    const fileList = createMemo(() => {
-        const reg = searchRegExp();
-        const data = props.data().nodes;
-        const edges = props.data().edges;
-        if (reg) {
-            const result = data.filter((node) => {
-                const isIn = reg.test(node.name);
-                node.visible = isIn;
-                return isIn;
+    let input: HTMLInputElement;
+    const [searchRegExp, setSearchRegExp] = createSignal(null as RegExp | null);
+    onMount(() => {
+        fromEvent(input, "input")
+            .pipe(
+                throttleTime(100),
+                map((e) => (e.currentTarget as HTMLInputElement).value),
+                filter((text) => text === ""),
+                tap((text) => {
+                    setSearchRegExp(new RegExp(text));
+                }),
+                switchMap(() => {
+                    const nodes = props.data().nodes;
+                    const edges = props.data().edges;
+                    const reg = searchRegExp()!;
+                    return from(nodes).pipe(
+                        filter((node) => {
+                            const isIn = reg.test(node.name);
+                            node.visible = isIn;
+                            return isIn;
+                        }),
+                        tap(({ id }) => {
+                            edges.forEach((edge) => {
+                                edge.visible =
+                                    edge.source === id || edge.source === id;
+                            });
+                        }),
+                        toArray()
+                    );
+                })
+            )
+            .subscribe((fileList) => {
+                setFileList(fileList);
+                ModuleEvents.emit("filterUpdate", {});
             });
-            const ids = result.map((i) => i.id);
-            reg &&
-                edges.forEach((i) => {
-                    const isIn =
-                        ids.includes(i.source!) && ids.includes(i.target!);
-                    i.visible = isIn;
-                });
-            ModuleEvents.emit("filterUpdate", {});
-            return result;
-        }
-
-        return data;
     });
+    const [fileList, setFileList] = createSignal(
+        [] as (NodeConfig & {
+            name: string;
+        })[]
+    );
     return (
         <div class="flex-none h-full overflow-hidden absolute z-10 flex flex-col backdrop-blur-lg bg-gray-100/60 px-2">
-            <input
-                type="search"
-                placeholder="请输入正则表达式"
-                oninput={(e) => setSearchText(e.currentTarget.value)}
-            />
+            <input type="search" placeholder="请输入正则表达式" />
             <div class="overflow-y-auto flex-grow">
                 <For each={fileList()}>{renderRow}</For>
             </div>
