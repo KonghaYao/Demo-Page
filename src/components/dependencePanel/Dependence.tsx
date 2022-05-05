@@ -33,22 +33,26 @@ const Update = fromEvent(RollupHub, "drawDependence").pipe(
                 // 划分 两种不同的 加载模块
                 let type = "circle";
                 let fill = "blue";
+                let img = "";
                 if (value.id.startsWith(window.location.origin)) {
                 } else if (isURLString(value.id)) {
                     type = "remote";
                     fill = "#aaa";
+                    img =
+                        "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/file_type_rollup.svg";
                 } else {
                     type = "local";
                     fill = "#fafafa";
+                    img =
+                        "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
+                        getIconForFile(value.id);
                 }
                 return {
                     id: uid,
                     type,
                     style: { fill },
                     icon: {
-                        img:
-                            "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
-                            getIconForFile(value.id),
+                        img,
                     },
 
                     name: value.id,

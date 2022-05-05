@@ -1,6 +1,5 @@
 import { createSignal, For, onCleanup, onMount } from "solid-js";
 import { NodeConfig, EdgeConfig } from "@antv/g6";
-import { getIconForFile } from "vscode-icons-js";
 import { ModuleEvents } from "./ModuleStore";
 import {
     debounceTime,
