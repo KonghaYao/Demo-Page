@@ -5,16 +5,59 @@ import { RenderMap } from "./RenderMap";
 import { isURLString } from "../../utils/isURLString";
 import { RenderFileTree } from "./RenderFileTree";
 import { ModuleStore, updateStore } from "./ModuleStore";
-import { fromEventPattern, map } from "rxjs";
+import { fromEvent, map } from "rxjs";
+import { Emitter } from "mitt";
+import { getIconForFile } from "vscode-icons-js";
 type NodeMeta = {
     id: string;
     imported: { uid: string }[];
     importedBy: { uid: string }[];
 };
-const RollupHub = (globalThis as any).RollupHub;
-const Update = fromEventPattern(
-    (handle) => RollupHub.on("drawDependence", handle),
-    (handle) => RollupHub.off("drawDependence", handle)
+const RollupHub: Emitter<{
+    drawDependence: any;
+}> = (globalThis as any).RollupHub;
+const Update = fromEvent(RollupHub, "drawDependence").pipe(
+    map(({ nodeMetas }: any) => {
+        // console.log(nodeMetas);
+        const edges: EdgeConfig[] = [];
+        const nodes = Object.entries<NodeMeta>(nodeMetas).map(
+            ([uid, value]) => {
+                edges.push(
+                    ...value.imported.map((i) => {
+                        return {
+                            source: uid,
+                            target: i.uid,
+                        };
+                    })
+                );
+                // 划分 两种不同的 加载模块
+                let type = "circle";
+                let fill = "blue";
+                if (value.id.startsWith(window.location.origin)) {
+                } else if (isURLString(value.id)) {
+                    type = "remote";
+                    fill = "#aaa";
+                } else {
+                    type = "local";
+                    fill = "#fafafa";
+                }
+                return {
+                    id: uid,
+                    type,
+                    style: { fill },
+                    icon: {
+                        img:
+                            "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
+                            getIconForFile(value.id),
+                    },
+
+                    name: value.id,
+                    label: value.id.replace(/.*\//, ""),
+                };
+            }
+        );
+        return { nodes, edges };
+    })
 );
 
 /** 渲染一个 依赖关系面板，但是必须要全局 RollupHub 支持 */
@@ -23,44 +66,7 @@ export default function Dependence() {
         nodes: [] as (NodeConfig & { name: string })[],
         edges: [] as EdgeConfig[],
     });
-    const updater$ = Update.pipe(
-        map(({ nodeMetas }: any) => {
-            // console.log(nodeMetas);
-            const edges: EdgeConfig[] = [];
-            const nodes = Object.entries<NodeMeta>(nodeMetas).map(
-                ([uid, value]) => {
-                    edges.push(
-                        ...value.imported.map((i) => {
-                            return {
-                                source: uid,
-                                target: i.uid,
-                            };
-                        })
-                    );
-                    // 划分 两种不同的 加载模块
-                    let type = "circle";
-                    let fill = "blue";
-                    if (value.id.startsWith(window.location.origin)) {
-                    } else if (isURLString(value.id)) {
-                        type = "remote";
-                        fill = "green";
-                    } else {
-                        type = "local";
-                        fill = "gray";
-                    }
-                    return {
-                        id: uid,
-                        type,
-                        style: { fill },
-
-                        name: value.id,
-                        label: value.id.replace(/.*\//, ""),
-                    };
-                }
-            );
-            return { nodes, edges };
-        })
-    ).subscribe(setDependence);
+    const updater$ = Update.subscribe(setDependence);
     const fileTreeShow = createMemo(
         () => ModuleStore.dependence.renderFileTree.show
     );

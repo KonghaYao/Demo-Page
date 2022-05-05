@@ -18,13 +18,7 @@ import {
 const renderRow = (item: NodeConfig & { name: string }) => {
     return (
         <div class="flex items-center cursor-default button-like">
-            <img
-                class="h-4 w-4 mx-2"
-                src={
-                    "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
-                    getIconForFile(item.name)
-                }
-            />
+            <img class="h-4 w-4 mx-2" src={item.icon!.img!} />
             {item.name as string}
         </div>
     );

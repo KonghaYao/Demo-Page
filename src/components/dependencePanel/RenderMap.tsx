@@ -10,10 +10,10 @@ const createGraph = (container: HTMLElement) =>
         fitView: true,
         container,
         layout: {
-            type: "fruchterman",
+            type: "force",
+            nodeStrength: -300,
             preventOverlap: true,
-            gravity: 1,
-            gpuEnabled: true,
+            workerEnabled: true,
         },
         width: 600,
         height: 300,
@@ -25,13 +25,16 @@ const createGraph = (container: HTMLElement) =>
                 lineWidth: 1,
                 opacity: 0.2,
             },
-
+            icon: {
+                show: true,
+            },
             // 节点上的标签文本配置
             labelCfg: {
+                position: "bottom",
                 // 节点上的标签文本样式配置
-                size: 8,
+                size: 4,
                 style: {
-                    opacity: 0.9,
+                    opacity: 0.2,
                     fill: "#222", // 节点标签文字颜色
                 },
             },
@@ -39,19 +42,18 @@ const createGraph = (container: HTMLElement) =>
         defaultEdge: {
             // 边样式配置
             style: {
-                opacity: 0.4,
-                stroke: "#aa0000",
+                opacity: 0.2,
+                stroke: "#aa1100",
                 endArrow: {
                     path: G6.Arrow.triangleRect(7, 7, 7, 3, 5, 15),
                     d: 5,
-                    fill: "#aa0000",
+                    fill: "#aa1100",
                 },
             },
         },
 
         modes: {
             default: [
-                "drag-node",
                 "drag-canvas",
                 "zoom-canvas",
                 {
