@@ -18,6 +18,7 @@ export const [ModuleStore, updateStore] = createStore({
         renderFileTree: {
             show: false,
         },
+        // 必须为静态属性，不能被 store 解析
         get mapper() {
             return baseStore.mapper;
         },
