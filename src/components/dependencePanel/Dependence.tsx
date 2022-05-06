@@ -1,6 +1,6 @@
-import { createMemo, createSignal, onCleanup, Show } from "solid-js";
+import { createMemo, Show } from "solid-js";
 import "./dependence.css";
-import type { NodeConfig, EdgeConfig } from "@antv/g6";
+import type { EdgeConfig, GraphData } from "@antv/g6";
 import { RenderMap } from "./RenderMap";
 import { isURLString } from "../../utils/isURLString";
 import { RenderFileTree } from "./RenderFileTree";
@@ -62,20 +62,16 @@ const Update = fromEvent(RollupHub, "drawDependence").pipe(
         return { nodes, edges };
     })
 );
-
+Update.subscribe((mapper) => {
+    updateStore("dependence", "mapper", mapper);
+    console.log("%c 依赖记录完成");
+});
 /** 渲染一个 依赖关系面板，但是必须要全局 RollupHub 支持 */
 export default function Dependence() {
-    const [dependence, setDependence] = createSignal({
-        nodes: [] as (NodeConfig & { name: string })[],
-        edges: [] as EdgeConfig[],
-    });
-    const updater$ = Update.subscribe(setDependence);
     const fileTreeShow = createMemo(
         () => ModuleStore.dependence.renderFileTree.show
     );
-    onCleanup(() => {
-        updater$.unsubscribe();
-    });
+
     return (
         <section class="flex flex-col bg-gray-50/20 backdrop-blur text-gray-700 p-2 overflow-y-auto h-full  items-center rounded-md ">
             <div class="text-xl flex justify-between w-full p-2 items-center">
@@ -102,9 +98,9 @@ export default function Dependence() {
             </div>
             <div class="flex-grow w-full flex overflow-hidden relative justify-center">
                 <Show when={fileTreeShow()}>
-                    <RenderFileTree data={dependence}></RenderFileTree>
+                    <RenderFileTree></RenderFileTree>
                 </Show>
-                <RenderMap data={dependence}></RenderMap>
+                <RenderMap></RenderMap>
             </div>
         </section>
     );

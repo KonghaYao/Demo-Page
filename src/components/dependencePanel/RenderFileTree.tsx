@@ -1,5 +1,5 @@
 import { createSignal, For, onCleanup, onMount, Show } from "solid-js";
-import { NodeConfig, EdgeConfig } from "@antv/g6";
+import { NodeConfig, EdgeConfig, Graph, GraphData } from "@antv/g6";
 import { ModuleEvents, ModuleStore, updateStore } from "./ModuleStore";
 import {
     debounceTime,
@@ -14,8 +14,8 @@ import {
     toArray,
 } from "rxjs";
 /** 渲染一行文件 */
-const renderRow = (item: NodeConfig & { name: string }) => {
-    const openFile = () => ModuleEvents.emit("showCode", item.name);
+const renderRow = (item: NodeConfig) => {
+    const openFile = () => ModuleEvents.emit("showCode", item.name as string);
     return (
         <div
             class="flex items-center cursor-default button-like"
@@ -25,23 +25,18 @@ const renderRow = (item: NodeConfig & { name: string }) => {
         </div>
     );
 };
-export const RenderFileTree = (props: {
-    data(): {
-        nodes: (NodeConfig & { name: string })[];
-        edges: EdgeConfig[];
-    };
-    update?: () => void;
-}) => {
+export const RenderFileTree = () => {
+    const data = ModuleStore.dependence.mapper! as GraphData;
     let input: HTMLInputElement;
     const [searchRegExp, setSearchRegExp] = createSignal(null as RegExp | null);
     /** 筛选被搜索的node */
     const getFiltered = () => {
-        const nodes = props.data().nodes;
-        const edges = props.data().edges;
+        const nodes = data.nodes!;
+        const edges = data.edges!;
         const reg = searchRegExp()!;
         return from(nodes).pipe(
             filter((node) => {
-                const isIn = reg.test(node.name);
+                const isIn = reg.test(node.name as string);
                 node.visible = isIn;
                 return isIn;
             }),
@@ -64,12 +59,10 @@ export const RenderFileTree = (props: {
                 map((e) => (e.target as HTMLInputElement).value),
                 switchMap((text) => {
                     if (text === "") {
-                        return of(props.data().nodes).pipe(
+                        return of(data.nodes!).pipe(
                             tap((node) => {
                                 node.forEach((i) => (i.visible = true));
-                                props
-                                    .data()
-                                    .edges.forEach((i) => (i.visible = true));
+                                data.edges!.forEach((i) => (i.visible = true));
                                 updateStore("dependence", "filter", "");
                             })
                         );
@@ -94,7 +87,7 @@ export const RenderFileTree = (props: {
         updater$.unsubscribe();
     });
 
-    const [fileList, setFileList] = createSignal(props.data().nodes);
+    const [fileList, setFileList] = createSignal(data.nodes!);
 
     return (
         <div class="flex-none h-full overflow-hidden absolute z-10 flex flex-col backdrop-blur-lg bg-gray-100/60 px-2">

@@ -1,7 +1,7 @@
 import { onMount, createEffect, onCleanup } from "solid-js";
 import g6, { Graph, GraphData } from "@antv/g6";
-import { ModuleEvents } from "./ModuleStore";
-import { debounceTime, Subscription, fromEvent } from "rxjs";
+import { baseStore, ModuleEvents, ModuleStore } from "./ModuleStore";
+import { Subscription, fromEvent } from "rxjs";
 const G6: typeof g6 = (globalThis as any).G6;
 
 const updater$ = fromEvent(ModuleEvents, "filterUpdate");
@@ -78,14 +78,14 @@ const createGraph = (container: HTMLElement) =>
         },
     });
 
-export const RenderMap = (props: { data(): GraphData }) => {
+export const RenderMap = () => {
     let updater: null | Subscription;
     let container!: HTMLDivElement;
     let graph: Graph;
-
+    const data = baseStore.mapper as GraphData;
     onMount(() => {
         graph = createGraph(container);
-        graph.data(props.data());
+        graph.data(data);
         graph.render();
         updater = updater$.subscribe(() => {
             update();
@@ -96,9 +96,9 @@ export const RenderMap = (props: { data(): GraphData }) => {
         // 更新视图
         const update = () => {
             graph.clear();
-            console.log("数据更新", props.data());
+            console.log("数据更新", data);
 
-            graph.data(props.data());
+            graph.data(data);
             graph.render();
         };
 
