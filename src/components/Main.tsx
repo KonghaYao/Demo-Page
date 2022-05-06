@@ -43,11 +43,10 @@ export default function Home() {
                     <CodeViewer
                         src={ModuleStore.codeViewer.src}
                         languages={[
-                            "js",
+                            "javascript",
                             "css",
-                            "html",
                             "tsx",
-                            "ts",
+                            "typescript",
                         ]}></CodeViewer>
                 </div>
             </Show>

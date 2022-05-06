@@ -15,7 +15,6 @@ import {
 } from "rxjs";
 /** 渲染一行文件 */
 const renderRow = (item: NodeConfig & { name: string }) => {
-    console.log(item);
     return (
         <div
             class="flex items-center cursor-default button-like"
