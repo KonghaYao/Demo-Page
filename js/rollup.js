@@ -69,7 +69,7 @@ const config = {
                     const text = await fetch(id).then((res) => res.text());
                     const css = await postcss().process(text);
                     return `
-                    import styleInject from "https://esm.sh/style-inject";
+                    import styleInject from "style-inject";
                     styleInject(\`${css}\`)
                     `;
                 }

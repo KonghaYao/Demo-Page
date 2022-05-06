@@ -8,7 +8,8 @@ export const ModuleEvents = mitt<{
 }>();
 export const [ModuleStore, updateStore] = createStore({
     dependence: {
-        show: true,
+        show: false,
+        filter: "",
         renderFileTree: {
             show: false,
         },

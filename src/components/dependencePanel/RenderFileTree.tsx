@@ -1,6 +1,6 @@
-import { createSignal, For, onCleanup, onMount } from "solid-js";
+import { createSignal, For, onCleanup, onMount, Show } from "solid-js";
 import { NodeConfig, EdgeConfig } from "@antv/g6";
-import { ModuleEvents } from "./ModuleStore";
+import { ModuleEvents, ModuleStore, updateStore } from "./ModuleStore";
 import {
     debounceTime,
     filter,
@@ -15,10 +15,11 @@ import {
 } from "rxjs";
 /** 渲染一行文件 */
 const renderRow = (item: NodeConfig & { name: string }) => {
+    const openFile = () => ModuleEvents.emit("showCode", item.name);
     return (
         <div
             class="flex items-center cursor-default button-like"
-            onclick={() => ModuleEvents.emit("showCode", item.name)}>
+            onclick={openFile}>
             <img class="h-4 w-4 mx-2" src={item.icon!.img!} />
             {item.name as string}
         </div>
@@ -69,12 +70,14 @@ export const RenderFileTree = (props: {
                                 props
                                     .data()
                                     .edges.forEach((i) => (i.visible = true));
+                                updateStore("dependence", "filter", "");
                             })
                         );
                     } else {
                         return of(text).pipe(
                             tap((text) => {
                                 setSearchRegExp(new RegExp(text));
+                                updateStore("dependence", "filter", text);
                             }),
                             switchMap(getFiltered)
                         );
@@ -83,17 +86,24 @@ export const RenderFileTree = (props: {
             )
             .subscribe((fileList) => {
                 setFileList(fileList);
-                console.log(fileList);
                 ModuleEvents.emit("filterUpdate", {});
             });
     });
+
     onCleanup(() => {
         updater$.unsubscribe();
     });
+
     const [fileList, setFileList] = createSignal(props.data().nodes);
+
     return (
         <div class="flex-none h-full overflow-hidden absolute z-10 flex flex-col backdrop-blur-lg bg-gray-100/60 px-2">
-            <input type="search" placeholder="请输入正则表达式" ref={input!} />
+            <input
+                type="search"
+                value={ModuleStore.dependence.filter}
+                placeholder="请输入正则表达式"
+                ref={input!}
+            />
             <div class="overflow-y-auto flex-grow">
                 <For each={fileList()}>{renderRow}</For>
             </div>

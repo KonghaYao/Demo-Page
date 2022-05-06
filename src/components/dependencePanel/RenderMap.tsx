@@ -69,7 +69,11 @@ const createGraph = (container: HTMLElement) =>
         nodeStateStyles: {
             // 鼠标 hover 上节点，即 hover 状态为 true 时的样式
             hover: {
-                stroke: "#222", // 节点描边色
+                labelCfg: {
+                    style: {
+                        opacity: 0.8,
+                    },
+                },
             },
         },
     });
@@ -85,6 +89,9 @@ export const RenderMap = (props: { data(): GraphData }) => {
         graph.render();
         updater = updater$.subscribe(() => {
             update();
+        });
+        graph.on("node:click", ({ item }) => {
+            ModuleEvents.emit("showCode", (item as any).name);
         });
         // 更新视图
         const update = () => {

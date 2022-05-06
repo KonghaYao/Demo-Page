@@ -3,7 +3,6 @@ import { updateStore } from "./ModuleStore";
 
 export const CodeViewer = (props: { src: string; languages: string[] }) => {
     let ref: HTMLDivElement;
-
     const [code, setCode] = createSignal("");
 
     onMount(async () => {

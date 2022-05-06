@@ -2,14 +2,13 @@ import { createSignal, lazy, Suspense, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { CodeViewer } from "./dependencePanel/CodeViewer";
 import { ModuleStore } from "./dependencePanel/ModuleStore";
+import { SystemEvents } from "./System";
 export default function Home() {
-    const pageName = window.location.hash.replace("#", "");
-    let input: HTMLInputElement;
-    const [queryText, setText] = createSignal(pageName || "index");
-    function handle() {
-        setText(input.value);
-        window.location.hash = "#" + input.value;
-    }
+    const pageName = window.location.hash.replace("#", "") || "index";
+    const [queryText, setText] = createSignal(pageName);
+    SystemEvents.on("changePage", (page: string) => {
+        setText(page);
+    });
     const AsyncPage = (pagesName: string) => () => {
         const Page = lazy(() => {
             if (pagesName === "") return Promise.resolve(<div>Loading</div>);
@@ -25,16 +24,6 @@ export default function Home() {
 
     return (
         <section class="flex flex-col bg-white text-gray-700 p-4 overflow-hidden h-full">
-            <div class="w-full flex py-2 shadow-lg shadow-gray-300 rounded-xl overflow-hidden">
-                <input
-                    class="mx-4 flex-grow"
-                    type="text"
-                    ref={(el) => (input = el)}
-                />
-                <button className="bg-sky-400 text-white px-2" onClick={handle}>
-                    点我加载
-                </button>
-            </div>
             <div class="flex-grow overflow-y-auto overflow-x-hidden ">
                 <Dynamic component={AsyncPage(queryText())} />
             </div>
