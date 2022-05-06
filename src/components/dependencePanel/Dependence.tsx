@@ -34,8 +34,7 @@ const Update = fromEvent(RollupHub, "drawDependence").pipe(
                 let type = "circle";
                 let fill = "blue";
                 let img = "";
-                if (value.id.startsWith(window.location.origin)) {
-                } else if (isURLString(value.id)) {
+                if (isURLString(value.id)) {
                     type = "remote";
                     fill = "#aaa";
                     img =

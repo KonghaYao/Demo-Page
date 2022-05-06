@@ -1,19 +1,32 @@
 import { createSignal, onMount } from "solid-js";
-
-import type _Prism from "prismjs";
-import "https://cdn.jsdelivr.net/npm/prismjs";
-import "https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js";
+import extensions from "./extensions.json";
 import { ModuleStore, updateStore } from "./ModuleStore";
-const Prism = (globalThis as any).Prism as typeof _Prism;
-Prism.plugins.autoloader.languages_path =
-    "https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/";
-Prism.plugins.autoloader.use_minified = false;
-export const CodeViewer = (props: { src: string; language?: string[] }) => {
+import _Prism from "prismjs";
+const Prism: typeof _Prism = (globalThis as any).Prism;
+export const CodeViewer = (props: {
+    src: string;
+
+    languages: string[];
+}) => {
     let ref: HTMLDivElement;
-    const ext = props.src.replace(/.*\./, "");
+    const ext = props.src.replace(/.*\./, ".");
+    let [language, setLanguage] = createSignal(
+        /* @ts-ignore */
+        ext in extensions ? extensions[ext] : "makeup"
+    );
     const [code, setCode] = createSignal("");
     onMount(async () => {
-        const code = await fetch(props.src).then((res) => res.text());
+        try {
+            await import(
+                `https://cdn.jsdelivr.net/npm/prismjs/components/prism-${language()}.min.js`
+            );
+        } catch (e) {
+            setLanguage("markup");
+        }
+        console.log(language());
+        const code = await fetch(new URL(props.src, window.location.href)).then(
+            (res) => res.text()
+        );
         setCode(code);
         Prism.highlightElement(ref);
     });
@@ -27,12 +40,8 @@ export const CodeViewer = (props: { src: string; language?: string[] }) => {
                     close
                 </span>
             </div>
-            <code
-                className={`language-${ext}`}
-                data-dependencies={
-                    props.language ? props.language.concat(ext) : ext
-                }>
-                {code}
+            <code ref={ref!} class={`language-${language()}`}>
+                {code()}
             </code>
         </pre>
     );

@@ -10,6 +10,7 @@
     "license": "ISC",
     "dependencies": {
         "@antv/g6": "^4.6.4",
+        "highlight.js": "^11.5.1",
         "mitt": "^3.0.0",
         "prismjs": "^1.28.0",
         "rehype-stringify": "^9.0.3",

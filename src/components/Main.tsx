@@ -40,7 +40,15 @@ export default function Home() {
             </div>
             <Show when={ModuleStore.codeViewer.show}>
                 <div class="absolute w-screen h-screen top-0 left-0 flex justify-center items-center z-50">
-                    <CodeViewer src={ModuleStore.codeViewer.src}></CodeViewer>
+                    <CodeViewer
+                        src={ModuleStore.codeViewer.src}
+                        languages={[
+                            "js",
+                            "css",
+                            "html",
+                            "tsx",
+                            "ts",
+                        ]}></CodeViewer>
                 </div>
             </Show>
         </section>
