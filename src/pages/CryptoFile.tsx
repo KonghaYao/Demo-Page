@@ -1,5 +1,6 @@
 import type Sodium from "libsodium-wrappers";
 import { createSignal, For } from "solid-js";
+
 // 在 npm 上没有 browser 版本
 // https://hat.sh/about/#technical-details
 import {
@@ -7,8 +8,15 @@ import {
     Decryption, // 解密数据
 } from "../utils/cryption";
 import { timeCounter } from "../utils/timeCounter";
-const sodium: typeof Sodium = (globalThis as any).sodium;
+import { useGlobal } from "../utils/useGlobal";
 
+/** 渲染指定的数据进行一个展示 */
+export const description = {
+    title: "Sodium 实现文件加密与解密",
+};
+
+/** 获取全局的属性 */
+const sodium = useGlobal<typeof Sodium>("sodium");
 interface ImageShower {
     url: string;
     desc: string;

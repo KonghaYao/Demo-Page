@@ -8,14 +8,17 @@ import { ModuleStore, updateStore } from "./ModuleStore";
 import { fromEvent, map } from "rxjs";
 import { Emitter } from "mitt";
 import { getIconForFile } from "vscode-icons-js";
+import { useGlobal } from "../../utils/useGlobal";
 type NodeMeta = {
     id: string;
     imported: { uid: string }[];
     importedBy: { uid: string }[];
 };
-const RollupHub: Emitter<{
-    drawDependence: any;
-}> = (globalThis as any).RollupHub;
+const RollupHub = useGlobal<
+    Emitter<{
+        drawDependence: any;
+    }>
+>("RollupHub");
 const Update = fromEvent(RollupHub, "drawDependence").pipe(
     map(({ nodeMetas }: any) => {
         // console.log(nodeMetas);
