@@ -1,5 +1,6 @@
 import { createSignal, lazy, Suspense } from "solid-js";
 import { Dynamic } from "solid-js/web";
+import { CDN } from "../global";
 
 import { Description } from "./Description";
 import { ModuleDescription } from "./ModuleDescription";
@@ -20,7 +21,8 @@ export default function Home() {
         const Page = lazy(() => {
             if (pagesName === "") return Promise.resolve(<div>Loading</div>);
             console.log("%c跳转到" + pagesName, "color:red");
-            return import(`../pages/${pagesName}.tsx`).then((module) => {
+            const module = CDN + `/src/pages/${pagesName}.tsx`;
+            return import(module).then((module) => {
                 if ("description" in module) setDescription(module.description);
                 return module;
             });

@@ -3,4 +3,9 @@ import { createStore } from "solid-js/store";
 export const SystemEvents = mitt<{
     changePage: string;
 }>();
-export const [System, setSystem] = createStore({});
+export const [System, setSystem] = createStore({
+    moduleName: "",
+});
+SystemEvents.on("changePage", (value) => {
+    setSystem("moduleName", value);
+});

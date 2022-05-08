@@ -1,5 +1,8 @@
+import { CodeViewerEvent } from "./CodeViewer/store";
 import { updateStore } from "./components/dependencePanel/ModuleStore";
 import { PageSearch } from "./components/pageSearch";
+import { System } from "./components/System";
+import { CDN } from "./global";
 
 export function HelperBar() {
     return (
@@ -10,7 +13,14 @@ export function HelperBar() {
                     onclick={() => updateStore("dependence", "show", true)}>
                     map
                 </div>
-                <div class="material-icons bg-orange-400 rounded-full p-1">
+                <div
+                    class="material-icons bg-orange-400 rounded-full p-1"
+                    onclick={() =>
+                        CodeViewerEvent.emit(
+                            "showCode",
+                            CDN + `/src/page/${System.moduleName}.tsx`
+                        )
+                    }>
                     source
                 </div>
             </div>
