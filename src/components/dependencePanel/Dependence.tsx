@@ -2,7 +2,7 @@ import { createMemo, Show } from "solid-js";
 import "./dependence.css";
 import type { EdgeConfig, GraphData } from "@antv/g6";
 import { RenderMap } from "./RenderMap";
-import { isURLString } from "../../utils/isURLString";
+import { isURLString, isLocal, isCDNLocal } from "../../utils/isURLString";
 import { RenderFileTree } from "./RenderFileTree";
 import { ModuleStore, updateStore } from "./ModuleStore";
 import { fromEvent, map } from "rxjs";
@@ -37,17 +37,17 @@ const Update = fromEvent(RollupHub, "drawDependence").pipe(
                 let type = "circle";
                 let fill = "blue";
                 let img = "";
-                if (isURLString(value.id)) {
-                    type = "remote";
-                    fill = "#aaa";
-                    img =
-                        "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/file_type_rollup.svg";
-                } else {
+                if (isCDNLocal(value.id)) {
                     type = "local";
                     fill = "#fafafa";
                     img =
                         "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
                         getIconForFile(value.id);
+                } else {
+                    type = "remote";
+                    fill = "#aaa";
+                    img =
+                        "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/file_type_rollup.svg";
                 }
                 return {
                     id: uid,
