@@ -1,16 +1,44 @@
 import { createSignal, onMount } from "solid-js";
 import { CDN } from "../global";
 import { store, updateStore } from "./store";
-
+import type _Prism from "prismjs";
+import { loadLink, loadScript } from "../utils/loadScript";
+import { useGlobal } from "../utils/useGlobal";
+await loadScript("https://cdn.jsdelivr.net/npm/prismjs/prism.min.js");
+await loadLink(
+    "https://cdn.jsdelivr.net/npm/prismjs/themes/prism-solarizedlight.css"
+);
+const Prism = useGlobal<typeof _Prism>("Prism");
 export const CodeViewer = (props: { src: string }) => {
-    let ref: HTMLDivElement;
+    let container: HTMLElement;
     const [code, setCode] = createSignal("");
 
     onMount(async () => {
         const url = new URL(props.src, CDN);
-        console.log(props.src);
         const code = await fetch(url).then((res) => res.text());
+        const ext = url.pathname.replace(/(.*)\./, "");
+        console.log(ext);
         setCode(code);
+        if (code && ext) {
+            console.log(ext);
+            const languages = store.language.get(ext);
+            console.log(languages);
+            if (languages) {
+                const languageName = languages[0];
+                for (let i of languages.reverse()) {
+                    await loadScript(
+                        `https://cdn.jsdelivr.net/npm/prismjs/components/prism-${i}.js`
+                    );
+                }
+
+                const html = Prism.highlight(
+                    code,
+                    Prism.languages[languageName],
+                    languageName
+                );
+                setCode(html);
+            }
+        }
     });
 
     return (
@@ -22,7 +50,10 @@ export const CodeViewer = (props: { src: string }) => {
                     close
                 </span>
             </div>
-            <code ref={ref!}>{code()}</code>
+            <code
+                ref={container!}
+                class={`prism-code`}
+                innerHTML={code()}></code>
         </pre>
     );
 };

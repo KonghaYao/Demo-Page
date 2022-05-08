@@ -14,3 +14,19 @@ export const loadScript = async (url: string) => {
         document.body.appendChild(script);
     });
 };
+export const loadLink = (url: string) => {
+    if (successSet.has(url)) return true;
+    return new Promise((resolve, reject) => {
+        const script = document.createElement("link");
+        script.href = url;
+        script.rel = "stylesheet";
+        script.onload = () => {
+            successSet.add(url);
+            resolve(true);
+        };
+        script.onerror = (e) => {
+            reject(e);
+        };
+        document.head.appendChild(script);
+    });
+};

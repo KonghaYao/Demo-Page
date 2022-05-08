@@ -8,6 +8,11 @@ export const CodeViewerEvent = mitt<{
 export const [store, updateStore] = createStore({
     show: false,
     src: "",
+    /** prismjs 中的 语言名称 对应的后缀名*/
+    language: new Map([
+        ["tsx", ["tsx", "typescript", "jsx"]],
+        ["ts", ["typescript"]],
+    ]),
 });
 CodeViewerEvent.on("showCode", (src) => {
     updateStore({

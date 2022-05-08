@@ -21,8 +21,8 @@ export default function Home() {
         const Page = lazy(() => {
             if (pagesName === "") return Promise.resolve(<div>Loading</div>);
             console.log("%c跳转到" + pagesName, "color:red");
-            const module = CDN + `/src/pages/${pagesName}.tsx`;
-            return import(module).then((module) => {
+            const module = new URL(`./src/pages/${pagesName}.tsx`, CDN);
+            return import(module.toString()).then((module) => {
                 if ("description" in module) setDescription(module.description);
                 return module;
             });
