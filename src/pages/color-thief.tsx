@@ -5,14 +5,25 @@ import { filter, fromEvent, map, Subscription, tap } from "rxjs";
 const colorThief = new ColorThief();
 export const description = {
     title: "ColorThief 颜色抽取器",
+    link: [
+        "https://lokeshdhakar.com/projects/color-thief/",
+        "https://github.com/lokesh/color-thief",
+    ],
 };
+/**
+ * 因为网络上的图片触发 跨域错误，但是没有触发 CORS 协议
+ * 那么可以直接下载并转化为本地 URL
+ */
 const url = await imageToLocalURL(
     "https://cdn.jsdelivr.net/gh/tensorflow/tfjs-examples/mobilenet/cat.jpg"
 );
+/** 主体 */
 export default function () {
     const [src, setSrc] = createSignal(url);
     const [Main, setMain] = createSignal([0, 0, 0] as ColorHex);
     const [ColorSets, setColorSets] = createSignal([] as ColorHex[]);
+
+    /** 当图片加载完成，直接获取颜色  */
     const getColor = (e: Event) => {
         const mainColor = colorThief.getColor(
             e.currentTarget as HTMLImageElement
@@ -23,7 +34,9 @@ export default function () {
         setMain(mainColor);
         setColorSets(Colors);
     };
+
     let file: HTMLInputElement;
+    /** 绑定上传事件 */
     let inputFile$: Subscription;
     onMount(() => {
         inputFile$ = fromEvent(file, "input")
