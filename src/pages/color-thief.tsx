@@ -2,13 +2,15 @@ import { createMemo, createSignal, For, onCleanup, onMount } from "solid-js";
 import ColorThief, { ColorHex } from "colorthief";
 import { imageToLocalURL } from "../utils/imageToLocalURL";
 import { filter, fromEvent, map, Subscription, tap } from "rxjs";
+import { ModuleDescription } from "../components/ModuleDescription";
 const colorThief = new ColorThief();
-export const description = {
+export const description: ModuleDescription = {
     title: "ColorThief 颜色抽取器",
     link: [
         "https://lokeshdhakar.com/projects/color-thief/",
         "https://github.com/lokesh/color-thief",
     ],
+    desc: "Color Thief 可以提取一个图片中的主体颜色，或者直接抽取出一个颜色模板。",
 };
 /**
  * 因为网络上的图片触发 跨域错误，但是没有触发 CORS 协议

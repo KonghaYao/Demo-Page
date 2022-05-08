@@ -3,14 +3,17 @@ import { Dynamic } from "solid-js/web";
 
 import { CodeViewer } from "./dependencePanel/CodeViewer";
 import { ModuleStore } from "./dependencePanel/ModuleStore";
+import { Description } from "./Description";
+import { ModuleDescription } from "./ModuleDescription";
 import { SystemEvents } from "./System";
+
 export default function Home() {
     const pageName = window.location.hash.replace("#", "") || "index";
     const [queryText, setText] = createSignal(pageName);
     const [description, setDescription] = createSignal({
         title: "Unknown Module",
-        desc: "这个模块没有命名哦",
-    });
+        desc: "加载信息中。。。",
+    } as ModuleDescription);
 
     SystemEvents.on("changePage", (page: string) => {
         setText(page);
@@ -33,13 +36,15 @@ export default function Home() {
 
     return (
         <section class="flex flex-col bg-white text-gray-700 p-4 overflow-hidden h-full">
-            <div class="rounded-lg border-2 border-orange-400">
-                <h1 class="text-lg">{description().title}</h1>
-                <p class="text-sm text-gray-400">{description().desc}</p>
-            </div>
+            {/* 模块解析 */}
+            <Description description={description()}></Description>
+
+            {/* 具体模块的内容 */}
             <div class="flex-grow overflow-y-auto overflow-x-hidden ">
                 <Dynamic component={AsyncPage(queryText())} />
             </div>
+
+            {/* 模块的代码展示 */}
             <Show when={ModuleStore.codeViewer.show}>
                 <div class="absolute w-screen h-screen top-0 left-0 flex justify-center items-center z-50">
                     <CodeViewer

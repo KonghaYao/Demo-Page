@@ -1,5 +1,6 @@
 import type Sodium from "libsodium-wrappers";
 import { createSignal, For } from "solid-js";
+import { ModuleDescription } from "../components/ModuleDescription";
 
 // 在 npm 上没有 browser 版本
 // https://hat.sh/about/#technical-details
@@ -11,8 +12,10 @@ import { timeCounter } from "../utils/timeCounter";
 import { useGlobal } from "../utils/useGlobal";
 
 /** 渲染指定的数据进行一个展示 */
-export const description = {
+export const description: ModuleDescription = {
     title: "Sodium 实现文件加密与解密",
+    desc: "Sodium 可以实现浏览器端的加密，使用 Sodium 可以实现文件的加密与解密！",
+    link: ["https://hat.sh/about/#technical-details"],
 };
 
 /** 获取全局的属性 */
@@ -48,6 +51,8 @@ export default function CryptoFile() {
         const url = URL.createObjectURL(new Blob([result]));
         setImages([...images(), { url, ...options, size: result.byteLength }]);
     };
+
+    // 主要加解密功能实现
     sodium.ready
         .then(async () => {
             timeCounter("getFile");

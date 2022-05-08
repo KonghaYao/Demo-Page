@@ -3,9 +3,14 @@ import { loadScript } from "../utils/loadScript";
 import { useGlobal } from "../utils/useGlobal";
 import type { GPU as _GPU } from "gpu.js";
 import { imageToLocalURL } from "../utils/imageToLocalURL";
-export const description = {
+import { ModuleDescription } from "../components/ModuleDescription";
+export const description: ModuleDescription = {
     title: "GPU.js —— Cat 图像扰动",
     desc: "GPU.js 可以执行图像的像素级调整！",
+    link: [
+        "https://www.npmjs.com/package/gpu.js",
+        "https://github.com/gpujs/gpu.js",
+    ],
 };
 
 await loadScript(

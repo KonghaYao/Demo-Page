@@ -1,9 +1,12 @@
 import { onMount } from "solid-js";
+import { ModuleDescription } from "../components/ModuleDescription";
 import { loadScript } from "../utils/loadScript";
 import { useGlobal } from "../utils/useGlobal";
 
-export const description = {
+export const description: ModuleDescription = {
     title: "RunKit —— Nodejs 运行器",
+    desc: "RunKit 是 NPM 官方推荐的在线 Nodejs 运行器！",
+    link: ["https://runkit.com/home"],
 };
 /** 加载 Runkit 脚本 */
 await loadScript("https://embed.runkit.com");

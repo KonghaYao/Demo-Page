@@ -2,11 +2,8 @@ import { render, Show } from "solid-js/web";
 import "./style/global.css";
 import Main from "./components/Main";
 import Dependence from "./components/dependencePanel/Dependence";
-import {
-    ModuleStore,
-    updateStore,
-} from "./components/dependencePanel/ModuleStore";
-import { PageSearch } from "./components/pageSearch";
+import { ModuleStore } from "./components/dependencePanel/ModuleStore";
+import { HelperBar } from "./HelperBar";
 const App = () => {
     return (
         <section class="h-screen flex flex-col relative font-song select-none ">
@@ -16,16 +13,7 @@ const App = () => {
                 </div>
                 <div></div>
             </header>
-            <nav class="flex p-2 px-4 bg-gray-100 items-center">
-                <div class="flex-grow flex items-center">
-                    <div
-                        class="material-icons"
-                        onclick={() => updateStore("dependence", "show", true)}>
-                        map
-                    </div>
-                </div>
-                <PageSearch></PageSearch>
-            </nav>
+            {HelperBar()}
             <main class="flex-grow bg-gray-50 p-4">
                 <Main></Main>
             </main>
