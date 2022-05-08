@@ -1,5 +1,5 @@
 import { createSignal, onMount } from "solid-js";
-import { ModuleStore, updateStore } from "./ModuleStore";
+import { store, updateStore } from "./store";
 
 export const CodeViewer = (props: { src: string; languages: string[] }) => {
     let ref: HTMLDivElement;
@@ -17,13 +17,7 @@ export const CodeViewer = (props: { src: string; languages: string[] }) => {
             <div class="flex justify-end p-2">
                 <span
                     class="material-icons"
-                    onclick={() =>
-                        updateStore(
-                            "codeViewer",
-                            "show",
-                            !ModuleStore.codeViewer.show
-                        )
-                    }>
+                    onclick={() => updateStore("show", !store.show)}>
                     close
                 </span>
             </div>

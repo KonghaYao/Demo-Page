@@ -1,7 +1,8 @@
 import { onMount, createEffect, onCleanup } from "solid-js";
 import g6, { Graph, GraphData } from "@antv/g6";
-import { baseStore, ModuleEvents, ModuleStore } from "./ModuleStore";
+import { baseStore, ModuleEvents } from "./ModuleStore";
 import { Subscription, fromEvent } from "rxjs";
+import { CodeViewerEvent } from "../../CodeViewer/store";
 const G6: typeof g6 = (globalThis as any).G6;
 
 const updater$ = fromEvent(ModuleEvents, "filterUpdate");
@@ -91,7 +92,7 @@ export const RenderMap = () => {
             update();
         });
         graph.on("node:click", ({ item }) => {
-            ModuleEvents.emit("showCode", (item as any).name);
+            CodeViewerEvent.emit("showCode", (item as any).name);
         });
         // 更新视图
         const update = () => {

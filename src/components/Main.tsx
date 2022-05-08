@@ -1,8 +1,6 @@
-import { createSignal, lazy, Suspense, Show } from "solid-js";
+import { createSignal, lazy, Suspense } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { CodeViewer } from "./dependencePanel/CodeViewer";
-import { ModuleStore } from "./dependencePanel/ModuleStore";
 import { Description } from "./Description";
 import { ModuleDescription } from "./ModuleDescription";
 import { SystemEvents } from "./System";
@@ -43,20 +41,6 @@ export default function Home() {
             <div class="flex-grow overflow-y-auto overflow-x-hidden ">
                 <Dynamic component={AsyncPage(queryText())} />
             </div>
-
-            {/* 模块的代码展示 */}
-            <Show when={ModuleStore.codeViewer.show}>
-                <div class="absolute w-screen h-screen top-0 left-0 flex justify-center items-center z-50">
-                    <CodeViewer
-                        src={ModuleStore.codeViewer.src}
-                        languages={[
-                            "javascript",
-                            "css",
-                            "tsx",
-                            "typescript",
-                        ]}></CodeViewer>
-                </div>
-            </Show>
         </section>
     );
 }

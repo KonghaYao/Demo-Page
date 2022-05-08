@@ -5,7 +5,6 @@ import { GraphData } from "@antv/g6";
 /** 用于模块间数据通信 */
 export const ModuleEvents = mitt<{
     filterUpdate: {};
-    showCode: string;
 }>();
 
 export const baseStore = {
@@ -26,16 +25,4 @@ export const [ModuleStore, updateStore] = createStore({
             baseStore.mapper = data;
         },
     },
-    codeViewer: {
-        show: false,
-        src: "",
-    },
-});
-ModuleEvents.on("showCode", (src) => {
-    updateStore({
-        codeViewer: {
-            show: true,
-            src,
-        },
-    });
 });
