@@ -9,7 +9,8 @@ export const description = {
 export default function README() {
     const [markdownHTML, {}] = createResource(async () => {
         const file = await fetch("./README.md").then((res) => res.text());
-        return (await Markdown.process(file)).value;
+        const mark = await Markdown.process(file);
+        return mark.value as string;
     });
     return <div class="markdown-body" innerHTML={markdownHTML()}></div>;
 }

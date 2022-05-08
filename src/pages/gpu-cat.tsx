@@ -2,6 +2,7 @@ import { onMount } from "solid-js";
 import { loadScript } from "../utils/loadScript";
 import { useGlobal } from "../utils/useGlobal";
 import type { GPU as _GPU } from "gpu.js";
+import { imageToLocalURL } from "../utils/imageToLocalURL";
 export const description = {
     title: "GPU.js —— Cat 图像扰动",
     desc: "GPU.js 可以执行图像的像素级调整！",
@@ -20,9 +21,7 @@ function imageToArray() {
             let image = new Image();
             const url =
                 "https://cdn.jsdelivr.net/gh/tensorflow/tfjs-examples/mobilenet/cat.jpg";
-            const Url = await fetch(url)
-                .then((res) => res.blob())
-                .then((blob) => URL.createObjectURL(blob));
+            const Url = await imageToLocalURL(url);
             image.src = Url;
             image.onload = () => {
                 canvas.height = image.height;

@@ -59,7 +59,9 @@ const config = {
         }),
         sky_module({
             cdn: "https://cdn.skypack.dev/",
-            rename: {},
+            rename: {
+                colorthief: "colorthief@2.3.2/dist/color-thief.mjs",
+            },
         }),
         // 这是一种异步导入方案，使用 全局的一个外置 Server 来保证代码的正确执行
         server.createPlugin({}),
