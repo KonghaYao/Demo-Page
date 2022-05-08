@@ -15,12 +15,13 @@ export function HelperBar() {
                 </div>
                 <div
                     class="material-icons bg-orange-400 rounded-full p-1"
-                    onclick={() =>
-                        CodeViewerEvent.emit(
-                            "showCode",
-                            CDN + `/src/page/${System.moduleName}.tsx`
-                        )
-                    }>
+                    onclick={() => {
+                        const url = new URL(
+                            `/src/pages/${System.moduleName}.tsx`,
+                            CDN
+                        );
+                        CodeViewerEvent.emit("showCode", url.toString());
+                    }}>
                     source
                 </div>
             </div>

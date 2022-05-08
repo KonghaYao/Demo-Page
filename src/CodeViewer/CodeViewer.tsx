@@ -1,14 +1,15 @@
 import { createSignal, onMount } from "solid-js";
+import { CDN } from "../global";
 import { store, updateStore } from "./store";
 
-export const CodeViewer = (props: { src: string; languages: string[] }) => {
+export const CodeViewer = (props: { src: string }) => {
     let ref: HTMLDivElement;
     const [code, setCode] = createSignal("");
 
     onMount(async () => {
-        const code = await fetch(new URL(props.src, window.location.href)).then(
-            (res) => res.text()
-        );
+        const url = new URL(props.src, CDN);
+        console.log(props.src);
+        const code = await fetch(url).then((res) => res.text());
         setCode(code);
     });
 

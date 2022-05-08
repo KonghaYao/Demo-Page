@@ -4,6 +4,7 @@ import Main from "./components/Main";
 import Dependence from "./components/dependencePanel/Dependence";
 import { ModuleStore } from "./components/dependencePanel/ModuleStore";
 import { HelperBar } from "./HelperBar";
+import { CodeViewerWrapper } from "./CodeViewerWrapper";
 const App = () => {
     return (
         <section class="h-screen flex flex-col relative font-song select-none ">
@@ -22,6 +23,7 @@ const App = () => {
                     <Dependence></Dependence>
                 </div>
             </Show>
+            <CodeViewerWrapper></CodeViewerWrapper>
         </section>
     );
 };

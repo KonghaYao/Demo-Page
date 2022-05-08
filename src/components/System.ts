@@ -4,7 +4,7 @@ export const SystemEvents = mitt<{
     changePage: string;
 }>();
 export const [System, setSystem] = createStore({
-    moduleName: "",
+    moduleName: window.location.hash.replace("#", ""),
 });
 SystemEvents.on("changePage", (value) => {
     setSystem("moduleName", value);
