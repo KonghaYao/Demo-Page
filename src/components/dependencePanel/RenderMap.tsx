@@ -92,7 +92,8 @@ export const RenderMap = () => {
             update();
         });
         graph.on("node:click", ({ item }) => {
-            CodeViewerEvent.emit("showCode", (item as any).name);
+            console.log(item);
+            CodeViewerEvent.emit("showCode", (item as any)._cfg.model.name);
         });
         // 更新视图
         const update = () => {

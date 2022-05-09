@@ -16,8 +16,9 @@ import {
 import { CodeViewerEvent } from "../../CodeViewer/store";
 /** 渲染一行文件 */
 const renderRow = (item: NodeConfig) => {
-    const openFile = () =>
+    const openFile = () => {
         CodeViewerEvent.emit("showCode", item.name as string);
+    }
     return (
         <div
             class="flex items-center cursor-default button-like"

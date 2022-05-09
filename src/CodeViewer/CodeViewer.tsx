@@ -1,4 +1,4 @@
-import { createSignal, onMount } from "solid-js";
+import { createEffect, createSignal, onMount } from "solid-js";
 import { CDN } from "../global";
 import { store, updateStore } from "./store";
 import type _Prism from "prismjs";
@@ -15,14 +15,12 @@ export const CodeViewer = (props: { src: string }) => {
 
     onMount(async () => {
         const url = new URL(props.src, CDN);
+        console.log(url.toString());
         const code = await fetch(url).then((res) => res.text());
         const ext = url.pathname.replace(/(.*)\./, "");
-        console.log(ext);
         setCode(code);
         if (code && ext) {
-            console.log(ext);
             const languages = store.language.get(ext);
-            console.log(languages);
             if (languages) {
                 const languageName = languages[0];
                 for (let i of languages.reverse()) {
@@ -42,7 +40,7 @@ export const CodeViewer = (props: { src: string }) => {
     });
 
     return (
-        <pre class="backdrop-blur-xl bg-white/30 w-3/4 h-3/4 overflow-y-auto p-4 pt-2 rounded-lg">
+        <pre class=" shadow-2xl bg-white w-3/4 h-3/4 overflow-y-auto p-4 pt-2 rounded-2xl">
             <div class="flex justify-end p-2">
                 <span
                     class="material-icons"

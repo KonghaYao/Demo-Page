@@ -1,8 +1,8 @@
 import { createMemo, Show } from "solid-js";
 import "./dependence.css";
-import type { EdgeConfig, GraphData } from "@antv/g6";
+import type { EdgeConfig } from "@antv/g6";
 import { RenderMap } from "./RenderMap";
-import { isURLString, isLocal, isCDNLocal } from "../../utils/isURLString";
+import {  isCDNLocal } from "../../utils/isURLString";
 import { RenderFileTree } from "./RenderFileTree";
 import { ModuleStore, updateStore } from "./ModuleStore";
 import { fromEvent, map } from "rxjs";
