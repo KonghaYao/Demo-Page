@@ -5,6 +5,7 @@ import Dependence from "./components/dependencePanel/Dependence";
 import { ModuleStore } from "./components/dependencePanel/ModuleStore";
 import { HelperBar } from "./HelperBar";
 import { CodeViewerWrapper } from "./CodeViewerWrapper";
+/** 加载loading 的 WebComponent */
 import "wc-spinners";
 const App = () => {
     return (

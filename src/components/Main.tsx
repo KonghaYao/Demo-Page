@@ -3,6 +3,7 @@ import { Dynamic } from "solid-js/web";
 import { CDN } from "../global";
 
 import { Description } from "./Description";
+import { Loading } from "./LoadingPage/loading";
 import { ModuleDescription } from "./ModuleDescription";
 import { SystemEvents } from "./System";
 
@@ -28,7 +29,7 @@ export default function Home() {
             });
         });
         return (
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loading></Loading>}>
                 <Page />
             </Suspense>
         );
