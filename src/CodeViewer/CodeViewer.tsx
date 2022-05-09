@@ -1,9 +1,10 @@
-import { createComputed, createEffect, createSignal, observable, onMount } from "solid-js";
+import { createComputed, createEffect, createMemo, createSignal, observable, onMount } from "solid-js";
 import { CDN } from "../global";
 import { CodeViewerEvent, store, updateStore } from "./store";
 import type _Prism from "prismjs";
 import { loadLink, loadScript } from "../utils/loadScript";
 import { useGlobal } from "../utils/useGlobal";
+import { jumpTo } from "../utils/jumpTo";
 const remote = "https://cdn.jsdelivr.net/npm/prismjs/"
 await loadScript(remote + "prism.min.js");
 await loadLink(
@@ -19,7 +20,10 @@ const addLinkToURL = (Pre: HTMLPreElement, cb: (url: string) => void, baseURL = 
 
             if (isURL) {
                 el.classList.add('underline', 'underline-offset-1', 'cursor-pointer')
-                el.addEventListener('click', () => cb(new URL(puleText, baseURL).toString()))
+                el.addEventListener('click', (e) => {
+                    const url = new URL(puleText, baseURL).toString()
+                    e.ctrlKey ? jumpTo(url) : cb(url)
+                })
             }
         }
     }
@@ -73,7 +77,7 @@ export const CodeViewer = (props: { src: string }) => {
                 history.push(props.src)
                 setTimeout(() => {
                     addLinkToURL(container, (url) => {
-                        console.log(url);
+
                         CodeViewerEvent.emit('showCode', url)
                     }, props.src)
                 }, 500)
@@ -90,16 +94,17 @@ export const CodeViewer = (props: { src: string }) => {
 
     return (
         <div class="flex flex-col h-3/4 w-3/4">
-            <div class="flex justify-between p-2">
+            <div class="flex justify-between p-2 text-sky-400">
 
                 <span
-                    class="material-icons cursor-pointer text-sky-400"
+                    class="material-icons cursor-pointer"
                     onclick={goBack}
                 >
                     keyboard_arrow_left
                 </span>
+                <span class="flex-grow text-center hover:underline underline-offset-1 cursor-pointer" onclick={() => jumpTo(props.src)}>{props.src}</span>
                 <span
-                    class="material-icons cursor-pointer text-sky-400"
+                    class="material-icons cursor-pointer"
                     onclick={() => updateStore("show", !store.show)}>
                     close
                 </span>
