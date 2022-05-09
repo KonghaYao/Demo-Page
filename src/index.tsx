@@ -5,6 +5,7 @@ import Dependence from "./components/dependencePanel/Dependence";
 import { ModuleStore } from "./components/dependencePanel/ModuleStore";
 import { HelperBar } from "./HelperBar";
 import { CodeViewerWrapper } from "./CodeViewerWrapper";
+import "wc-spinners";
 const App = () => {
     return (
         <section class="h-screen flex flex-col relative font-song select-none ">
