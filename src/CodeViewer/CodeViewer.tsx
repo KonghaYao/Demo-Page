@@ -6,7 +6,7 @@ import { loadLink, loadScript } from "../utils/loadScript";
 import { useGlobal } from "../utils/useGlobal";
 await loadScript("https://cdn.jsdelivr.net/npm/prismjs/prism.min.js");
 await loadLink(
-    "https://cdn.jsdelivr.net/npm/prismjs/themes/prism-solarizedlight.css"
+    "https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-material-light.min.css"
 );
 const Prism = useGlobal<typeof _Prism>("Prism");
 export const CodeViewer = (props: { src: string }) => {
