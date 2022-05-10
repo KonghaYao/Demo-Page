@@ -2,7 +2,7 @@ import { createMemo, Show } from "solid-js";
 import "./dependence.css";
 import type { EdgeConfig } from "@antv/g6";
 import { RenderMap } from "./RenderMap";
-import {  isCDNLocal } from "../../utils/isURLString";
+import { isCDNLocal } from "../../utils/isURLString";
 import { RenderFileTree } from "./RenderFileTree";
 import { ModuleStore, updateStore } from "./ModuleStore";
 import { fromEvent, map } from "rxjs";
@@ -76,7 +76,7 @@ export default function Dependence() {
     );
 
     return (
-        <section class="flex flex-col bg-gray-50/20 backdrop-blur text-gray-700 p-2 overflow-y-auto h-full  items-center rounded-md ">
+        <section class="flex flex-col bg-gray-50/70 backdrop-blur text-gray-700 p-2 overflow-y-auto h-full  items-center rounded-md ">
             <div class="text-xl flex justify-between w-full p-2 items-center">
                 <span
                     onclick={() =>

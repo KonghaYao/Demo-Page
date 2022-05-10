@@ -12,7 +12,7 @@ export function HelperBar() {
                 <div
                     class="material-icons rounded-full p-1 bg-green-400"
                     onclick={() => updateStore("dependence", "show", true)}>
-                    map
+                    fitbit
                 </div>
                 <div
                     class="material-icons bg-orange-400 rounded-full p-1"
