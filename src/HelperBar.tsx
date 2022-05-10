@@ -43,6 +43,7 @@ export function HelperBar() {
                     }}
                 </For>
             </div>
+            <div class="flex-grow"></div>
             <PageSearch></PageSearch>
         </nav>
     );

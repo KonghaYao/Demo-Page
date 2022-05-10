@@ -16,8 +16,8 @@ const App = () => {
                 </div>
                 <div></div>
             </header>
-            {HelperBar()}
-            <main class="flex-grow bg-gray-50 p-4">
+            <HelperBar></HelperBar>
+            <main class="flex-grow bg-gray-50 p-4 ">
                 <Main></Main>
             </main>
             <Show when={ModuleStore.dependence.show}>

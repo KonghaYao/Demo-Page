@@ -1,4 +1,15 @@
 {
+    "ts-node": {
+        "transpileOnly": true,
+        "esm": true,
+
+        "moduleTypes": {
+            "./src/*": "esm"
+        },
+        "compilerOptions": {
+            "jsx": "preserve"
+        }
+    },
     "compilerOptions": {
         /* Visit https://aka.ms/tsconfig.json to read more about this file */
         "resolveJsonModule": true,

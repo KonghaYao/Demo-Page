@@ -24,13 +24,10 @@ export default function Home() {
             if (pagesName === "") return Promise.resolve(<div>Loading</div>);
             console.log("%c跳转到" + pagesName, "color:red");
             const module = new URL(`./src/pages/${pagesName}.tsx`, CDN);
-
-
             return import(module.toString()).then((module) => {
                 if ("description" in module) setDescription(module.description);
                 return module;
-            })
-
+            });
         });
         return (
             <Suspense fallback={<Loading></Loading>}>
@@ -40,14 +37,16 @@ export default function Home() {
     };
 
     return (
-        <section class="flex flex-col bg-white text-gray-700 p-4 overflow-hidden h-full">
+        <section class="flex flex-col bg-white text-gray-700 p-4 overflow-hidden h-full max-w-3xl m-auto">
             {/* 模块解析 */}
             <Description description={description()}></Description>
 
             {/* 具体模块的内容 */}
-            <div class="flex-grow overflow-y-auto overflow-x-hidden ">
-                <ErrorBoundary fallback={(err, reload) => <ErrorPage err={err} reload={reload}></ErrorPage>}>
-
+            <div class="flex-grow overflow-y-auto overflow-x-hidden my-2">
+                <ErrorBoundary
+                    fallback={(err, reload) => (
+                        <ErrorPage err={err} reload={reload}></ErrorPage>
+                    )}>
                     <Dynamic component={AsyncPage(queryText())} />
                 </ErrorBoundary>
             </div>
