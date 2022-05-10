@@ -1,8 +1,9 @@
-import { createSignal, lazy, Suspense } from "solid-js";
+import { createSignal, ErrorBoundary, lazy, Suspense } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { CDN } from "../global";
 
 import { Description } from "./Description";
+import { ErrorPage } from "./LoadingPage/ErrorPage";
 import { Loading } from "./LoadingPage/loading";
 import { ModuleDescription } from "./ModuleDescription";
 import { SystemEvents } from "./System";
@@ -45,7 +46,10 @@ export default function Home() {
 
             {/* 具体模块的内容 */}
             <div class="flex-grow overflow-y-auto overflow-x-hidden ">
-                <Dynamic component={AsyncPage(queryText())} />
+                <ErrorBoundary fallback={(err, reload) => <ErrorPage err={err} reload={reload}></ErrorPage>}>
+
+                    <Dynamic component={AsyncPage(queryText())} />
+                </ErrorBoundary>
             </div>
         </section>
     );
