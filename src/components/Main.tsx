@@ -19,14 +19,17 @@ export default function Home() {
         setText(page);
     });
     const AsyncPage = (pagesName: string) => () => {
-        const Page = lazy(() => {
+        const Page = lazy(async () => {
             if (pagesName === "") return Promise.resolve(<div>Loading</div>);
             console.log("%c跳转到" + pagesName, "color:red");
             const module = new URL(`./src/pages/${pagesName}.tsx`, CDN);
+
+
             return import(module.toString()).then((module) => {
                 if ("description" in module) setDescription(module.description);
                 return module;
-            });
+            })
+
         });
         return (
             <Suspense fallback={<Loading></Loading>}>

@@ -7,20 +7,25 @@ export const description: ModuleDescription = {
     desc: "Typed.js 是 用于创建打字效果的常用插件; 这里配合 PrismJS 对代码进行格式化，形成一个动态写代码的效果",
     link: ["https://github.com/mattboldt/typed.js"],
 };
+
+/** 远程代码 */
 const code = await fetch(
     "https://cdn.jsdelivr.net/npm/typed.js@2.0.12/app.js"
 ).then((res) => res.text());
-const codes = [code.slice(0, 50), code, code.slice(0, 100), code];
+/* 代码序列 */
+const codes = [code.slice(0, 50), code, code.slice(0, 100), code].map((i) => {
+    /* 高亮一下代码 */
+    return Prism.highlight(i, Prism.languages.js, "js");
+});
+
+
 export default function () {
-    var options = {
-        strings: codes.map((i) => {
-            return Prism.highlight(i, Prism.languages.js, "js");
-        }),
-        typeSpeed: 30,
-    };
     let container: HTMLDivElement;
     onMount(() => {
-        var typed = new Typed(container, options);
+        const typed = new Typed(container, {
+            strings: codes,
+            typeSpeed: 30,
+        });
         typed.start();
     });
 

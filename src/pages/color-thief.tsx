@@ -59,12 +59,14 @@ export default function () {
     return (
         <div>
             <div class="m-2">
+                {/* 隐藏的上传元素 */}
                 <input
                     type="file"
                     ref={file!}
                     accept="image/*"
                     style="display:none"
                 />
+                {/* 图片展示 */}
                 <img
                     class="m-auto w-full max-w-lg cursor-pointer"
                     src={src()}
@@ -84,6 +86,7 @@ export default function () {
         </div>
     );
 }
+
 /** 展示一个颜色方格 */
 export const ColorCard = (props: { color: number[] }) => {
     const color = createMemo(
