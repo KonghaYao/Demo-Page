@@ -16,7 +16,6 @@ globalThis.RollupHub = RollupHub;
 import postcss from "https://esm.sh/postcss";
 import { drawDependence } from "rollup-web/dist/plugins/drawDependence.js";
 await initBabel();
-
 // Solid-js 配置
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
 const server = new DynamicServer("_import");
@@ -72,12 +71,16 @@ const config = {
                     const text = await fetch(id).then((res) => res.text());
                     const css = await postcss().process(text);
                     return `
-                    import styleInject from "style-inject";
-                    styleInject(\`${css}\`)
+                    const link = document.createElement('style')
+                    link.type="text/css"
+                    link.innerHTML = \`${css}\`
+                    document.head.appendChild(link)
+                    console.log(link)
                     `;
                 }
             },
         },
+
         drawDependence({
             log(mapperTag, newestMapper) {
                 RollupHub.emit(
@@ -97,4 +100,8 @@ const config = {
 server.registerRollupPlugins(config.plugins);
 const data = await useRollup(config);
 await ModuleEval(data.output[0].code);
+const script = document.createElement("script");
+script.src = "https://cdn.tailwindcss.com";
+document.body.appendChild(script);
+document.querySelectorAll('[type="text/tailwindcss"]');
 console.log("初始化打包完成");
