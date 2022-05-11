@@ -23,10 +23,12 @@ const GPU = useGlobal<typeof _GPU>("GPU");
 
 /* 下载图片并转化为 像素二进制数组 */
 
-const [image, BitArray] = await imageToArray("https://cdn.jsdelivr.net/gh/tensorflow/tfjs-examples/mobilenet/cat.jpg");
+const [image, BitArray] = await imageToArray(
+    "https://cdn.jsdelivr.net/gh/tensorflow/tfjs-examples/mobilenet/cat.jpg"
+);
 
 export default function () {
-    let update$: Subscription
+    let update$: Subscription;
     onMount(async () => {
         const render = new GPU({ mode: "gpu" })
             .createKernel(function (
@@ -57,19 +59,24 @@ export default function () {
         render.canvas.style.width = "100%";
 
         /** 创建循环 */
-        update$ = animationFrames().pipe(map(() => {
-            /** 数据扰动值 */
-            const wobble = 14 * Math.sin(Date.now() / 400);
-            return wobble
-        }), map((wobble) => {
-            /** 渲染数据 */
-            render(BitArray, wobble)
-        })).subscribe()
+        update$ = animationFrames()
+            .pipe(
+                map(() => {
+                    /** 数据扰动值 */
+                    const wobble = 14 * Math.sin(Date.now() / 400);
+                    return wobble;
+                }),
+                map((wobble) => {
+                    /** 渲染数据 */
+                    render(BitArray, wobble);
+                })
+            )
+            .subscribe();
     });
 
     onCleanup(() => {
-        update$?.unsubscribe()
-    })
+        update$?.unsubscribe();
+    });
     let container: HTMLDivElement;
-    return <div class="w-3/4 overflow-auto" ref={container!}></div>;
+    return <div className="w-3/4 overflow-auto" ref={container!}></div>;
 }

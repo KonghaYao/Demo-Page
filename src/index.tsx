@@ -9,19 +9,19 @@ import { CodeViewerWrapper } from "./CodeViewerWrapper";
 import "wc-spinners";
 const App = () => {
     return (
-        <section class="h-screen flex flex-col relative font-song select-none ">
-            <header class="flex w-full justify-center bg-white ">
-                <div class="w-full px-8 py-2 ">
-                    <div class="text-2xl">DEMO-PAGES</div>
+        <section className="h-screen flex flex-col relative font-song select-none ">
+            <header className="flex w-full justify-center bg-white ">
+                <div className="w-full px-8 py-2 ">
+                    <div className="text-2xl">DEMO-PAGES</div>
                 </div>
                 <div></div>
             </header>
             <HelperBar></HelperBar>
-            <main class="flex-grow bg-gray-50 p-4 ">
+            <main className="flex-grow bg-gray-50 p-4 ">
                 <Main></Main>
             </main>
             <Show when={ModuleStore.dependence.show}>
-                <div class="absolute bottom-0 w-full h-1/2">
+                <div className="absolute bottom-0 w-full h-1/2">
                     <Dependence></Dependence>
                 </div>
             </Show>

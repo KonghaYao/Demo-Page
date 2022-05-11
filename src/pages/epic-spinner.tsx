@@ -48,16 +48,16 @@ const spinnerName = [
 ];
 export default function () {
     return (
-        <div class="p-4 grid grid-cols-5 gap-4">
+        <div className="p-4 grid grid-cols-5 gap-4">
             <For each={spinnerName}>
                 {(Tag) => {
                     const a = document.createElement(Tag);
                     return (
-                        <div class="col-span-1 flex flex-col justify-between items-center flex-none  rounded-lg hover:bg-gray-50">
-                            <span class="flex-none w-32 h-32 flex justify-center items-center">
+                        <div className="col-span-1 flex flex-col justify-between items-center flex-none  rounded-lg hover:bg-gray-50">
+                            <span className="flex-none w-32 h-32 flex justify-center items-center">
                                 {a}
                             </span>
-                            <span class="text-gray-500 text-xs font-bold">
+                            <span className="text-gray-500 text-xs font-bold">
                                 {Tag.replace("-spinner", "")}
                             </span>
                         </div>

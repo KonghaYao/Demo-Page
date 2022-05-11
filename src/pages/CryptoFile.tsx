@@ -29,13 +29,13 @@ interface ImageShower {
 }
 const renderImage = (shower: ImageShower) => {
     return (
-        <div class="col-span-1 flex flex-col items-center h-full">
-            <div class="font-bold">{shower.title}</div>
-            <div class="text-sm text-gray-500">{shower.desc}</div>
-            <div class="flex-grow my-2">
+        <div className="col-span-1 flex flex-col items-center h-full">
+            <div className="font-bold">{shower.title}</div>
+            <div className="text-sm text-gray-500">{shower.desc}</div>
+            <div className="flex-grow my-2">
                 <img src={shower.url}></img>
             </div>
-            <div class="text-sm text-gray-500">
+            <div className="text-sm text-gray-500">
                 {shower.size} Bytes 花费时间 {shower.time} ms
             </div>
         </div>
@@ -91,7 +91,7 @@ export default function CryptoFile() {
         });
 
     return (
-        <div class="grid  items-center space-y-3 grid-cols-3 my-4">
+        <div className="grid  items-center space-y-3 grid-cols-3 my-4">
             <For each={images()}>{renderImage}</For>
         </div>
     );

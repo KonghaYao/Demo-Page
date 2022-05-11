@@ -76,8 +76,8 @@ export default function Dependence() {
     );
 
     return (
-        <section class="flex flex-col bg-gray-50/70 backdrop-blur text-gray-700 p-2 overflow-y-auto h-full  items-center rounded-md ">
-            <div class="text-xl flex justify-between w-full p-2 items-center">
+        <section className="flex flex-col bg-gray-50/70 backdrop-blur text-gray-700 p-2 overflow-y-auto h-full  items-center rounded-md ">
+            <div className="text-xl flex justify-between w-full p-2 items-center">
                 <span
                     onclick={() =>
                         updateStore(
@@ -87,19 +87,19 @@ export default function Dependence() {
                             !fileTreeShow()
                         )
                     }
-                    class="material-icons">
+                    className="material-icons">
                     {fileTreeShow()
                         ? "keyboard_arrow_right"
                         : "keyboard_arrow_left"}
                 </span>
                 打包依赖关系图
                 <span
-                    class="material-icons"
+                    className="material-icons"
                     onclick={() => updateStore("dependence", "show", false)}>
                     close
                 </span>
             </div>
-            <div class="flex-grow w-full flex overflow-hidden relative justify-center">
+            <div className="flex-grow w-full flex overflow-hidden relative justify-center">
                 <Show when={fileTreeShow()}>
                     <RenderFileTree></RenderFileTree>
                 </Show>

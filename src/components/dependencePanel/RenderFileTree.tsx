@@ -18,12 +18,12 @@ import { CodeViewerEvent } from "../../CodeViewer/store";
 const renderRow = (item: NodeConfig) => {
     const openFile = () => {
         CodeViewerEvent.emit("showCode", item.name as string);
-    }
+    };
     return (
         <div
-            class="flex items-center cursor-default button-like"
+            className="flex items-center cursor-default button-like"
             onclick={openFile}>
-            <img class="h-4 w-4 mx-2" src={item.icon!.img!} />
+            <img className="h-4 w-4 mx-2" src={item.icon!.img!} />
             {item.name as string}
         </div>
     );
@@ -93,14 +93,14 @@ export const RenderFileTree = () => {
     const [fileList, setFileList] = createSignal(data.nodes!);
 
     return (
-        <div class="flex-none h-full overflow-hidden absolute z-10 flex flex-col backdrop-blur-lg bg-gray-100/60 px-2">
+        <div className="flex-none h-full overflow-hidden absolute z-10 flex flex-col backdrop-blur-lg bg-gray-100/60 px-2">
             <input
                 type="search"
                 value={ModuleStore.dependence.filter}
                 placeholder="请输入正则表达式"
                 ref={input!}
             />
-            <div class="overflow-y-auto flex-grow">
+            <div className="overflow-y-auto flex-grow">
                 <For each={fileList()}>{renderRow}</For>
             </div>
         </div>

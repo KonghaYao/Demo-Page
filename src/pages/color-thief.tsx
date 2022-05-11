@@ -58,7 +58,7 @@ export default function () {
     });
     return (
         <div>
-            <div class="m-2">
+            <div className="m-2">
                 {/* 隐藏的上传元素 */}
                 <input
                     type="file"
@@ -68,16 +68,16 @@ export default function () {
                 />
                 {/* 图片展示 */}
                 <img
-                    class="m-auto w-full max-w-lg cursor-pointer"
+                    className="m-auto w-full max-w-lg cursor-pointer"
                     src={src()}
                     onclick={() => file.click()}
                     onload={getColor}></img>
             </div>
-            <div class="grid grid-cols-3 auto-cols-min">
+            <div className="grid grid-cols-3 auto-cols-min">
                 <p>主要颜色</p>
-                <p class="col-span-2">颜色盘</p>
+                <p className="col-span-2">颜色盘</p>
                 <ColorCard color={Main()}></ColorCard>
-                <div class="flex col-span-2">
+                <div className="flex col-span-2">
                     <For each={ColorSets()}>
                         {(item) => <ColorCard color={item}></ColorCard>}
                     </For>
@@ -99,14 +99,14 @@ export const ColorCard = (props: { color: number[] }) => {
     const [showHex, setShowHex] = createSignal(false);
     return (
         <div
-            class="h-12 w-12 text-sx flex justify-center items-center "
             onmouseenter={() => setShowHex(true)}
             onmouseleave={() => setShowHex(false)}
             style={{
                 "background-color": color(),
             }}>
+            className="h-12 w-12 text-sx flex justify-center items-center "
             <span
-                class="bg-clip-text  transition-opacity "
+                className="bg-clip-text  transition-opacity "
                 style={{ opacity: showHex() ? 100 : 0 }}>
                 {color}
             </span>

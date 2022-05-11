@@ -5,6 +5,8 @@ import { System } from "./components/System";
 import { CDN } from "./global";
 import "xy-ui/components/xy-tips.js";
 import { For } from "solid-js";
+
+const defaultClass = " material-icons cursor-pointer rounded-full p-1 ";
 export function HelperBar() {
     const icons = [
         {
@@ -24,16 +26,17 @@ export function HelperBar() {
         },
     ];
     return (
-        <nav class="flex p-2 px-4 bg-gray-100 items-center">
-            <div class="grid grid-flow-col gap-4 text-white  items-center">
+        <nav className="flex p-2 px-4 bg-gray-100 items-center">
+            <div className="grid grid-flow-col gap-4 text-white  items-center">
                 <For each={icons}>
                     {(item) => {
                         return (
                             // @ts-ignore
                             <xy-tips dir="bottom" attr:tips={item.tips}>
                                 <div
-                                    className={item.class.join(" ")}
-                                    class="material-icons cursor-pointer rounded-full p-1 "
+                                    className={
+                                        item.class.join(" ") + defaultClass
+                                    }
                                     onclick={item.click}>
                                     {item.value}
                                 </div>
@@ -43,7 +46,7 @@ export function HelperBar() {
                     }}
                 </For>
             </div>
-            <div class="flex-grow"></div>
+            <div className="flex-grow"></div>
             <PageSearch></PageSearch>
         </nav>
     );

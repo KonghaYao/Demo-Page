@@ -37,12 +37,12 @@ export default function Home() {
     };
 
     return (
-        <section class="flex flex-col bg-white text-gray-700 p-4 overflow-hidden h-full max-w-3xl m-auto">
+        <section className="flex flex-col bg-white text-gray-700 p-4 overflow-hidden h-full max-w-3xl m-auto">
             {/* 模块解析 */}
             <Description description={description()}></Description>
 
             {/* 具体模块的内容 */}
-            <div class="flex-grow overflow-y-auto overflow-x-hidden my-2">
+            <div className="flex-grow overflow-y-auto overflow-x-hidden my-2">
                 <ErrorBoundary
                     fallback={(err, reload) => (
                         <ErrorPage err={err} reload={reload}></ErrorPage>

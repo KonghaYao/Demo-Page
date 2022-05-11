@@ -110,5 +110,5 @@ export const RenderMap = () => {
         graph.destroy();
         updater?.unsubscribe();
     });
-    return <div class="relative drop-shadow-md" ref={container}></div>;
+    return <div className="relative drop-shadow-md" ref={container}></div>;
 };

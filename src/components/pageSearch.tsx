@@ -6,10 +6,10 @@ export function PageSearch() {
         window.location.hash = "#" + this.value;
     }
     return (
-        <div class="w-full flex bg-white rounded-xl overflow-hidden mx-4 max-w-sm">
+        <div className="w-full flex bg-white rounded-xl overflow-hidden mx-4 max-w-sm">
             {/* @ts-ignore */}
             <xy-input
-                class=" flex-grow"
+                className=" flex-grow"
                 type="search"
                 onsubmit={handle}
                 attr:defaultvalue={window.location.hash.replace("#", "")}
