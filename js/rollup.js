@@ -79,8 +79,15 @@ const config = {
             },
         },
         drawDependence({
-            log(data, mapper) {
-                RollupHub.emit("drawDependence", data, mapper);
+            log(mapperTag, newestMapper) {
+                RollupHub.emit(
+                    "drawDependence",
+                    {
+                        nodeParts: newestMapper.getNodeParts(),
+                        nodeMetas: newestMapper.getNodeMetas(),
+                    },
+                    newestMapper
+                );
             },
             mapperTag: "default",
         }),
