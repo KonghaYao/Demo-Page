@@ -7,8 +7,14 @@ import { HelperBar } from "./HelperBar";
 import { CodeViewerWrapper } from "./CodeViewerWrapper";
 /** 加载loading 的 WebComponent */
 import "wc-spinners";
+
+/* shoelace 的样式表 */
+await loadLink(
+    "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.73/dist/themes/light.css"
+);
 import { onMount } from "solid-js";
 import { router } from "./router/index";
+import { loadLink } from "./utils/loadScript";
 const App = () => {
     onMount(() => {
         router.navigate(window.location.hash.replace("#", ""));

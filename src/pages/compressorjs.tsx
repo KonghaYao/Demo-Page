@@ -1,4 +1,4 @@
-import { batch, createResource, createSignal, Show } from "solid-js";
+import { createResource, createSignal, Show } from "solid-js";
 import { Loading } from "../components/LoadingPage/loading";
 import { ModuleDescription } from "../components/ModuleDescription";
 
@@ -7,41 +7,6 @@ export const description: ModuleDescription = {
     desc: "Compressorjs 是前端压缩图片的一个插件",
     link: ["https://github.com/fengyuanchen/compressorjs"],
 };
-const MoveLine = (prop: {
-    offset: number;
-    width?: number;
-    onDrag: (offset: number) => void;
-}) => {
-    const [dragging, setDragging] = createSignal(false);
-    const [init, setInit] = createSignal(0);
-    const cancel = () => {
-        setDragging(false);
-    };
-    document.addEventListener("pointercancel", cancel);
-    document.addEventListener("pointerup", cancel);
-    return (
-        <div
-            class="absolute top-0 flex justify-center w-8 cursor-pointer h-full  z-40"
-            style={{
-                left: prop.offset + "px",
-            }}
-            onpointerdown={(e) => {
-                batch(() => {
-                    setInit(e.offsetX);
-                    setDragging(true);
-                });
-            }}
-            onpointermove={(e) => {
-                if (dragging()) {
-                    const diff = e.offsetX - init();
-                    prop.onDrag(prop.offset + diff);
-                }
-            }}>
-            <div class="w-1 bg-white h-full"> </div>
-        </div>
-    );
-};
-
 type PicDetail = {
     title: string;
     url: string;
@@ -49,11 +14,12 @@ type PicDetail = {
     quality: number;
 };
 import Compressor from "compressorjs";
+
 /** 压缩图片代码 */
-const compress = (file: File) => {
+const compress = (file: File, quality: number) => {
     return new Promise<{ old: PicDetail; new: PicDetail }>((resolve) => {
         new Compressor(file, {
-            quality: 0.6,
+            quality,
             success(result) {
                 const [oldOne, newOne] = [file, result].map((i) => ({
                     url: URL.createObjectURL(i),
@@ -77,54 +43,69 @@ const compress = (file: File) => {
     });
 };
 
+import "@shoelace-style/shoelace/dist/components/image-comparer/image-comparer.js";
+import "@shoelace-style/shoelace/dist/components/format-bytes/format-bytes.js";
 export default function () {
+    const [url, setURL] = createSignal(
+        "https://images.unsplash.com/photo-1517331156700-3c241d2b4d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80"
+    );
+    const [quality, setQuality] = createSignal(0.1);
     const [files, { mutate, refetch }] = createResource(async () => {
-        return fetch("https://source.unsplash.com/random/800x400")
+        return fetch(url())
             .then((res) => res.blob())
             .then((res) => {
                 return new File([res], "1.jpg", {
                     type: "image/jpeg",
                 });
             })
-            .then(compress);
+            .then((file) => compress(file, quality()));
     });
-    const imageStyle = {
-        width: "800px",
-        height: "400px",
-        "max-width": "800px",
-    };
-    const [offset, setPercent] = createSignal(200);
     return (
-        <Show when={!files.loading} fallback={<Loading></Loading>}>
-            <div className="relative h-full w-full">
-                <div class="h-full w-full"></div>
-                <div class="h-full w-full absolute top-0 left-0 z-10 overflow-hidden">
-                    <img
-                        draggable={false}
-                        style={imageStyle}
-                        src={files()!.new.url}
-                        alt=""
-                    />
-                </div>
-                <div class="h-full w-1/2 absolute top-0 left-0 z-20 overflow-hidden">
-                    <img
-                        draggable={false}
-                        src={files()!.old.url}
-                        style={imageStyle}
-                    />
-                </div>
-
-                <div class="absolute h-full w-full top-0 left-0 z-50">
-                    <Detail
-                        className="absolute top-0 left-0"
-                        data={files()!.old}></Detail>
-                    <MoveLine offset={offset()} onDrag={setPercent}></MoveLine>
-                    <Detail
-                        className="absolute top-0 right-0"
-                        data={files()!.new}></Detail>
-                </div>
+        <>
+            <div class="flex ">
+                <input
+                    type="file"
+                    oninput={(e) => {
+                        const file = e.currentTarget.files![0];
+                        if (url()) URL.revokeObjectURL(url());
+                        const Url = URL.createObjectURL(file);
+                        setURL(Url);
+                        refetch();
+                    }}></input>
+                <input
+                    type="range"
+                    value={10}
+                    min={1}
+                    max={100}
+                    onchange={(e) => {
+                        const Quality = e.currentTarget.value;
+                        setQuality(parseInt(Quality) / 100);
+                        refetch();
+                    }}
+                />
             </div>
-        </Show>
+            <Show when={!files.loading} fallback={<Loading></Loading>}>
+                <div class="relative">
+                    {/* @ts-ignore */}
+                    <sl-image-comparer>
+                        {/* 右侧为 before，左侧为 after */}
+                        <img slot="before" src={files()!.new.url} />
+                        <img slot="after" src={files()!.old.url} />
+                        {/* @ts-ignore */}
+                    </sl-image-comparer>
+                    <div
+                        class="absolute h-full w-full top-0 left-0 z-50 "
+                        style="pointer-events:none">
+                        <Detail
+                            className="absolute top-0 left-0"
+                            data={files()!.old}></Detail>
+                        <Detail
+                            className="absolute top-0 right-0"
+                            data={files()!.new}></Detail>
+                    </div>
+                </div>
+            </Show>
+        </>
     );
 }
 
@@ -132,7 +113,9 @@ const Detail = (props: { className?: string; data: PicDetail }) => {
     return (
         <div class={props.className} className="backdrop-blur-xl bg-white/70">
             <div>{props.data.title}</div>
-            <div>{props.data.size} B</div>
+            {/* @ts-ignore */}
+            <sl-format-bytes value={props.data.size}></sl-format-bytes>
+
             <div>{props.data.quality.toFixed(2)} %</div>
         </div>
     );
