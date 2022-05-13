@@ -8,6 +8,6 @@ export const [System, setSystem] = createStore({
     moduleName: window.location.hash.replace("#", ""),
 });
 SystemEvents.on("changePage", (value) => {
-    // setSystem("moduleName", value);
-    // router.navigate(`/page/${value}`);
+    setSystem("moduleName", value);
+    router.navigate(`/page/${value}`);
 });

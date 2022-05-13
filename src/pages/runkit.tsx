@@ -1,5 +1,4 @@
-import { lazy, onMount, Suspense } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { createSignal, JSX, lazy, onMount, Show, Suspense } from "solid-js";
 import { Loading } from "../components/LoadingPage/loading";
 import { ModuleDescription } from "../components/ModuleDescription";
 import { loadScript } from "../utils/loadScript";
@@ -15,23 +14,29 @@ export const description: ModuleDescription = {
 await loadScript("https://embed.runkit.com");
 const RunKit = useGlobal<any>("RunKit");
 
-
 export default function () {
+    const [loading, setLoading] = createSignal(true);
     const NoteBook = lazy(async () => {
-        const div = <div></div>
+        const div = <div></div>;
         RunKit.createNotebook({
             // runkit 的 父级元素
             element: div,
             // runkit 中的预设源代码
             source: '// GeoJSON!\nvar getJSON = require("async-get-json");\n\nawait getJSON("https://storage.googleapis.com/maps-devrel/google.json");',
-
+            onLoad() {
+                console.log("runkit 加载完成");
+                setLoading(false);
+            },
         });
-        console.log("runkit 加载完成");
-        return { default: () => div }
-    })
+        return { default: () => div };
+    });
 
-
-    return <Suspense fallback={<Loading></Loading>}>
-        <NoteBook />
-    </Suspense>
+    return (
+        <Suspense fallback={<Loading></Loading>}>
+            <Show when={loading()}>
+                <Loading></Loading>
+            </Show>
+            <NoteBook />
+        </Suspense>
+    );
 }
