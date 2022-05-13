@@ -4,6 +4,7 @@ export const loadScript = async (url: string) => {
     return new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.src = url;
+
         script.onload = () => {
             successSet.add(url);
             resolve(true);
