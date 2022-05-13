@@ -7,24 +7,17 @@ import { Description } from "./Description";
 import { ErrorPage } from "./LoadingPage/ErrorPage";
 import { Loading } from "./LoadingPage/loading";
 import { ModuleDescription } from "./ModuleDescription";
-import { SystemEvents } from "./System";
 
 export default function Home() {
-    const pageName = window.location.hash.replace("#", "") || "index";
-    const [queryText, setText] = createSignal(pageName);
     const [description, setDescription] = createSignal({
         title: "Unknown Module",
         desc: "加载信息中。。。",
     } as ModuleDescription);
 
-    SystemEvents.on("changePage", (page: string) => {
-        setText(page);
-    });
-    const AsyncPage = (pagesName: string) => () => {
+    const AsyncPage = (pageName: string) => {
         const Page = lazy(async () => {
-            if (pagesName === "") return Promise.resolve(<div>Loading</div>);
-            console.log("%c跳转到" + pagesName, "color:red");
-            const module = new URL(`./src/pages/${pagesName}.tsx`, CDN);
+            console.log("%c跳转到" + pageName, "color:red");
+            const module = new URL(`./src/pages/${pageName}.tsx`, CDN);
             return import(module.toString()).then((module) => {
                 if ("description" in module) setDescription(module.description);
                 return module;
@@ -32,7 +25,7 @@ export default function Home() {
         });
         return (
             <Suspense fallback={<Loading></Loading>}>
-                <Page />
+                <Page></Page>
             </Suspense>
         );
     };
@@ -52,6 +45,23 @@ export default function Home() {
                         path="/page/:pageName"
                         element={(match) => {
                             return match && AsyncPage(match.data!.pageName);
+                            // return (
+                            //     match && (
+                            //         <Suspense fallback={<Loading></Loading>}>
+                            //             {lazy(async () => {
+                            //                 return {
+                            //                     default: () => {
+                            //                         return (
+                            //                             <div>
+                            //                                 match{Date.now()}
+                            //                             </div>
+                            //                         );
+                            //                     },
+                            //                 };
+                            //             })}
+                            //         </Suspense>
+                            //     )
+                            // );
                         }}></Route>
                 </ErrorBoundary>
             </div>

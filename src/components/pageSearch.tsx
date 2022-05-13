@@ -3,8 +3,8 @@ import "xy-ui/components/xy-input.js";
 export function PageSearch() {
     function handle(this: { value: string }) {
         SystemEvents.emit("changePage", this.value);
-        window.location.hash = "#" + this.value;
     }
+
     return (
         <div className="w-full flex bg-white rounded-xl overflow-hidden mx-4 max-w-sm">
             {/* @ts-ignore */}
@@ -12,7 +12,7 @@ export function PageSearch() {
                 className=" flex-grow"
                 type="search"
                 onsubmit={handle}
-                attr:defaultvalue={window.location.hash.replace("#", "")}
+                attr:defaultvalue={""}
             />
         </div>
     );

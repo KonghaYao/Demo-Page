@@ -8,8 +8,11 @@ import {
 } from "solid-js";
 import Navigo, { Match } from "navigo";
 import { JSX } from "solid-js";
-const router = new Navigo("/", { hash: true });
-type ElementCreator = (cb?: Match) => JSX.Element;
+import { Dynamic } from "solid-js/web";
+export const router = new Navigo("/", {
+    hash: true,
+});
+type ElementCreator = (cb: Match | false) => JSX.Element;
 
 /** 路由跳转组件 */
 export const Link = (props: { href: string; element: JSX.Element }) => {
@@ -28,22 +31,20 @@ export const Route = (props: {
     path: string;
     element: JSX.Element | ElementCreator;
 }) => {
-    const isNow = !!router.matchLocation(props.path);
-    const [matched, setMatched] = createSignal(isNow);
-    const [matchedData, setData] = createSignal<Match | undefined>(undefined);
+    const isCurrent = router.matchLocation(props.path);
+    const [matched, setMatched] = createSignal(isCurrent);
     const cb = (info?: Match) => {};
     router.on(props.path, cb, {
         before(done, match) {
             batch(() => {
-                setMatched(true);
-                setData(match);
+                setMatched(match);
             });
+            console.log(match);
             done();
         },
         leave(done, match) {
             batch(() => {
                 setMatched(false);
-                setData(undefined);
             });
             done();
         },
@@ -54,11 +55,10 @@ export const Route = (props: {
     });
     return (
         <Show when={matched()}>
-            <Suspense fallback={<p>Loading...</p>}>
-                {typeof props.element === "function"
-                    ? props.element(matchedData())
-                    : props.element}
-            </Suspense>
+            {matched() &&
+                (typeof props.element === "function"
+                    ? props.element(matched())
+                    : props.element)}
         </Show>
     );
 };

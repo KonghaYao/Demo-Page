@@ -103,8 +103,4 @@ const config = {
 server.registerRollupPlugins(config.plugins);
 const data = await useRollup(config);
 await ModuleEval(data.output[0].code);
-const script = document.createElement("script");
-script.src = "https://cdn.tailwindcss.com";
-document.body.appendChild(script);
-document.querySelectorAll('[type="text/tailwindcss"]');
 console.log("初始化打包完成");

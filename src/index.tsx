@@ -7,8 +7,12 @@ import { HelperBar } from "./HelperBar";
 import { CodeViewerWrapper } from "./CodeViewerWrapper";
 /** 加载loading 的 WebComponent */
 import "wc-spinners";
-import Test from "./router/test";
+import { onMount } from "solid-js";
+import { router } from "./router/index";
 const App = () => {
+    onMount(() => {
+        router.navigate(window.location.hash.replace("#", ""));
+    });
     return (
         <section className="h-screen flex flex-col relative font-song select-none ">
             <header className="flex w-full justify-center bg-white ">
@@ -17,7 +21,6 @@ const App = () => {
                 </div>
                 <div></div>
             </header>
-            <Test></Test>
             <HelperBar></HelperBar>
             <main className="flex-grow bg-gray-50 p-4 ">
                 <Main></Main>
