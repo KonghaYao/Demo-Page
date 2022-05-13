@@ -26,7 +26,7 @@ export function HelperBar() {
         },
     ];
     return (
-        <nav className="flex p-2 px-4 bg-gray-100 items-center">
+        <nav className="flex p-2 px-12 bg-gray-100 items-center">
             <div className="grid grid-flow-col gap-4 text-white  items-center">
                 <For each={icons}>
                     {(item) => {

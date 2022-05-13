@@ -19,10 +19,10 @@ const App = () => {
                 <div className="w-full px-8 py-2 ">
                     <div className="text-2xl">DEMO-PAGES</div>
                 </div>
-                <div></div>
             </header>
             <HelperBar></HelperBar>
-            <main className="flex-grow bg-gray-50 p-4 ">
+
+            <main className="flex-grow bg-gray-50 p-4 overflow-auto">
                 <Main></Main>
             </main>
             <Show when={ModuleStore.dependence.show}>

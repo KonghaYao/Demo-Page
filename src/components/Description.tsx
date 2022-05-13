@@ -2,9 +2,14 @@ import { For } from "solid-js";
 import { ModuleDescription } from "./ModuleDescription";
 
 /** 展示模块的组件 */
-export const Description = (props: { description: ModuleDescription }) => {
+export const Description = (props: {
+    description: ModuleDescription;
+    className?: string;
+}) => {
     return (
-        <div className="rounded-lg border-2 border-orange-400 p-4">
+        <div
+            class={props.className}
+            className=" rounded-lg border-2 border-orange-400 p-4 w-full">
             <div className="flex justify-between text-lg font-bold">
                 <span>{props.description.title}</span>
 
