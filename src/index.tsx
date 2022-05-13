@@ -7,6 +7,7 @@ import { HelperBar } from "./HelperBar";
 import { CodeViewerWrapper } from "./CodeViewerWrapper";
 /** 加载loading 的 WebComponent */
 import "wc-spinners";
+import Test from "./router/test";
 const App = () => {
     return (
         <section className="h-screen flex flex-col relative font-song select-none ">
@@ -16,6 +17,7 @@ const App = () => {
                 </div>
                 <div></div>
             </header>
+            <Test></Test>
             <HelperBar></HelperBar>
             <main className="flex-grow bg-gray-50 p-4 ">
                 <Main></Main>

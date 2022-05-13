@@ -1,6 +1,7 @@
 import { createSignal, ErrorBoundary, lazy, Suspense } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { CDN } from "../global";
+import { Route } from "../router/index";
 
 import { Description } from "./Description";
 import { ErrorPage } from "./LoadingPage/ErrorPage";
@@ -38,7 +39,7 @@ export default function Home() {
 
     return (
         <section className="flex flex-col bg-white text-gray-700 p-4 overflow-hidden h-full max-w-3xl m-auto">
-            {/* 模块解析 */}
+            {/* 模块解析*/}
             <Description description={description()}></Description>
 
             {/* 具体模块的内容 */}
@@ -47,7 +48,11 @@ export default function Home() {
                     fallback={(err, reload) => (
                         <ErrorPage err={err} reload={reload}></ErrorPage>
                     )}>
-                    <Dynamic component={AsyncPage(queryText())} />
+                    <Route
+                        path="/page/:pageName"
+                        element={(match) => {
+                            return match && AsyncPage(match.data!.pageName);
+                        }}></Route>
                 </ErrorBoundary>
             </div>
         </section>

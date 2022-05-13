@@ -60,6 +60,9 @@ const config = {
             cdn: "https://cdn.skypack.dev/",
             rename: {
                 colorthief: "colorthief@2.3.2/dist/color-thief.mjs",
+                "solid-js": "solid-js@1.3.17",
+                "solid-js/web": "solid-js@1.3.17/web",
+                "solid-js/store": "solid-js@1.3.17/store",
             },
         }),
         // 这是一种异步导入方案，使用 全局的一个外置 Server 来保证代码的正确执行
@@ -75,7 +78,7 @@ const config = {
                     link.type="text/css"
                     link.innerHTML = \`${css}\`
                     document.head.appendChild(link)
-                    console.log(link)
+               
                     `;
                 }
             },
