@@ -6,11 +6,12 @@ import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
-export const Markdown = unified()
-    .use(remarkParse)
-    .use(remarkGfm)
-    .use(remarkToc)
-    .use(remarkSqueezeParagraphs)
-    .use(remarkFrontmatter, ["yaml"])
-    .use(remarkRehype)
-    .use(rehypeStringify);
+export const createMarkdown = () =>
+    unified()
+        .use(remarkParse)
+        .use(remarkGfm)
+        .use(remarkToc)
+        .use(remarkSqueezeParagraphs)
+        .use(remarkFrontmatter, ["yaml"])
+        .use(remarkRehype)
+        .use(rehypeStringify);

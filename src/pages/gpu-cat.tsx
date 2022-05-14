@@ -5,7 +5,6 @@ import type { GPU as _GPU } from "gpu.js";
 import { ModuleDescription } from "../components/ModuleDescription";
 import { imageToArray } from "../utils/imageToArray";
 import { animationFrames, map, Subscription } from "rxjs";
-import { render } from "solid-js/web";
 
 export const description: ModuleDescription = {
     title: "GPU.js —— Cat 图像扰动",
@@ -23,13 +22,12 @@ const GPU = useGlobal<typeof _GPU>("GPU");
 
 /* 下载图片并转化为 像素二进制数组 */
 
-const [image, BitArray] = await imageToArray(
-    "https://cdn.jsdelivr.net/gh/tensorflow/tfjs-examples/mobilenet/cat.jpg"
-);
-
 export default function () {
     let update$: Subscription;
     onMount(async () => {
+        const [image, BitArray] = await imageToArray(
+            "https://cdn.jsdelivr.net/gh/tensorflow/tfjs-examples/mobilenet/cat.jpg"
+        );
         const render = new GPU({ mode: "gpu" })
             .createKernel(function (
                 this: any,

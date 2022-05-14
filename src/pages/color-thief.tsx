@@ -3,7 +3,7 @@ import ColorThief, { ColorHex } from "colorthief";
 import { imageToLocalURL } from "../utils/imageToLocalURL";
 import { filter, fromEvent, map, Subscription, tap } from "rxjs";
 import { ModuleDescription } from "../components/ModuleDescription";
-const colorThief = new ColorThief();
+
 export const description: ModuleDescription = {
     title: "ColorThief 颜色抽取器",
     link: [
@@ -12,6 +12,7 @@ export const description: ModuleDescription = {
     ],
     desc: "Color Thief 可以提取一个图片中的主体颜色，或者直接抽取出一个颜色模板。",
 };
+
 /**
  * 因为网络上的图片触发 跨域错误，但是没有触发 CORS 协议
  * 那么可以直接下载并转化为本地 URL
@@ -19,8 +20,10 @@ export const description: ModuleDescription = {
 const url = await imageToLocalURL(
     "https://cdn.jsdelivr.net/gh/tensorflow/tfjs-examples/mobilenet/cat.jpg"
 );
+
 /** 主体 */
 export default function () {
+    const colorThief = new ColorThief();
     const [src, setSrc] = createSignal(url);
     const [Main, setMain] = createSignal([0, 0, 0] as ColorHex);
     const [ColorSets, setColorSets] = createSignal([] as ColorHex[]);

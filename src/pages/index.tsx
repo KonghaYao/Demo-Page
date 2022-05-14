@@ -1,5 +1,5 @@
 import { createResource } from "solid-js";
-import { Markdown } from "../utils/remark";
+import { createMarkdown } from "../utils/remark";
 import "../style/markdown.css";
 
 export const description = {
@@ -11,7 +11,7 @@ export const description = {
 export default function README() {
     const [markdownHTML, {}] = createResource(async () => {
         const file = await fetch("./README.md").then((res) => res.text());
-        const mark = await Markdown.process(file);
+        const mark = await createMarkdown().process(file);
         return mark.value as string;
     });
     return <div className="markdown-body" innerHTML={markdownHTML()}></div>;

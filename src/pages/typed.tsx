@@ -12,14 +12,15 @@ export const description: ModuleDescription = {
 const code = await fetch(
     "https://cdn.jsdelivr.net/npm/typed.js@2.0.12/app.js"
 ).then((res) => res.text());
-/* 代码序列 */
-const codes = [code.slice(0, 50), code, code.slice(0, 100), code].map((i) => {
-    /* 高亮一下代码 */
-    return Prism.highlight(i, Prism.languages.js, "js");
-});
-
 
 export default function () {
+    /* 代码序列 */
+    const codes = [code.slice(0, 50), code, code.slice(0, 100), code].map(
+        (i) => {
+            /* 高亮一下代码 */
+            return Prism.highlight(i, Prism.languages.js, "js");
+        }
+    );
     let container: HTMLDivElement;
     onMount(() => {
         const typed = new Typed(container, {
