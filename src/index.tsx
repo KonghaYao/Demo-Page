@@ -5,6 +5,7 @@ import Dependence from "./components/dependencePanel/Dependence";
 import { ModuleStore } from "./components/dependencePanel/ModuleStore";
 import { HelperBar } from "./HelperBar";
 import { CodeViewerWrapper } from "./CodeViewerWrapper";
+import { PageList } from "./PageList/index";
 /** 加载loading 的 WebComponent */
 import "wc-spinners";
 
@@ -13,7 +14,7 @@ await loadLink(
     "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.73/dist/themes/light.css"
 );
 import { onMount } from "solid-js";
-import { router } from "./router/index";
+import { Route, router } from "./router/index";
 import { loadLink } from "./utils/loadScript";
 const App = () => {
     onMount(() => {
@@ -29,7 +30,8 @@ const App = () => {
             <HelperBar></HelperBar>
 
             <main className="flex-grow bg-gray-50 p-4 overflow-auto">
-                <Main></Main>
+                <Route path="/page/:pageName" element={<Main></Main>}></Route>
+                <Route path="/" element={<PageList></PageList>}></Route>
             </main>
             <Show when={ModuleStore.dependence.show}>
                 <div className="absolute bottom-0 w-full h-1/2">

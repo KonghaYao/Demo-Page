@@ -8,7 +8,6 @@ import {
 } from "solid-js";
 import Navigo, { Match } from "navigo";
 import { JSX } from "solid-js";
-import { Dynamic } from "solid-js/web";
 export const router = new Navigo("/", {
     hash: true,
 });

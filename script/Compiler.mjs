@@ -85,13 +85,19 @@ rollup({
     })
     .then((res) => {
         //  校验产出代码
-        import("./result.mjs").then((res) => {
-            const complete = res.default.every((i) => {
-                return "title" in i;
+        return import("./result.mjs")
+            .then((res) => {
+                const complete = res.default.every((i) => {
+                    return "title" in i;
+                });
+                console.log(complete);
+                return JSON.stringify(res.default);
+            })
+            .then((json) => {
+                writeFileSync("./script/PageList.json", json);
             });
-            console.log(complete);
-        });
     })
     .then(() => {
-        return rm("./script/temp.mjs");
+        rm("./script/temp.mjs");
+        rm("./script/result.mjs");
     });

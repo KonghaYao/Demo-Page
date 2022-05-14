@@ -3,6 +3,7 @@ import { Loading } from "../components/LoadingPage/loading";
 import { ModuleDescription } from "../components/ModuleDescription";
 
 export const description: ModuleDescription = {
+    fileName: "compressorjs",
     title: "Compressorjs —— 图片压缩插件",
     desc: "Compressorjs 是前端压缩图片的一个插件",
     link: ["https://github.com/fengyuanchen/compressorjs"],

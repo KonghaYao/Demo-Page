@@ -3,6 +3,7 @@ import { ModuleDescription } from "../components/ModuleDescription";
 import Prism from "prismjs";
 import Typed from "typed.js";
 export const description: ModuleDescription = {
+    fileName: "typed",
     title: "Typed.js —— 打字效果",
     desc: "Typed.js 是 用于创建打字效果的常用插件; 这里配合 PrismJS 对代码进行格式化，形成一个动态写代码的效果",
     link: ["https://github.com/mattboldt/typed.js"],

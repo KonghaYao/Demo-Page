@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "ws --http2 --spa index.html"
+        "dev": "ws --http2 --spa index.html",
+        "make": "node ./script/Compiler.mjs"
     },
     "type": "module",
     "author": "",

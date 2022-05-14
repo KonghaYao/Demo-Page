@@ -2,6 +2,7 @@ import { For, onMount } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
 import "wc-spinners";
 export const description: ModuleDescription = {
+    fileName: "wc-spinner",
     title: "Wc Spinners",
     desc: "Wc Spinners 是 基于 Web Component 的 Loading 动画组件",
     link: [

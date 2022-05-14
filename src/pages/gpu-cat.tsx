@@ -7,6 +7,7 @@ import { imageToArray } from "../utils/imageToArray";
 import { animationFrames, map, Subscription } from "rxjs";
 
 export const description: ModuleDescription = {
+    fileName: "gpu-cat",
     title: "GPU.js —— Cat 图像扰动",
     desc: "GPU.js 可以执行图像的像素级调整！",
     link: [

@@ -13,6 +13,7 @@ import { useGlobal } from "../utils/useGlobal";
 
 /** 渲染指定的数据进行一个展示 */
 export const description: ModuleDescription = {
+    fileName: "CryptoFile",
     title: "Sodium 实现文件加密与解密",
     desc: "Sodium 可以实现浏览器端的加密，使用 Sodium 可以实现文件的加密与解密！",
     link: ["https://hat.sh/about/#technical-details"],

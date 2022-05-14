@@ -5,6 +5,7 @@ import { filter, fromEvent, map, Subscription, tap } from "rxjs";
 import { ModuleDescription } from "../components/ModuleDescription";
 
 export const description: ModuleDescription = {
+    fileName: "color-thief",
     title: "ColorThief 颜色抽取器",
     link: [
         "https://lokeshdhakar.com/projects/color-thief/",

@@ -1,8 +1,10 @@
 import { createResource } from "solid-js";
 import { createMarkdown } from "../utils/remark";
 import "../style/markdown.css";
+import { ModuleDescription } from "../components/ModuleDescription";
 
-export const description = {
+export const description: ModuleDescription = {
+    fileName: "index",
     title: "介绍文件",
     desc: "这是我们的介绍文件",
     link: [],
