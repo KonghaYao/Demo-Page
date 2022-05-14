@@ -4,10 +4,7 @@ import { router } from "../router/index";
 export const SystemEvents = mitt<{
     changePage: string;
 }>();
-export const [System, setSystem] = createStore({
-    moduleName: window.location.hash.replace("#", ""),
-});
+export const [System, setSystem] = createStore({});
 SystemEvents.on("changePage", (value) => {
-    setSystem("moduleName", value);
     router.navigate(`/page/${value}`);
 });

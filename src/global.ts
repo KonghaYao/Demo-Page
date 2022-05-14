@@ -1,2 +1,2 @@
 export const CDN =
-    window.location.origin || 'https"//cdn.jsdelivr.net/gh/konghayao/';
+    window.location.href || 'https"//cdn.jsdelivr.net/gh/konghayao/';

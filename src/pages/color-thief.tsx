@@ -77,22 +77,28 @@ export default function () {
                     onclick={() => file.click()}
                     onload={getColor}></img>
             </div>
-            <div className="grid grid-cols-3 auto-cols-min">
-                <p>主要颜色</p>
-                <p className="col-span-2">颜色盘</p>
-                <ColorCard color={Main()}></ColorCard>
-                <div className="flex col-span-2">
-                    <For each={ColorSets()}>
-                        {(item) => <ColorCard color={item}></ColorCard>}
-                    </For>
+            <div className="flex">
+                <div>
+                    <p class="col-span-1">主要颜色</p>
+                    <ColorCard class="col-span-1" color={Main()}></ColorCard>
+                </div>
+                <div class="ml-4">
+                    <p>颜色盘</p>
+
+                    <div className="flex">
+                        <For each={ColorSets()}>
+                            {(item) => <ColorCard color={item}></ColorCard>}
+                        </For>
+                    </div>
                 </div>
             </div>
         </div>
     );
 }
-
+import copy from "copy-to-clipboard";
+import { Notify } from "notiflix";
 /** 展示一个颜色方格 */
-export const ColorCard = (props: { color: number[] }) => {
+export const ColorCard = (props: { color: number[]; class?: string }) => {
     const color = createMemo(
         () =>
             `#${props.color
@@ -100,19 +106,23 @@ export const ColorCard = (props: { color: number[] }) => {
                 .join("")
                 .toUpperCase()}`
     );
-    const [showHex, setShowHex] = createSignal(false);
+    const textColor = ([r, g, b]: number[]) =>
+        r * 0.299 + g * 0.587 + b * 0.114 > 186 ? "#000" : "#FFF";
     return (
         <div
-            onmouseenter={() => setShowHex(true)}
-            onmouseleave={() => setShowHex(false)}
+            class={props.class}
+            className="h-16 w-16 text-sx flex justify-center items-center "
             style={{
                 "background-color": color(),
+            }}
+            onclick={() => {
+                Notify.success("复制成功");
+                copy(color());
             }}>
-            className="h-12 w-12 text-sx flex justify-center items-center "
             <span
-                className="bg-clip-text  transition-opacity "
-                style={{ opacity: showHex() ? 100 : 0 }}>
-                {color}
+                className="text-xs cursor-pointer"
+                style={{ color: textColor(props.color) }}>
+                {color()}
             </span>
         </div>
     );

@@ -1,4 +1,4 @@
-import { For, onMount } from "solid-js";
+import { For } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
 import "wc-spinners";
 export const description: ModuleDescription = {

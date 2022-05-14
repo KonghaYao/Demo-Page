@@ -19,8 +19,14 @@ export function HelperBar() {
         {
             value: "source",
             click: () => {
-                const url = new URL(`/src/pages/${System.moduleName}.tsx`, CDN);
-                CodeViewerEvent.emit("showCode", url.toString());
+                const route = router.matchLocation("/page/:pageName");
+                if (route && route.data) {
+                    const url = new URL(
+                        `./src/pages/${route.data.pageName}.tsx`,
+                        CDN
+                    );
+                    CodeViewerEvent.emit("showCode", url.toString());
+                }
             },
             class: ["bg-orange-400"],
             tips: "主要源代码",
