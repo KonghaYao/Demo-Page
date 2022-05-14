@@ -1,6 +1,6 @@
 import { render, Show } from "solid-js/web";
 import "./style/global.css";
-import Main from "./components/Main";
+import { PageViewer } from "./components/Main";
 import Dependence from "./components/dependencePanel/Dependence";
 import { ModuleStore } from "./components/dependencePanel/ModuleStore";
 import { HelperBar } from "./HelperBar";
@@ -30,7 +30,7 @@ const App = () => {
             <HelperBar></HelperBar>
 
             <main className="flex-grow bg-gray-50 p-4 overflow-auto">
-                <Route path="/page/:pageName" element={Main}></Route>
+                <Route path="/page/:pageName" element={PageViewer}></Route>
                 <Route path="/" element={PageList}></Route>
             </main>
             <Show when={ModuleStore.dependence.show}>

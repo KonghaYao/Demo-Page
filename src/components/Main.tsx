@@ -4,6 +4,8 @@ import {
     createSignal,
     ErrorBoundary,
     lazy,
+    onCleanup,
+    onMount,
     Suspense,
 } from "solid-js";
 import { CDN } from "../global";
@@ -13,15 +15,16 @@ import { Description } from "./Description";
 import { ErrorPage } from "./LoadingPage/ErrorPage";
 import { Loading } from "./LoadingPage/loading";
 import { ModuleDescription } from "./ModuleDescription";
-
-export default function Home() {
+export const PageViewer: Component<{ match: Match }> = (props) => {
     const [description, setDescription] = createSignal({
         title: "Unknown Module",
         desc: "加载信息中。。。",
     } as ModuleDescription);
 
     const AsyncPage: Component<{ match: Match }> = (props) => {
+        if (!props.match?.data) console.error("错误:", props.match);
         const pageName = props.match.data!.pageName;
+        console.group(pageName);
         const Page = lazy(async () => {
             console.log("%c跳转到" + pageName, "color:red");
             const module = new URL(`./src/pages/${pageName}.tsx`, CDN);
@@ -36,7 +39,14 @@ export default function Home() {
             </Suspense>
         );
     };
-
+    console.log("重新执行");
+    onMount(() => {
+        console.log("重新启动");
+    });
+    onCleanup(() => {
+        console.log("页面已经删除");
+        console.groupEnd();
+    });
     return (
         <section className="relative flex flex-col bg-white text-gray-700 p-4 overflow-hidden h-full max-w-3xl m-auto z-0">
             {/* 模块解析*/}
@@ -55,4 +65,4 @@ export default function Home() {
             </div>
         </section>
     );
-}
+};

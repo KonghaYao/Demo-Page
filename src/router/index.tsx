@@ -29,14 +29,17 @@ export const Link = (props: { href: string; element: JSX.Element }) => {
 
 /** 路由显示组件 */
 export const Route = (props: { path: string; element: Component<any> }) => {
-    const isCurrent = router.matchLocation(props.path);
-    const [matched, setMatched] = createSignal(isCurrent);
-    const cb = (info?: Match) => {};
+    const [matched, setMatched] = createSignal<Match | false>(false);
+    /** 路由跳转的回调函数 */
+    const cb = () => {};
     router.on(props.path, cb, {
-        before(done, match) {
+        async before(next, match) {
+            next();
             setMatched(match);
-            console.log("路由跳转 => ", match.url);
-            done();
+            console.log(
+                `%c路由跳转 => ${Inner.name} ${match.url}`,
+                "color:orange"
+            );
         },
         leave(done, match) {
             setMatched(false);
@@ -44,23 +47,21 @@ export const Route = (props: { path: string; element: Component<any> }) => {
         },
     });
 
+    onMount(() => {
+        /** 必须在路由绑定之后再 match 才能 match 到 */
+        const isCurrent = router.matchLocation(props.path) as Match;
+        setMatched(isCurrent);
+        console.log(router, router.getCurrentLocation(), props.path, isCurrent);
+    });
     onCleanup(() => {
         router.off(cb);
     });
-    const component = createMemo(() => {
-        if (matched()) {
-            return props.element;
-        } else {
-            return () => <div>loading</div>;
-        }
-    });
+    const Inner = props.element;
     return (
-        <Show when={!!matched()}>
-            <Dynamic
-                component={component()}
-                someProp={() => ({
-                    match: matched(),
-                })}></Dynamic>
+        <Show when={matched()}>
+            {(match) => {
+                return <Inner match={match}></Inner>;
+            }}
         </Show>
     );
 };
