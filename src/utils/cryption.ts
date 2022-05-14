@@ -11,7 +11,6 @@ export const getKey = function (
     password: string,
     salt: Uint8Array = sodium.randombytes_buf(sodium.crypto_pwhash_SALTBYTES)
 ) {
-    console.log(salt.join());
     return [
         sodium.crypto_pwhash(
             sodium.crypto_secretstream_xchacha20poly1305_KEYBYTES,

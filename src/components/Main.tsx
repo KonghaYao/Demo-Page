@@ -5,7 +5,6 @@ import {
     ErrorBoundary,
     lazy,
     onCleanup,
-    onMount,
     Suspense,
 } from "solid-js";
 import { CDN } from "../global";
@@ -33,20 +32,15 @@ export const PageViewer: Component<{ match: Match }> = (props) => {
                 return module;
             });
         });
+        onCleanup(() => {
+            console.groupEnd();
+        });
         return (
             <Suspense fallback={<Loading></Loading>}>
                 <Page></Page>
             </Suspense>
         );
     };
-    console.log("重新执行");
-    onMount(() => {
-        console.log("重新启动");
-    });
-    onCleanup(() => {
-        console.log("页面已经删除");
-        console.groupEnd();
-    });
     return (
         <section className="relative flex flex-col bg-white text-gray-700 p-4 overflow-hidden h-full max-w-3xl m-auto z-0">
             {/* 模块解析*/}

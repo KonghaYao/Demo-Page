@@ -36,10 +36,6 @@ export const Route = (props: { path: string; element: Component<any> }) => {
         async before(next, match) {
             next();
             setMatched(match);
-            console.log(
-                `%c路由跳转 => ${Inner.name} ${match.url}`,
-                "color:orange"
-            );
         },
         leave(done, match) {
             setMatched(false);
@@ -51,7 +47,6 @@ export const Route = (props: { path: string; element: Component<any> }) => {
         /** 必须在路由绑定之后再 match 才能 match 到 */
         const isCurrent = router.matchLocation(props.path) as Match;
         setMatched(isCurrent);
-        console.log(router, router.getCurrentLocation(), props.path, isCurrent);
     });
     onCleanup(() => {
         router.off(cb);
