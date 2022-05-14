@@ -5,6 +5,7 @@ import { System } from "./components/System";
 import { CDN } from "./global";
 import "xy-ui/components/xy-tips.js";
 import { For } from "solid-js";
+import { router } from "./router/index";
 
 const defaultClass = " material-icons cursor-pointer rounded-full p-1 ";
 export function HelperBar() {
@@ -23,6 +24,14 @@ export function HelperBar() {
             },
             class: ["bg-orange-400"],
             tips: "主要源代码",
+        },
+        {
+            value: "home",
+            click: () => {
+                router.navigate("/");
+            },
+            class: ["bg-blue-400"],
+            tips: "返回列表",
         },
     ];
     return (

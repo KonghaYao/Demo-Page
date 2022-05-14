@@ -1,5 +1,6 @@
 export const ErrorPage = (props: { err: Error; reload: () => void }) => {
     let reload = props.reload || (() => window.location.reload());
+    console.error(props.err);
     return (
         <div className="h-full w-full flex-col flex justify-center items-center text-red-400 font-bold">
             {/* @ts-ignore */}

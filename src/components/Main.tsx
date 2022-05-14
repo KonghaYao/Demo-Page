@@ -1,4 +1,11 @@
-import { createSignal, ErrorBoundary, lazy, Suspense } from "solid-js";
+import { Match } from "navigo";
+import {
+    Component,
+    createSignal,
+    ErrorBoundary,
+    lazy,
+    Suspense,
+} from "solid-js";
 import { CDN } from "../global";
 import { Route } from "../router/index";
 
@@ -13,7 +20,8 @@ export default function Home() {
         desc: "加载信息中。。。",
     } as ModuleDescription);
 
-    const AsyncPage = (pageName: string) => {
+    const AsyncPage: Component<{ match: Match }> = (props) => {
+        const pageName = props.match.data!.pageName;
         const Page = lazy(async () => {
             console.log("%c跳转到" + pageName, "color:red");
             const module = new URL(`./src/pages/${pageName}.tsx`, CDN);
@@ -42,11 +50,7 @@ export default function Home() {
                     fallback={(err, reload) => (
                         <ErrorPage err={err} reload={reload}></ErrorPage>
                     )}>
-                    <Route
-                        path="/page/:pageName"
-                        element={(match) =>
-                            match && AsyncPage(match.data!.pageName)
-                        }></Route>
+                    <Route path="/page/:pageName" element={AsyncPage}></Route>
                 </ErrorBoundary>
             </div>
         </section>

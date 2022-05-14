@@ -1,5 +1,7 @@
 import {
     batch,
+    Component,
+    createMemo,
     createSignal,
     onCleanup,
     onMount,
@@ -8,10 +10,10 @@ import {
 } from "solid-js";
 import Navigo, { Match } from "navigo";
 import { JSX } from "solid-js";
+import { Dynamic } from "solid-js/web";
 export const router = new Navigo("/", {
     hash: true,
 });
-type ElementCreator = (cb: Match | false) => JSX.Element;
 
 /** 路由跳转组件 */
 export const Link = (props: { href: string; element: JSX.Element }) => {
@@ -26,25 +28,18 @@ export const Link = (props: { href: string; element: JSX.Element }) => {
 };
 
 /** 路由显示组件 */
-export const Route = (props: {
-    path: string;
-    element: JSX.Element | ElementCreator;
-}) => {
+export const Route = (props: { path: string; element: Component<any> }) => {
     const isCurrent = router.matchLocation(props.path);
     const [matched, setMatched] = createSignal(isCurrent);
     const cb = (info?: Match) => {};
     router.on(props.path, cb, {
         before(done, match) {
-            batch(() => {
-                setMatched(match);
-            });
-            console.log(match);
+            setMatched(match);
+            console.log("路由跳转 => ", match.url);
             done();
         },
         leave(done, match) {
-            batch(() => {
-                setMatched(false);
-            });
+            setMatched(false);
             done();
         },
     });
@@ -52,12 +47,20 @@ export const Route = (props: {
     onCleanup(() => {
         router.off(cb);
     });
+    const component = createMemo(() => {
+        if (matched()) {
+            return props.element;
+        } else {
+            return () => <div>loading</div>;
+        }
+    });
     return (
-        <Show when={matched()}>
-            {matched() &&
-                (typeof props.element === "function"
-                    ? props.element(matched())
-                    : props.element)}
+        <Show when={!!matched()}>
+            <Dynamic
+                component={component()}
+                someProp={() => ({
+                    match: matched(),
+                })}></Dynamic>
         </Show>
     );
 };

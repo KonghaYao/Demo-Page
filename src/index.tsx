@@ -30,8 +30,8 @@ const App = () => {
             <HelperBar></HelperBar>
 
             <main className="flex-grow bg-gray-50 p-4 overflow-auto">
-                <Route path="/page/:pageName" element={<Main></Main>}></Route>
-                <Route path="/" element={<PageList></PageList>}></Route>
+                <Route path="/page/:pageName" element={Main}></Route>
+                <Route path="/" element={PageList}></Route>
             </main>
             <Show when={ModuleStore.dependence.show}>
                 <div className="absolute bottom-0 w-full h-1/2">
