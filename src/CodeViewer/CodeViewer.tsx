@@ -5,6 +5,7 @@ import type _Prism from "prismjs";
 import { loadLink, loadScript } from "../utils/loadScript";
 import { useGlobal } from "../utils/useGlobal";
 import { jumpTo } from "../utils/jumpTo";
+import { isLocal } from "../utils/isURLString";
 const remote = "https://cdn.jsdelivr.net/npm/prismjs/";
 await loadScript(remote + "prism.min.js");
 await loadLink(
@@ -50,7 +51,7 @@ const addLinkToURL = (
                     });
                     console.log(MapperStore.get("default"));
                     console.log("查找打包记录 ", isBundle);
-                    e.ctrlKey ? jumpTo(Url) : cb(Url);
+                    e.ctrlKey || !isLocal(Url) ? jumpTo(Url) : cb(Url);
                 });
             }
         }
