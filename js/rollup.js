@@ -14,7 +14,12 @@ import mitt from "mitt";
 const RollupHub = mitt();
 globalThis.RollupHub = RollupHub;
 import postcss from "https://esm.sh/postcss";
-import { drawDependence } from "rollup-web/dist/plugins/drawDependence.js";
+
+import {
+    drawDependence,
+    MapperStore,
+} from "rollup-web/dist/plugins/drawDependence.js";
+globalThis.MapperStore = MapperStore;
 await initBabel();
 // Solid-js 配置
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";

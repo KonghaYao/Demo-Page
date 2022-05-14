@@ -2,7 +2,7 @@ import { onCleanup, onMount } from "solid-js";
 import { loadScript } from "../utils/loadScript";
 import { useGlobal } from "../utils/useGlobal";
 import type { GPU as _GPU } from "gpu.js";
-import { ModuleDescription } from "../components/ModuleDescription";
+import type { ModuleDescription } from "../components/ModuleDescription";
 import { imageToArray } from "../utils/imageToArray";
 import { animationFrames, map, Subscription } from "rxjs";
 

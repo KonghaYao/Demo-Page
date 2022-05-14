@@ -6,6 +6,7 @@ import { CDN } from "./global";
 import "xy-ui/components/xy-tips.js";
 import { For } from "solid-js";
 import { router } from "./router/index";
+import { Notify } from "notiflix";
 
 const defaultClass = " material-icons cursor-pointer rounded-full p-1 ";
 export function HelperBar() {
@@ -26,6 +27,8 @@ export function HelperBar() {
                         CDN
                     );
                     CodeViewerEvent.emit("showCode", url.toString());
+                } else {
+                    Notify.warning("需要在模块中才能查看哦！");
                 }
             },
             class: ["bg-orange-400"],

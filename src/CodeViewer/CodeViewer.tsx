@@ -1,11 +1,4 @@
-import {
-    createComputed,
-    createEffect,
-    createMemo,
-    createSignal,
-    observable,
-    onMount,
-} from "solid-js";
+import { createComputed, createSignal, onMount } from "solid-js";
 import { CDN } from "../global";
 import { CodeViewerEvent, store, updateStore } from "./store";
 import type _Prism from "prismjs";
@@ -17,7 +10,7 @@ await loadScript(remote + "prism.min.js");
 await loadLink(
     "https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-material-light.min.css"
 );
-
+const MapperStore = useGlobal<Map<string, any[]>>("MapperStore");
 /** 添加代码链接 */
 const addLinkToURL = (
     Pre: HTMLPreElement,
@@ -39,7 +32,25 @@ const addLinkToURL = (
                 );
                 el.addEventListener("click", (e) => {
                     const url = new URL(puleText, baseURL).toString();
-                    e.ctrlKey ? jumpTo(url) : cb(url);
+
+                    // 补全 后缀名
+                    // 使用打包记录尝试获取有后缀名的代码即可
+                    let Url = url;
+                    const reg = new RegExp(`^${url}[^\/]*`);
+                    const isBundle = MapperStore.get("default")?.some((i) => {
+                        const id = Object.keys(i.getNodeMetas()).find(
+                            (moduleId) => {
+                                return reg.test(moduleId);
+                            }
+                        );
+                        if (id) {
+                            Url = id;
+                            return true;
+                        }
+                    });
+                    console.log(MapperStore.get("default"));
+                    console.log("查找打包记录 ", isBundle);
+                    e.ctrlKey ? jumpTo(Url) : cb(Url);
                 });
             }
         }
@@ -104,9 +115,8 @@ export const CodeViewer = (props: { src: string }) => {
     createComputed(reload);
     onMount(reload);
     const goBack = () => {
-        const url = history.back()!;
-        console.log(url);
-        CodeViewerEvent.emit("showCode", url);
+        const url = history.back();
+        url && CodeViewerEvent.emit("showCode", url);
     };
 
     return (
