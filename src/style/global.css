@@ -2,6 +2,9 @@
 .font-song {
     font-family: "Noto Serif SC";
 }
+.noise-bg {
+    background-image: url(https://php-noise.com/noise.php?mode=brightness&multi=1.5&step=5&hex=8f2112&tiles=10&tileSize=20&borderWidth=0);
+}
 /* 全局样式 */
 .button-like {
     @apply transition-transform active:scale-90 cursor-pointer;

@@ -8,7 +8,7 @@ const pageList: ModuleDescription[] = await fetch(
 ).then((res) => res.json());
 export const PageList = () => {
     return (
-        <div class="grid grid-cols-4 gap-2">
+        <div class="grid grid-cols-4 gap-8">
             <For each={pageList}>
                 {(data) => <PageCard data={data}></PageCard>}
             </For>
@@ -17,9 +17,11 @@ export const PageList = () => {
 };
 const PageCard = (props: { data: ModuleDescription }) => {
     return (
-        <div class="flex flex-col p-4 rounded-xl bg-white/80 backdrop-blur-md">
-            <header>{props.data.title}</header>
-            <div class="flex-grow">{props.data.desc}</div>
+        <div class="flex flex-col p-4 rounded-xl bg-gray-100">
+            <header class="font-bold">{props.data.title}</header>
+            <div class="flex-grow text-sm text-gray-600 line-clamp-3">
+                {props.data.desc}
+            </div>
             <footer>
                 <Link
                     href={`/page/${props.data.fileName}`}

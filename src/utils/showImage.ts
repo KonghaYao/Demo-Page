@@ -1,6 +1,7 @@
 import "spotlight.js";
 import { useGlobal } from "./useGlobal";
 export const Spotlight = useGlobal<any>("Spotlight");
+/** 实现图片大屏展示 */
 export function showImage(
     images: { src: string; title?: string; description?: string }[],
     index: number

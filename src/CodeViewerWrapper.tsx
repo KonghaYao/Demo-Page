@@ -1,6 +1,6 @@
 import { Show } from "solid-js";
 import { CodeViewer } from "./CodeViewer/CodeViewer";
-import { store, updateStore } from "./CodeViewer/store";
+import { store } from "./CodeViewer/store";
 
 export function CodeViewerWrapper() {
     let container: HTMLDivElement;

@@ -50,7 +50,7 @@ export default function () {
     const [url, setURL] = createSignal(
         "https://images.unsplash.com/photo-1517331156700-3c241d2b4d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80"
     );
-    const [quality, setQuality] = createSignal(0.1);
+    const [quality, setQuality] = createSignal(0.7);
     const [files, { mutate, refetch }] = createResource(async () => {
         return fetch(url())
             .then((res) => res.blob())
@@ -75,7 +75,7 @@ export default function () {
                     }}></input>
                 <input
                     type="range"
-                    value={10}
+                    value={70}
                     min={1}
                     max={100}
                     onchange={(e) => {
@@ -95,13 +95,13 @@ export default function () {
                         {/* @ts-ignore */}
                     </sl-image-comparer>
                     <div
-                        class="absolute h-full w-full top-0 left-0 z-50 "
+                        class="absolute h-full w-full top-0 left-0 z-40 "
                         style="pointer-events:none">
                         <Detail
-                            className="absolute top-0 left-0"
+                            className="absolute top-4 left-4"
                             data={files()!.old}></Detail>
                         <Detail
-                            className="absolute top-0 right-0"
+                            className="absolute top-4 right-4 text-right"
                             data={files()!.new}></Detail>
                     </div>
                 </div>

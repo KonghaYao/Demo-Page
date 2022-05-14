@@ -29,7 +29,7 @@ const App = () => {
             </header>
             <HelperBar></HelperBar>
 
-            <main className="flex-grow bg-gray-50 p-4 overflow-auto">
+            <main className="flex-grow bg-gray-50 p-4 overflow-auto noise-bg">
                 <Route path="/page/:pageName" element={PageViewer}></Route>
                 <Route path="/" element={PageList}></Route>
             </main>
