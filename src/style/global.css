@@ -1,7 +1,12 @@
+@import url("https://cdn.jsdelivr.net/gh/KonghaYao/chinese-free-web-font-storage/build/斗鱼追光体/result.css");
 @import url("https://cdn.jsdelivr.net/gh/KonghaYao/chinese-free-web-font-storage/css/Noto Serif SC.css");
 .font-song {
     font-family: "Noto Serif SC";
 }
+.font-title {
+    font-family: "DOUYU Font";
+}
+
 .noise-bg {
     background-image: url(https://php-noise.com/noise.php?mode=brightness&multi=1.5&step=5&hex=8f2112&tiles=10&tileSize=20&borderWidth=0);
 }
