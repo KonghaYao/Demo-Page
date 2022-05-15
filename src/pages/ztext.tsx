@@ -1,11 +1,4 @@
-import {
-    createSignal,
-    onCleanup,
-    onMount,
-    For,
-    Component,
-    JSX,
-} from "solid-js";
+import { onMount, For } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
 import chroma from "chroma-js";
 import { loadScript } from "../utils/loadScript";
