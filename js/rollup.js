@@ -20,6 +20,10 @@ import {
     MapperStore,
 } from "rollup-web/dist/plugins/drawDependence.js";
 globalThis.MapperStore = MapperStore;
+const isDev = () => window.location.host.split(":")[0] === "127.0.0.1";
+const CDN = isDev()
+    ? window.location.href
+    : "https://cdn.jsdelivr.net/gh/konghayao/Demo-Page/index.html";
 await initBabel();
 // Solid-js 配置
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
@@ -55,6 +59,7 @@ const config = {
             },
         }),
         web_module({
+            root: CDN,
             // 本地打包
             extensions: [".tsx", ".ts", ".js", ".json"],
             log(url) {
