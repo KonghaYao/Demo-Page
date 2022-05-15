@@ -26,7 +26,8 @@ const exts = [".ts", ".tsx", ".mjs"];
 const processCode = (code) => {
     return code
         .replace(/^await[\s\S]+?;/gm, "")
-        .replace(/^((const|var|let)[\s\S]+?)await[\s\S]+?;/gm, "$1 null;");
+        .replace(/^((const|var|let).+?)await[\s\S]+?;/gm, "$1 null;")
+        .replace(/^((const|var|let).+?)=.+;/g, "$1 =  null;");
 };
 rollup({
     input: "./script/temp.mjs",
@@ -80,7 +81,6 @@ rollup({
             res.output[0].code
                 .replace(/^import[\s\S]+?;/gm, "")
                 .replace(/^delegateEvents[\s\S]+?;/gm, "")
-                .replace(/\n/g, "")
         );
     })
     .then((res) => {

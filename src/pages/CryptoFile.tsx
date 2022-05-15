@@ -54,68 +54,73 @@ const RenderImage: Component<{
 };
 
 import { showImage } from "../utils/showImage";
-const AsyncCrypto = lazy(async () => {
-    const images: ImageShower[] = [];
-    const pushImage = (
-        result: ArrayBuffer,
-        options: Omit<ImageShower, "src" | "size">
-    ) => {
-        const url = URL.createObjectURL(new Blob([result]));
-        images.push({ src: url, ...options, size: result.byteLength });
-    };
-    // 主要加解密功能实现
-    await sodium.ready
-        .then(async () => {
-            timeCounter("getFile");
-            const chunk = await fetch("https://source.unsplash.com/500x300", {
-                cache: "force-cache",
-            }).then((res) => res.arrayBuffer());
-            const result = new Uint8Array(chunk);
-            const time = timeCounter("getFile")!;
-            pushImage(chunk, {
-                title: "导入原始数据",
-                description: "输入的二进制数据",
-                time,
-            });
-            return result;
-        })
-        .then((chunk: Uint8Array) => {
-            timeCounter("encrypt")!;
-            const result = Encryption("123456", new Uint8Array(chunk));
-            const time = timeCounter("encrypt")!;
-            pushImage(result, {
-                title: "加密过程与结果",
-                description: "文件头+文件（分隔符）文件（结束符号）",
-                time,
-            });
-            return result;
-        })
-        .then((encryptedChunk: Uint8Array) => {
-            timeCounter("decrypt")!;
-            const result = Decryption("123456", encryptedChunk);
-            const time = timeCounter("decrypt")!;
-            pushImage(result!, {
-                title: "解密文件过程",
-                description: "解密文件",
-                time,
-            });
-        });
 
-    return {
-        default: () => {
-            return (
-                <For each={images}>
-                    {(data, index) => (
-                        <RenderImage
-                            onclick={() => showImage(images, index())}
-                            data={data}></RenderImage>
-                    )}
-                </For>
-            );
-        },
-    };
-});
 export default function CryptoFile() {
+    const AsyncCrypto = lazy(async () => {
+        const images: ImageShower[] = [];
+        const pushImage = (
+            result: ArrayBuffer,
+            options: Omit<ImageShower, "src" | "size">
+        ) => {
+            const url = URL.createObjectURL(new Blob([result]));
+            images.push({ src: url, ...options, size: result.byteLength });
+        };
+        // 主要加解密功能实现
+        await sodium.ready
+            .then(async () => {
+                timeCounter("getFile");
+                const chunk = await fetch(
+                    "https://source.unsplash.com/500x300",
+                    {
+                        cache: "force-cache",
+                    }
+                ).then((res) => res.arrayBuffer());
+                const result = new Uint8Array(chunk);
+                const time = timeCounter("getFile")!;
+                pushImage(chunk, {
+                    title: "导入原始数据",
+                    description: "输入的二进制数据",
+                    time,
+                });
+                return result;
+            })
+            .then((chunk: Uint8Array) => {
+                timeCounter("encrypt")!;
+                const result = Encryption("123456", new Uint8Array(chunk));
+                const time = timeCounter("encrypt")!;
+                pushImage(result, {
+                    title: "加密过程与结果",
+                    description: "文件头+文件（分隔符）文件（结束符号）",
+                    time,
+                });
+                return result;
+            })
+            .then((encryptedChunk: Uint8Array) => {
+                timeCounter("decrypt")!;
+                const result = Decryption("123456", encryptedChunk);
+                const time = timeCounter("decrypt")!;
+                pushImage(result!, {
+                    title: "解密文件过程",
+                    description: "解密文件",
+                    time,
+                });
+            });
+
+        return {
+            default: () => {
+                return (
+                    <For each={images}>
+                        {(data, index) => (
+                            <RenderImage
+                                onclick={() => showImage(images, index())}
+                                data={data}></RenderImage>
+                        )}
+                    </For>
+                );
+            },
+        };
+    });
+
     return (
         <Suspense fallback={<Loading></Loading>}>
             <div className="grid gap-2 items-center space-y-3 grid-cols-3 my-4">

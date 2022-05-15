@@ -16,6 +16,7 @@
         "colorthief": "^2.3.2",
         "compressorjs": "^1.1.1",
         "copy-to-clipboard": "^3.3.1",
+        "countup.js": "^2.1.0",
         "gpu.js": "^2.15.2",
         "highlight.js": "^11.5.1",
         "mitt": "^3.0.0",
