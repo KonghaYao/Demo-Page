@@ -27,7 +27,7 @@ const CDN = isDev()
 await initBabel();
 // Solid-js 配置
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
-const server = new DynamicServer("_import");
+const server = new DynamicServer("_import", CDN);
 const config = {
     // 直接采用 src 目录下的 index.ts 进行打包实验
     input: "./src/index.tsx",
