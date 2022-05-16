@@ -1,10 +1,16 @@
 const successSet = new Set<string>();
-export const loadScript = async (url: string) => {
+export const loadScript = async (
+    url: string,
+    attr: any = {},
+    to = document.body
+) => {
     if (successSet.has(url)) return true;
     return new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.src = url;
-
+        Object.entries(attr).forEach(([key, value]) => {
+            script.setAttribute(key, value as string);
+        });
         script.onload = () => {
             successSet.add(url);
             resolve(true);
@@ -12,7 +18,7 @@ export const loadScript = async (url: string) => {
         script.onerror = (e) => {
             reject(e);
         };
-        document.body.appendChild(script);
+        to.appendChild(script);
     });
 };
 export const loadLink = (url: string) => {

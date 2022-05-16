@@ -118,6 +118,7 @@
         "src/**/*.tsx",
         "src/**/*.ts",
         "src/**/*.d.ts",
-        "script/**/*.ts"
+        "script/**/*.ts",
+        "src/utils/pyodide.js"
     ]
 }
