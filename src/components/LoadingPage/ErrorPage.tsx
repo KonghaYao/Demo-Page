@@ -3,7 +3,6 @@ export const ErrorPage = (props: { err: Error; reload: () => void }) => {
     console.error(props.err);
     return (
         <div className="h-full w-full flex-col flex justify-center items-center text-red-400 font-bold">
-            {/* @ts-ignore */}
             <span className="p-4">发生了不知名的错误, 错误如下</span>
             <span className="text-xs">{props.err.message}</span>
             <button

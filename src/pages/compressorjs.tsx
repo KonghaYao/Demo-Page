@@ -87,12 +87,10 @@ export default function () {
             </div>
             <Show when={!files.loading} fallback={<Loading></Loading>}>
                 <div class="relative">
-                    {/* @ts-ignore */}
                     <sl-image-comparer>
                         {/* 右侧为 before，左侧为 after */}
                         <img slot="before" src={files()!.new.url} />
                         <img slot="after" src={files()!.old.url} />
-                        {/* @ts-ignore */}
                     </sl-image-comparer>
                     <div
                         class="absolute h-full w-full top-0 left-0 z-40 "
@@ -114,7 +112,7 @@ const Detail = (props: { className?: string; data: PicDetail }) => {
     return (
         <div class={props.className} className="backdrop-blur-xl bg-white/70">
             <div>{props.data.title}</div>
-            {/* @ts-ignore */}
+
             <sl-format-bytes value={props.data.size}></sl-format-bytes>
 
             <div>{props.data.quality.toFixed(2)} %</div>

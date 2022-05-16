@@ -45,7 +45,6 @@ const RenderImage: Component<{
                 <img src={props.data.src} onclick={() => props.onclick()}></img>
             </div>
             <div className="text-sm text-gray-500">
-                {/* @ts-ignore */}
                 <sl-format-bytes value={props.data.size} unit="bit" />
                 <span class="px-2">花费时间 {props.data.time} ms</span>
             </div>

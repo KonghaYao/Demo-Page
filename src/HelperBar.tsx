@@ -49,7 +49,6 @@ export function HelperBar() {
                 <For each={icons}>
                     {(item) => {
                         return (
-                            // @ts-ignore
                             <xy-tips dir="bottom" attr:tips={item.tips}>
                                 <div
                                     className={
@@ -58,7 +57,6 @@ export function HelperBar() {
                                     onclick={item.click}>
                                     {item.value}
                                 </div>
-                                {/* @ts-ignore */}
                             </xy-tips>
                         );
                     }}

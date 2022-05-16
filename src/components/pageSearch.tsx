@@ -7,7 +7,6 @@ export function PageSearch() {
 
     return (
         <div className="w-full flex bg-white rounded-xl overflow-hidden mx-4 max-w-sm">
-            {/* @ts-ignore */}
             <xy-input
                 className=" flex-grow"
                 type="search"

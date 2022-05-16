@@ -108,7 +108,6 @@ const PackagesList: Component<{}> = (props) => {
             </For>
             <Switch>
                 <Match when={state() === State.idle}>
-                    {/* @ts-ignore */}
                     <sl-tag onclick={() => setState(State.input)}>+</sl-tag>
                 </Match>{" "}
                 <Match when={state() === State.input}>
