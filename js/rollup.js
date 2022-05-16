@@ -20,9 +20,9 @@ import {
     MapperStore,
 } from "rollup-web/dist/plugins/drawDependence.js";
 globalThis.MapperStore = MapperStore;
-const isDev = () => window.location.host.split(":")[0] === "127.0.0.1";
+const isDev = () => globalThis.location.host.split(":")[0] === "127.0.0.1";
 const CDN = isDev()
-    ? window.location.href
+    ? globalThis.location.href
     : "https://cdn.jsdelivr.net/gh/konghayao/Demo-Page/index.html";
 await initBabel();
 // Solid-js 配置

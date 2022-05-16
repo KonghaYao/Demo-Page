@@ -15,6 +15,7 @@
         "@shoelace-style/shoelace": "^2.0.0-beta.73",
         "chroma-js": "^2.4.2",
         "colorthief": "^2.3.2",
+        "comlink": "^4.3.1",
         "compressorjs": "^1.1.1",
         "copy-to-clipboard": "^3.3.1",
         "countup.js": "^2.1.0",

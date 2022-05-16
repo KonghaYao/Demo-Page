@@ -1,8 +1,17 @@
 import { ModuleDescription } from "../components/ModuleDescription";
 import { wrap } from "comlink";
-
 import { CDN } from "../global";
-import { createResource, For } from "solid-js";
+import {
+    Component,
+    createResource,
+    createSignal,
+    For,
+    lazy,
+    Match,
+    Suspense,
+    Switch,
+} from "solid-js";
+import { Loading } from "../components/LoadingPage/loading";
 export const description: ModuleDescription = {
     fileName: "pyodide",
     title: "pyodide —— 浏览器 Python 环境",
@@ -12,28 +21,77 @@ export const description: ModuleDescription = {
         "https://github.com/pyodide/pyodide",
     ],
 };
+// 注册一个 CDN， 这个 CDN 可以通过 JSDelivr 获取！
 const worker = new Worker(new URL("./src/utils/pyodide.js", CDN));
-const api = wrap(worker);
-await api.init();
+const api = wrap<any>(worker);
+
 export default function () {
-    api.eval('print("hello-world")');
-    const [packages, {}] = createResource([], async () => {
-        const packs = await api.loadedPackages();
-        return Object.entries(packs) as [string, string][];
+    const Async = lazy(async () => {
+        // 预先加载 pyodide
+        await api.init();
+        return { default: Main };
     });
+    return (
+        <Suspense fallback={<Loading></Loading>}>
+            <Async></Async>
+        </Suspense>
+    );
+}
+const Main = () => {
     return (
         <div>
             <div>Python 安装完成</div>
-            <ul>
-                <For each={packages()}>
-                    {([name, position]) => (
-                        <li>
-                            {name}
-                            {position}
-                        </li>
-                    )}
-                </For>
-            </ul>
+            <PackagesList></PackagesList>
         </div>
     );
-}
+};
+
+const repl = () => {};
+
+// 模块查看器
+import "@shoelace-style/shoelace/dist/components/tag/tag.js";
+import "@shoelace-style/shoelace/dist/components/input/input.js";
+const PackagesList: Component<{}> = (props) => {
+    const [packages, { refetch }] = createResource([], async () => {
+        const packs = await api.loadedPackages();
+        return Object.entries(packs) as [string, string][];
+    });
+    enum State {
+        idle,
+        loading,
+        input,
+    }
+    const [state, setState] = createSignal<State>(State.idle);
+    const loadPackage = async (packageName: string) => {
+        setState(State.loading);
+        await api.loadPackage(packageName);
+        await refetch();
+        setState(State.idle);
+    };
+
+    return (
+        <div class="flex ">
+            <For each={packages()}>
+                {([name, position]) => <sl-tag>{name}</sl-tag>}
+            </For>
+            <Switch>
+                <Match when={state() === State.idle}>
+                    {/* @ts-ignore */}
+                    <sl-tag onclick={() => setState(State.input)}>+</sl-tag>
+                </Match>{" "}
+                <Match when={state() === State.input}>
+                    <sl-input
+                        placeholder="输入需要加载的包名"
+                        on:sl-change={(e: InputEvent) =>
+                            loadPackage(e.currentTarget.value)
+                        }></sl-input>
+                </Match>
+                <Match when={state() === State.loading}>
+                    <sl-tag>
+                        <Loading></Loading>
+                    </sl-tag>
+                </Match>
+            </Switch>
+        </div>
+    );
+};

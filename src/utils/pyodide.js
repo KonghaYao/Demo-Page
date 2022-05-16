@@ -2,7 +2,7 @@ importScripts("https://unpkg.com/comlink/dist/umd/comlink.js");
 importScripts("https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js");
 let pyodide;
 Comlink.expose({
-    async init() {
+    init: async () => {
         pyodide = await loadPyodide({
             // indexURL: indexUrl,
             stdout: console.log,
@@ -10,17 +10,19 @@ Comlink.expose({
             fullStdLib: false,
         });
         await pyodide.loadPackage("micropip");
-        console.log(pyodide);
     },
     eval(code) {
         return pyodide.runPythonAsync(code);
     },
-    async loadPackage(package_name, runtime) {
+    loadPackage: async (package_name) => {
+        await pyodide.loadPackage([package_name]);
+    },
+    pipInstall: async (package_name) => {
         const micropip = pyodide.globals.get("micropip");
         await micropip.install(package_name);
         micropip.destroy();
     },
-    loadedPackages() {
+    loadedPackages: () => {
         return pyodide.loadedPackages;
     },
 });

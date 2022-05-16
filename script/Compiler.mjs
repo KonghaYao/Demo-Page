@@ -27,7 +27,7 @@ const processCode = (code) => {
     return code
         .replace(/^await[\s\S]+?;/gm, "")
         .replace(/^((const|var|let).+?)await[\s\S]+?;/gm, "$1 null;")
-        .replace(/^((const|var|let).+?)=.+;/g, "$1 =  null;");
+        .replace(/^((const|var|let).+?)=.+?;$/gm, "$1 = null;");
 };
 rollup({
     input: "./script/temp.mjs",
