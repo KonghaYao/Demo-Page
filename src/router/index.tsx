@@ -1,7 +1,5 @@
 import {
-    batch,
     Component,
-    createMemo,
     createSignal,
     onCleanup,
     onMount,
@@ -10,7 +8,6 @@ import {
 } from "solid-js";
 import Navigo, { Match } from "navigo";
 import { JSX } from "solid-js";
-import { Dynamic } from "solid-js/web";
 export const router = new Navigo("/", {
     hash: true,
 });
@@ -28,7 +25,10 @@ export const Link = (props: { href: string; element: JSX.Element }) => {
 };
 
 /** 路由显示组件 */
-export const Route = (props: { path: string; element: Component<any> }) => {
+export const Route = (props: {
+    path: string;
+    element: Component<any> | JSX.Element;
+}) => {
     const [matched, setMatched] = createSignal<Match | false>(false);
     /** 路由跳转的回调函数 */
     const cb = () => {};
@@ -51,7 +51,7 @@ export const Route = (props: { path: string; element: Component<any> }) => {
     onCleanup(() => {
         router.off(cb);
     });
-    const Inner = props.element;
+    const Inner = props.element as Component<any>;
     return (
         <Show when={matched()}>
             {(match) => {

@@ -7,13 +7,7 @@ declare module "fs" {
     const a: any;
     export default a;
 }
-declare namespace JSX {
-    interface IntrinsicElements {
-        "sl-input": any;
-        "sl-tag": any;
-        "sl-textarea": any;
-    }
-}
+
 declare module "colorthief" {
     export type ColorHex = [number, number, number];
     export default class {

@@ -82,7 +82,7 @@ export const CodeViewer = (props: { src: string }) => {
 
     const reload = async () => {
         const url = new URL(props.src, CDN);
-        const code = await fetch(url).then((res) => res.text());
+        const code = await fetch(url.toString()).then((res) => res.text());
         const ext = url.pathname.replace(/(.*)\./, "");
         setCode(code);
         if (code && ext) {

@@ -12,6 +12,7 @@ import {
     Switch,
 } from "solid-js";
 import { Loading } from "../components/LoadingPage/loading";
+
 export const description: ModuleDescription = {
     fileName: "pyodide",
     title: "pyodide —— 浏览器 Python 环境",
@@ -62,6 +63,7 @@ const Repl: Component<{}> = (props) => {
     const [result, { refetch }] = createResource("", async () => {
         return api.eval(code);
     });
+
     return (
         <div>
             <sl-textarea
