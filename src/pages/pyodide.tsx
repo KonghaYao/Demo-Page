@@ -12,7 +12,6 @@ import {
     Switch,
 } from "solid-js";
 import { Loading } from "../components/LoadingPage/loading";
-
 export const description: ModuleDescription = {
     fileName: "pyodide",
     title: "pyodide —— 浏览器 Python 环境",
@@ -63,14 +62,13 @@ const Repl: Component<{}> = (props) => {
     const [result, { refetch }] = createResource("", async () => {
         return api.eval(code);
     });
-
     return (
         <div>
             <sl-textarea
                 placeholder="请输入 Python 代码！"
                 value={code}
                 on:sl-change={(e: InputEvent) => {
-                    code = e.currentTarget.value;
+                    code = (e.currentTarget as HTMLTextAreaElement).value;
                     refetch();
                 }}></sl-textarea>
 
@@ -117,7 +115,9 @@ const PackagesList: Component<{}> = (props) => {
                     <sl-input
                         placeholder="输入需要加载的包名"
                         on:sl-change={(e: InputEvent) =>
-                            loadPackage(e.currentTarget.value)
+                            loadPackage(
+                                (e.currentTarget as HTMLInputElement).value
+                            )
                         }></sl-input>
                 </Match>
                 <Match when={state() === State.loading}>

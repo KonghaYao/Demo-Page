@@ -1,7 +1,7 @@
-declare global {
-    namespace JSX {
-        interface IntrinsicElements {
-            // 扩展 IntrinsicElements 否则无法识别自定义标签
+import Solid from "solid-js";
+declare module "solid-js" {
+    export namespace JSX {
+        export interface IntrinsicElements {
             "sl-textarea": any;
             "sl-tag": any;
             "sl-input": any;
