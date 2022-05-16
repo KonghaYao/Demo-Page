@@ -73,6 +73,7 @@ class HistoryRecord {
         return this.history.pop();
     }
 }
+await loadScript("https://unpkg.org/prismjs/components/prism-core.min.js");
 const Prism = useGlobal<typeof _Prism>("Prism");
 export const CodeViewer = (props: { src: string }) => {
     let container: HTMLPreElement;

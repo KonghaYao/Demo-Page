@@ -3,7 +3,11 @@ import g6, { Graph, GraphData } from "@antv/g6";
 import { baseStore, ModuleEvents } from "./ModuleStore";
 import { Subscription, fromEvent } from "rxjs";
 import { CodeViewerEvent } from "../../CodeViewer/store";
-const G6: typeof g6 = (globalThis as any).G6;
+import { loadScript } from "../../utils/loadScript";
+import { useGlobal } from "../../utils/useGlobal";
+
+await loadScript("https://cdn.jsdelivr.net/npm/@antv/g6@4.6.4/dist/g6.min.js");
+const G6 = useGlobal<typeof g6>("G6");
 
 const updater$ = fromEvent(ModuleEvents, "filterUpdate");
 const createGraph = (container: HTMLElement) =>

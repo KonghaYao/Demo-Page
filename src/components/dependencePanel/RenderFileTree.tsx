@@ -1,5 +1,5 @@
-import { createSignal, For, onCleanup, onMount, Show } from "solid-js";
-import { NodeConfig, EdgeConfig, Graph, GraphData } from "@antv/g6";
+import { createSignal, For, onCleanup, onMount } from "solid-js";
+import { NodeConfig, GraphData } from "@antv/g6";
 import { ModuleEvents, ModuleStore, updateStore } from "./ModuleStore";
 import {
     debounceTime,

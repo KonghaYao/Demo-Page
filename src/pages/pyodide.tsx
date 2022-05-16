@@ -15,7 +15,7 @@ import { Loading } from "../components/LoadingPage/loading";
 export const description: ModuleDescription = {
     fileName: "pyodide",
     title: "pyodide —— 浏览器 Python 环境",
-    desc: "",
+    desc: "在浏览器上运行 Python 的插件",
     link: [
         "https://pyodide.org/en/stable/usage/loading-packages.html",
         "https://github.com/pyodide/pyodide",

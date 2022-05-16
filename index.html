@@ -5,7 +5,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
-
+        <meta http-equiv="expires" content="2000" />
+        <meta http-equiv="cache-control" content="only-if-cached" />
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+        <link rel="preconnect" href="https://cdn.skypack.net" />
         <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Material Icons"
@@ -14,10 +17,12 @@
             href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-okaidia.css"
             rel="stylesheet"
         />
-        <script src="https://cdn.tailwindcss.com?plugins=aspect-ratio,line-clamp"></script>
+        <script
+            defer
+            src="https://cdn.tailwindcss.com?plugins=aspect-ratio,line-clamp"
+        ></script>
     </head>
     <body></body>
-
     <script
         async
         src="https://ga.jspm.io/npm:es-module-shims@1.5.4/dist/es-module-shims.js"
@@ -32,13 +37,6 @@
             }
         }
     </script>
-    <script
-        async
-        src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-core.min.js"
-    ></script>
-    <script
-        async
-        src="https://cdn.jsdelivr.net/npm/@antv/g6@4.6.4/dist/g6.min.js"
-    ></script>
+
     <script type="module" src="./js/index.js"></script>
 </html>

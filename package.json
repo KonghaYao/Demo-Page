@@ -41,7 +41,8 @@
         "typed.js": "^2.0.12",
         "unified": "^10.1.2",
         "vscode-icons-js": "^11.6.1",
-        "wc-spinners": "^1.1.1"
+        "wc-spinners": "^1.1.1",
+        "xmind-embed-viewer": "^1.0.6"
     },
     "devDependencies": {
         "@babel/core": "^7.17.10",
