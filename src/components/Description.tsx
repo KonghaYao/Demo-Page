@@ -30,6 +30,10 @@ const LinkComponent = (props: { src: string }) => {
                 <img
                     className="w-11/12 h-11/12"
                     src={findLinkIcon(props.src)}
+                    onerror={(e) =>
+                        (e.currentTarget.src =
+                            "https://cdn.jsdelivr.net/gh/astrit/css.gg/icons/svg/link.svg")
+                    }
                 />
             </div>
         </a>
@@ -43,5 +47,5 @@ const findLinkIcon = (src: string) => {
     } else if (/github/.test(url.host)) {
         return `https://cdn.jsdelivr.net/gh/primer/octicons/icons/mark-github-16.svg`;
     }
-    return `https://cdn.jsdelivr.net/gh/astrit/css.gg/icons/svg/${name}.svg`;
+    return url.origin + "/favicon.ico";
 };
