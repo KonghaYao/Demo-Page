@@ -11,8 +11,10 @@ Comlink.expose({
         });
         await pyodide.loadPackage("micropip");
     },
-    eval(code) {
-        return pyodide.runPythonAsync(code);
+    async eval(code) {
+        const result = await pyodide.runPythonAsync(code);
+        console.log("python Result =>", result.toJs());
+        return result.toJs();
     },
     loadPackage: async (package_name) => {
         await pyodide.loadPackage([package_name]);

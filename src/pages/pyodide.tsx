@@ -29,6 +29,7 @@ export default function () {
     const Async = lazy(async () => {
         // 预先加载 pyodide
         await api.init();
+        await api.loadPackage("numpy");
         return { default: Main };
     });
     return (
@@ -42,11 +43,42 @@ const Main = () => {
         <div>
             <div>Python 安装完成</div>
             <PackagesList></PackagesList>
+            <Repl></Repl>
         </div>
     );
 };
+import { format } from "pretty-format";
+import "@shoelace-style/shoelace/dist/components/textarea/textarea.js";
+const Repl: Component<{}> = (props) => {
+    let code = `
+    import numpy as np
+    def make_x_and_y(n):
+        x = np.random.randn(n)
+        y = np.random.randn(n)
+        return x, y
+    x, y = make_x_and_y(n=10)
+    x, y
+    `;
+    const [result, { refetch }] = createResource("", async () => {
+        return api.eval(code);
+    });
+    return (
+        <div>
+            <sl-textarea
+                placeholder="请输入 Python 代码！"
+                value={code}
+                on:sl-change={(e: InputEvent) => {
+                    code = e.currentTarget.value;
+                    refetch();
+                }}></sl-textarea>
 
-const repl = () => {};
+            <Switch fallback={<div>{format(result())}</div>}>
+                <Match when={result.loading}>loading...</Match>
+                <Match when={result.error}>{result.error}</Match>
+            </Switch>
+        </div>
+    );
+};
 
 // 模块查看器
 import "@shoelace-style/shoelace/dist/components/tag/tag.js";
