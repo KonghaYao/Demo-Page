@@ -11,7 +11,9 @@ export const description: ModuleDescription = {
 export default function () {
     let el: HTMLDivElement;
     const [file, { mutate, refetch }] = createResource(async () => {
-        return fetch("./assets/demo.xmind").then((res) => res.arrayBuffer());
+        return fetch(
+            "https://cdn.jsdelivr.net/gh/xmind-embed-viewer/public/test-1.xmind"
+        ).then((res) => res.arrayBuffer());
     });
     createEffect(() => {
         el.innerHTML = "";
