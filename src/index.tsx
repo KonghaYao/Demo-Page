@@ -1,8 +1,6 @@
-import { render, Show } from "solid-js/web";
+import { render } from "solid-js/web";
 import "./style/global.css";
 import { PageViewer } from "./components/Main";
-import Dependence from "./components/dependencePanel/Dependence";
-import { ModuleStore } from "./components/dependencePanel/ModuleStore";
 import { HelperBar } from "./HelperBar";
 import { CodeViewerWrapper } from "./CodeViewerWrapper";
 import { PageList } from "./PageList/index";
@@ -11,11 +9,12 @@ import "wc-spinners";
 
 /* shoelace 的样式表 */
 await loadLink(
-    "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.73/dist/themes/light.css"
+    "https://unpkg.com/@shoelace-style/shoelace@2.0.0-beta.73/dist/themes/light.css"
 );
 import { onMount } from "solid-js";
 import { Route, router } from "./router/index";
 import { loadLink } from "./utils/loadScript";
+import { DependenceWrapper } from "./DependenceWrapper";
 const App = () => {
     onMount(() => {
         router.navigate(window.location.hash.replace("#", ""));
@@ -33,11 +32,7 @@ const App = () => {
                 <Route path="/page/:pageName" element={PageViewer}></Route>
                 <Route path="/" element={PageList}></Route>
             </main>
-            <Show when={ModuleStore.dependence.show}>
-                <div className="absolute bottom-0 w-full h-1/2">
-                    <Dependence></Dependence>
-                </div>
-            </Show>
+            <DependenceWrapper></DependenceWrapper>
             <CodeViewerWrapper></CodeViewerWrapper>
         </section>
     );
