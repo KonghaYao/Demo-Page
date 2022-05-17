@@ -1,7 +1,7 @@
 import { loadScript } from "./loadScript";
 import type Sodium from "libsodium-wrappers";
 await loadScript(
-    "https://cdn.jsdelivr.net/gh/jedisct1/libsodium.js/dist/browsers/sodium.js"
+    "https://fastly.jsdelivr.net/gh/jedisct1/libsodium.js/dist/browsers/sodium.js"
 );
 export const CHUNK_SIZE = 64 * 1024 * 1024;
 export const crypto_secretstream_xchacha20poly1305_ABYTES = 17;

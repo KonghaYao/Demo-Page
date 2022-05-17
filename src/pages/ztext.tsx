@@ -15,7 +15,7 @@ export const description: ModuleDescription = {
 
 // 该插件没有 npm
 await loadScript(
-    "https://cdn.jsdelivr.net/gh/bennettfeely/ztext/src/js/ztext.min.js"
+    "https://fastly.jsdelivr.net/gh/bennettfeely/ztext/src/js/ztext.min.js"
 );
 
 export default function () {

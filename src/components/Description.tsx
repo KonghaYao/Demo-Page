@@ -32,7 +32,7 @@ const LinkComponent = (props: { src: string }) => {
                     src={findLinkIcon(props.src)}
                     onerror={(e) =>
                         (e.currentTarget.src =
-                            "https://cdn.jsdelivr.net/gh/astrit/css.gg/icons/svg/link.svg")
+                            "https://fastly.jsdelivr.net/gh/astrit/css.gg/icons/svg/link.svg")
                     }
                 />
             </div>
@@ -45,7 +45,7 @@ const findLinkIcon = (src: string) => {
     if (/npm/.test(url.host)) {
         name = "npm";
     } else if (/github/.test(url.host)) {
-        return `https://cdn.jsdelivr.net/gh/primer/octicons/icons/mark-github-16.svg`;
+        return `https://fastly.jsdelivr.net/gh/primer/octicons/icons/mark-github-16.svg`;
     }
     return url.origin + "/favicon.ico";
 };

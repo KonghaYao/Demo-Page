@@ -41,13 +41,13 @@ const Update = fromEvent(RollupHub, "drawDependence").pipe(
                     type = "local";
                     fill = "#fafafa";
                     img =
-                        "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
+                        "https://fastly.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
                         getIconForFile(value.id);
                 } else {
                     type = "remote";
                     fill = "#aaa";
                     img =
-                        "https://cdn.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/file_type_rollup.svg";
+                        "https://fastly.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/file_type_rollup.svg";
                 }
                 return {
                     id: uid,

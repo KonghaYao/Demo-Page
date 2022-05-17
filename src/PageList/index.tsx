@@ -19,7 +19,9 @@ export const PageList = () => {
 const PageCard = (props: { data: ModuleDescription }) => {
     return (
         <div class="flex flex-col p-4 rounded-xl bg-gray-100">
-            <header class="text-sm font-title">{props.data.title}</header>
+            <header class="text-lg font-sans font-bold">
+                {props.data.title}
+            </header>
             <div class="flex-grow text-sm text-gray-500 line-clamp-3">
                 {props.data.desc}
             </div>

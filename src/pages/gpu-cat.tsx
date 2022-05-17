@@ -26,7 +26,7 @@ export default function () {
     let update$: Subscription;
     onMount(async () => {
         const [image, BitArray] = await imageToArray(
-            "https://cdn.jsdelivr.net/gh/tensorflow/tfjs-examples/mobilenet/cat.jpg"
+            "https://fastly.jsdelivr.net/gh/tensorflow/tfjs-examples/mobilenet/cat.jpg"
         );
         const render = new GPU({ mode: "gpu" })
             .createKernel(function (

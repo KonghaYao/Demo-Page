@@ -10,19 +10,24 @@ import {
 // 导入各种插件
 import { initBabel, babel } from "rollup-web/dist/plugins/babel.js";
 import json from "@rollup/plugin-json";
+
+// 构建一个给 Solid 内部的 打包信息渠道
 import mitt from "mitt";
 const RollupHub = mitt();
 globalThis.RollupHub = RollupHub;
+
 import postcss from "https://esm.sh/postcss";
 import {
     drawDependence,
     MapperStore,
 } from "rollup-web/dist/plugins/drawDependence.js";
 globalThis.MapperStore = MapperStore;
+
 const isDev = () => globalThis.location.host.split(":")[0] === "127.0.0.1";
 const CDN = isDev()
     ? globalThis.location.href
     : "https://fastly.jsdelivr.net/gh/konghayao/Demo-Page/index.html";
+
 await initBabel();
 // Solid-js 配置
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";

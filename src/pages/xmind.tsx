@@ -11,9 +11,9 @@ export const description: ModuleDescription = {
 export default function () {
     let el: HTMLDivElement;
     const [file, { mutate, refetch }] = createResource(async () => {
-        return fetch(
-            "https://cdn.jsdelivr.net/gh/xmind-embed-viewer/public/test-1.xmind"
-        ).then((res) => res.arrayBuffer());
+        return fetch("./assets/test-1.xmind").then((res) => {
+            return res.arrayBuffer();
+        });
     });
     createEffect(() => {
         el.innerHTML = "";
@@ -30,7 +30,8 @@ export default function () {
                     const file = await e.currentTarget.files![0].arrayBuffer();
                     mutate(file);
                 }}></input>
-            <div ref={el!}></div>
+            <div>xmind 官网在线加载较慢，请稍等。。。</div>
+            <div class="rounded-lg overflow-hidden" ref={el!}></div>
         </div>
     );
 }

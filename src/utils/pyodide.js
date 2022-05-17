@@ -1,5 +1,5 @@
 importScripts("https://unpkg.com/comlink/dist/umd/comlink.js");
-importScripts("https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js");
+importScripts("https://fastly.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js");
 let pyodide;
 Comlink.expose({
     init: async () => {

@@ -19,7 +19,7 @@ export const description: ModuleDescription = {
  * 那么可以直接下载并转化为本地 URL
  */
 const url = await imageToLocalURL(
-    "https://cdn.jsdelivr.net/gh/tensorflow/tfjs-examples/mobilenet/cat.jpg"
+    "https://fastly.jsdelivr.net/gh/tensorflow/tfjs-examples/mobilenet/cat.jpg"
 );
 
 /** 主体 */
