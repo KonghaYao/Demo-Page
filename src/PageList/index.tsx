@@ -9,7 +9,7 @@ const pageList: ModuleDescription[] = await fetch(
 
 export const PageList = () => {
     return (
-        <div class="grid grid-cols-4 gap-8">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-8 xl:grid-cols-4 lg:grid-cols-3  lg:max-w-4xl m-auto">
             <For each={pageList}>
                 {(data) => <PageCard data={data}></PageCard>}
             </For>

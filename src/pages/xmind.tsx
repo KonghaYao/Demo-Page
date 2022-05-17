@@ -2,7 +2,7 @@ import { createEffect, createResource, createSignal, onMount } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
 
 // 修改一下 插件里面 的 iframe 地址，让其指向我的加速网页
-/** xmind-embed-viewer */
+/** 原本仓库为  xmind-embed-viewer */
 import { XMindEmbedViewer } from "../utils/xmind/index";
 
 export const description: ModuleDescription = {
@@ -43,7 +43,7 @@ export default function () {
                             await e.currentTarget.files![0].arrayBuffer();
                         mutate(file);
                     }}></input>
-                <div>
+                <div class="text-sm">
                     xmind
                     官网在线加载较慢，所以在我的项目里面加速了一下官方的网页
                 </div>
