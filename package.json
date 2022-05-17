@@ -7,7 +7,6 @@
         "dev": "ws --http2 --spa index.html",
         "make": "node ./script/Compiler.mjs"
     },
-    "type": "module",
     "author": "",
     "license": "ISC",
     "dependencies": {

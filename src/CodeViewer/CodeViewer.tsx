@@ -74,6 +74,7 @@ class HistoryRecord {
     }
 }
 await loadScript("https://unpkg.org/prismjs/components/prism-core.min.js");
+await loadLink("https://cdn.jsdelivr.net/npm/prismjs/themes/prism-okaidia.css");
 const Prism = useGlobal<typeof _Prism>("Prism");
 export const CodeViewer = (props: { src: string }) => {
     let container: HTMLPreElement;
