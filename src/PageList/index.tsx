@@ -6,6 +6,7 @@ import { Link } from "../router/index";
 const pageList: ModuleDescription[] = await fetch(
     new URL("./script/PageList.json", CDN).toString()
 ).then((res) => res.json());
+
 export const PageList = () => {
     return (
         <div class="grid grid-cols-4 gap-8">

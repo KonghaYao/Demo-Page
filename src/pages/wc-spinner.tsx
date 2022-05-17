@@ -1,5 +1,6 @@
 import { For } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
+import spinnerNames from "../../assets/spinnerName.json";
 import "wc-spinners";
 export const description: ModuleDescription = {
     fileName: "wc-spinner",
@@ -11,46 +12,10 @@ export const description: ModuleDescription = {
     ],
 };
 
-const spinnerName = [
-    "atom-spinner",
-    "breeding-rhombus-spinner",
-    "circles-to-rhombuses-spinner",
-    "fingerprint-spinner",
-    "flower-spinner",
-    "fulfilling-bouncing-circle-spinner",
-    "fulfilling-square-spinner",
-    "half-circle-spinner",
-    "hollow-dots-spinner",
-    "intersecting-cirlces-spinner",
-    "looping-rhombuses-spinner",
-    "orbit-spinner",
-    "pixel-spinner",
-    "radar-spinner",
-    "scaling-squares-spinner",
-    "self-fulfilling-square-spinner",
-    "semipolar-spinner",
-    "spring-spinner",
-    "swapping-squares-spinner",
-    "trinity-rings-spinner",
-    "rsc-circle-spinner",
-    "default-spinner",
-    "dual-ring-spinner",
-    "ellipsis-spinner",
-    "facebook-spinner",
-    "rsc-grid-spinner",
-    "heart-spinner",
-    "hourglass-spinner",
-    "orbitals-spinner",
-    "ouroboro-spinner",
-    "rsc-ring-spinner",
-    "ripple-spinner",
-    "roller-spinner",
-    "spinner-spinner",
-];
 export default function () {
     return (
         <div className="p-4 grid grid-cols-5 gap-4">
-            <For each={spinnerName}>
+            <For each={spinnerNames}>
                 {(Tag) => {
                     const a = document.createElement(Tag);
                     return (

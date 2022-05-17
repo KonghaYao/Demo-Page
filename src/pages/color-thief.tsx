@@ -95,6 +95,7 @@ export default function () {
         </div>
     );
 }
+
 import copy from "copy-to-clipboard";
 import { Notify } from "notiflix";
 /** 展示一个颜色方格 */
