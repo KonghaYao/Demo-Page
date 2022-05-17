@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html site-mode="cn" mode="production" lang="cn">
+<html site-mode="en" mode="production" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="dns-prefetch preconnect" href="https://assets.xmind.net" />
         <link
-            rel="dns-prefetch preconnect"
-            href="https://s3.cn-north-1.amazonaws.com.cn"
+            data-n-head="ssr"
+            rel="icon"
+            type="image/x-icon"
+            href="/favicon.ico"
         />
-        <link data-n-head=ssr rel=icon type=image/x-icon
-        href="https://www.xmind.cn/favicon.ico">
         <link rel="icon" href="https://www.xmind.cn/webapp-icon/icon_48.png" />
         <link
             rel="apple-touch-icon"
@@ -65,34 +66,31 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <meta name="author" content="XMind Ltd." />
         <meta name="renderer" content="webkit" />
-        <title>XMind思维导图 | 中文官方网站</title>
+        <title>XMind - Mind Mapping Software</title>
         <meta
             name="description"
-            content="XMind是一个全功能的思维导图和头脑风暴软件，为激发灵感和创意而生。「XMind思维导图」中文官方网站提供XMind思维导图软件免费下载，产品介绍，购买。XMind (2022)、XMind 8、XMind移动版支持Windows，Mac(macOS)、Linux、iOS和Android(安卓)完整覆盖电脑端移动端各操作系统。"
+            content="XMind is the most professional and popular mind mapping tool. Millions of people use XMind to clarify thinking, manage complex information, brainstorming, get work organized, remote and work from home WFH."
         />
         <meta
             name="keywords"
-            content="xmind,思维导图,xmind官网,思维导图软件,效率工具,头脑风暴,脑图,心智图"
+            content="XMind,mindmap,mind map,mind mapping,mind mapping software,free mind mapping software,work from home,WFH,remote"
         />
         <link
             rel="stylesheet"
-            href="https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/vendor/css/bootstrap-customized-303033481c.min.css"
+            href="https://assets.xmind.net/www/assets/vendor/css/bootstrap-customized-303033481c.min.css"
         />
         <link
             rel="stylesheet"
-            href="https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/vendor/js/text-autospace/text-autospace-d1ab216252.css"
+            href="https://assets.xmind.net/www/assets/vendor/js/text-autospace/text-autospace-d1ab216252.css"
         />
-        <link
-            href="https://fonts.googleapis.com/css?family=Barlow:400,500,600,700"
-            rel="stylesheet"
-        />
+
         <link
             rel="stylesheet"
-            href="https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/vendor/fonts/xm-icons/style-90146e58b3.css"
+            href="https://assets.xmind.net/www/assets/vendor/fonts/xm-icons/style-90146e58b3.css"
         />
         <link
             rel="stylesheet"
-            href="https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/styles/index-dc59971aff.css"
+            href="https://assets.xmind.net/www/styles/index-8f35abc156.css"
         />
         <script src="https://fastly.jsdelivr.net/npm/jquery@3.2.1"></script>
         <meta
@@ -100,41 +98,54 @@
             content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
         />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="https://www.xmind.net/m" />
+        <meta name="twitter:site" content="https://www.xmind.net/m//" />
         <meta name="twitter:title" content="" />
         <meta name="twitter:description" content="" />
         <meta name="twitter:image" content="" />
         <link
             rel="stylesheet"
-            href="https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/styles/pages/share-embed-39eba5407f.css"
+            href="https://assets.xmind.net/www/styles/pages/share-embed-39eba5407f.css"
         />
+
+        <script
+            charset="utf-8"
+            src="https://assets.xmind.net/www/javascripts/en.common.5d4fb81264.js"
+        ></script>
+        <script
+            charset="utf-8"
+            src="https://assets.xmind.net/www/javascripts/en.error.8170843dfd.js"
+        ></script>
+        <script
+            charset="utf-8"
+            src="https://assets.xmind.net/www/javascripts/en.form.2b29e71e2b.js"
+        ></script>
     </head>
     <body>
         <script>
             (window.manifests = {
                 snowbrush:
-                    "https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/vendor/js/snowbrush.js",
+                    "https://assets.xmind.net/www/assets/vendor/js/snowbrush.js",
                 structureAnimationVideo:
-                    "https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/videos/animate/structure-loading-animate-ec6aa8c56e.mp4",
+                    "https://assets.xmind.net/www/assets/videos/animate/structure-loading-animate-ec6aa8c56e.mp4",
                 structureAnimationGIF:
-                    "https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/videos/animate/structure-loading-animate-08d3b453a2.gif",
+                    "https://assets.xmind.net/www/assets/videos/animate/structure-loading-animate-08d3b453a2.gif",
                 facebookIcon:
-                    "https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/images/share/facebook-icon-7018f49319.svg",
+                    "https://assets.xmind.net/www/assets/images/share/facebook-icon-7018f49319.svg",
                 linkedinIcon:
-                    "https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/images/share/linkedin-icon-b71dc66ddd.svg",
+                    "https://assets.xmind.net/www/assets/images/share/linkedin-icon-b71dc66ddd.svg",
                 twitterIcon:
-                    "https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/images/share/twitter-icon-11380ffc4e.svg",
+                    "https://assets.xmind.net/www/assets/images/share/twitter-icon-11380ffc4e.svg",
                 xmindLogo:
-                    "https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/images/share/xmind-034648d11e.svg",
+                    "https://assets.xmind.net/www/assets/images/share/xmind-034648d11e.svg",
             }),
                 (window.metadataString = "");
         </script>
-        <script src="https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/vendor/js/text-autospace/text-autospace-fed758f4a6.min.js"></script>
-        <script src="https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/vendor/js/polyfill-45b9836beb.min.js"></script>
-        <script src="https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/vendor/js/js-cookie-a978ac7394.js"></script>
-        <script src="https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/vendor/js/popper-135fa9e662.min.js"></script>
-        <script src="https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/assets/vendor/js/bootstrap-26779614c4.min.js"></script>
-        <script src="https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/javascripts/base.e9d03930ac.js"></script>
-        <script src="https://s3.cn-north-1.amazonaws.com.cn/assets.xmind.cn/www/javascripts/share-embed.5c980dca88.js"></script>
+        <script src="https://assets.xmind.net/www/assets/vendor/js/text-autospace/text-autospace-fed758f4a6.min.js"></script>
+        <script src="https://assets.xmind.net/www/assets/vendor/js/polyfill-45b9836beb.min.js"></script>
+        <script src="https://assets.xmind.net/www/assets/vendor/js/js-cookie-a978ac7394.js"></script>
+        <script src="https://assets.xmind.net/www/assets/vendor/js/popper-135fa9e662.min.js"></script>
+        <script src="https://assets.xmind.net/www/javascripts/base.42b9056354.js"></script>
+        <div class="toast"><span></span></div>
+        <script src="https://assets.xmind.net/www/javascripts/share-embed.56c50c8027.js"></script>
     </body>
 </html>

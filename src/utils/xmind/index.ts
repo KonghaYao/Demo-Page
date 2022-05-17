@@ -37,7 +37,7 @@ export class XMindEmbedViewer {
                 height: "350px",
                 width: "750px",
             },
-            url = "https://www.xmind.net/embed-viewer",
+            url = "https://www.xmind.cn/embed-viewer",
         } = args;
 
         const iframeController = new IframeController(el, url);
