@@ -3,6 +3,7 @@ import { ModuleDescription } from "../components/ModuleDescription";
 import { CountUp } from "countup.js";
 import { loadScript } from "../utils/loadScript";
 import { useGlobal } from "../utils/useGlobal";
+import { NPM } from "../global";
 export const description: ModuleDescription = {
     fileName: "vanta",
     title: "vanta 3D 背景动画",
@@ -36,7 +37,7 @@ export default function () {
     const changeBackground = async (type: string) => {
         temp?.destroy();
         await loadScript(
-            `https://cdn.jsdelivr.net/npm/vanta@0.5.21/dist/vanta.${type.toLowerCase()}.min.js`
+            NPM + `vanta@0.5.21/dist/vanta.${type.toLowerCase()}.min.js`
         );
         const module = useGlobal<any>("VANTA");
         // 具体配置请参考官网

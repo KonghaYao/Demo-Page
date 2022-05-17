@@ -14,7 +14,6 @@ import mitt from "mitt";
 const RollupHub = mitt();
 globalThis.RollupHub = RollupHub;
 import postcss from "https://esm.sh/postcss";
-
 import {
     drawDependence,
     MapperStore,
@@ -23,7 +22,7 @@ globalThis.MapperStore = MapperStore;
 const isDev = () => globalThis.location.host.split(":")[0] === "127.0.0.1";
 const CDN = isDev()
     ? globalThis.location.href
-    : "https://cdn.jsdelivr.net/gh/konghayao/Demo-Page/index.html";
+    : "https://fastly.jsdelivr.net/gh/konghayao/Demo-Page/index.html";
 await initBabel();
 // Solid-js 配置
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";

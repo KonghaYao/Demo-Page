@@ -1,15 +1,15 @@
 import { createComputed, createSignal, onMount } from "solid-js";
-import { CDN } from "../global";
+import { CDN, NPM } from "../global";
 import { CodeViewerEvent, store, updateStore } from "./store";
 import type _Prism from "prismjs";
 import { loadLink, loadScript } from "../utils/loadScript";
 import { useGlobal } from "../utils/useGlobal";
 import { jumpTo } from "../utils/jumpTo";
 import { isLocal } from "../utils/isURLString";
-const remote = "https://cdn.jsdelivr.net/npm/prismjs/";
+const remote = "https://fastly.jsdelivr.net/npm/prismjs/";
 await loadScript(remote + "prism.min.js");
 await loadLink(
-    "https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-material-light.min.css"
+    "https://fastly.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-material-light.min.css"
 );
 const MapperStore = useGlobal<Map<string, any[]>>("MapperStore");
 /** 添加代码链接 */
@@ -73,8 +73,8 @@ class HistoryRecord {
         return this.history.pop();
     }
 }
-await loadScript("https://unpkg.org/prismjs/components/prism-core.min.js");
-await loadLink("https://cdn.jsdelivr.net/npm/prismjs/themes/prism-okaidia.css");
+await loadScript(NPM + "prismjs/components/prism-core.min.js");
+await loadLink(NPM + "prismjs/themes/prism-okaidia.css");
 const Prism = useGlobal<typeof _Prism>("Prism");
 export const CodeViewer = (props: { src: string }) => {
     let container: HTMLPreElement;
@@ -91,9 +91,7 @@ export const CodeViewer = (props: { src: string }) => {
             if (languages) {
                 const languageName = languages[0];
                 for (let i of languages.reverse()) {
-                    await loadScript(
-                        `https://cdn.jsdelivr.net/npm/prismjs/components/prism-${i}.js`
-                    );
+                    await loadScript(NPM + `prismjs/components/prism-${i}.js`);
                 }
 
                 const html = Prism.highlight(

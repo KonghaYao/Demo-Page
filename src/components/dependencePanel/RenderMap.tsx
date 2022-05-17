@@ -5,8 +5,9 @@ import { Subscription, fromEvent } from "rxjs";
 import { CodeViewerEvent } from "../../CodeViewer/store";
 import { loadScript } from "../../utils/loadScript";
 import { useGlobal } from "../../utils/useGlobal";
+import { NPM } from "../../global";
 
-await loadScript("https://cdn.jsdelivr.net/npm/@antv/g6@4.6.4/dist/g6.min.js");
+await loadScript(NPM + "@antv/g6@4.6.4/dist/g6.min.js");
 const G6 = useGlobal<typeof g6>("G6");
 
 const updater$ = fromEvent(ModuleEvents, "filterUpdate");

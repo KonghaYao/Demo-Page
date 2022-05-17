@@ -2,6 +2,7 @@ import { onMount } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
 import Prism from "prismjs";
 import Typed from "typed.js";
+import { NPM } from "../global";
 export const description: ModuleDescription = {
     fileName: "typed",
     title: "Typed.js —— 打字效果",
@@ -10,9 +11,9 @@ export const description: ModuleDescription = {
 };
 
 /** 远程代码 */
-const code = await fetch(
-    "https://cdn.jsdelivr.net/npm/typed.js@2.0.12/app.js"
-).then((res) => res.text());
+const code = await fetch(NPM + "typed.js@2.0.12/app.js").then((res) =>
+    res.text()
+);
 
 export default function () {
     /* 代码序列 */

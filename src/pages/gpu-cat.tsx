@@ -5,6 +5,7 @@ import type { GPU as _GPU } from "gpu.js";
 import type { ModuleDescription } from "../components/ModuleDescription";
 import { imageToArray } from "../utils/imageToArray";
 import { animationFrames, map, Subscription } from "rxjs";
+import { NPM } from "../global";
 
 export const description: ModuleDescription = {
     fileName: "gpu-cat",
@@ -16,9 +17,7 @@ export const description: ModuleDescription = {
     ],
 };
 
-await loadScript(
-    "https://cdn.jsdelivr.net/npm/gpu.js@latest/dist/gpu-browser.min.js"
-);
+await loadScript(NPM + "gpu.js@latest/dist/gpu-browser.min.js");
 const GPU = useGlobal<typeof _GPU>("GPU");
 
 /* 下载图片并转化为 像素二进制数组 */
