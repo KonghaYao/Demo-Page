@@ -32,6 +32,7 @@ const processCode = (code) => {
 rollup({
     input: "./script/temp.mjs",
     plugins: [
+        ,
         {
             resolveId(thisFile, importer) {
                 const ext = extname(thisFile);
