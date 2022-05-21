@@ -77,12 +77,12 @@ rollup({
         })
     )
     .then((res) => {
-        writeFileSync(
-            "./script/result.mjs",
-            res.output[0].code
-                .replace(/^import[\s\S]+?;/gm, "")
-                .replace(/^delegateEvents[\s\S]+?;/gm, "")
-        );
+        let code = res.output[0].code
+            .replace(/^import[\s\S]+?;/gm, "")
+            .replace(/^delegateEvents[\s\S]+?;/gm, "");
+        // ! 解决执行环境的问题
+        code = "globalThis.location = {href:'4343',host:''}" + code;
+        writeFileSync("./script/result.mjs", code);
     })
     .then((res) => {
         //  校验产出代码
