@@ -5,6 +5,7 @@ declare module "solid-js" {
         export interface IntrinsicElements {
             "sl-textarea": any;
             "sl-tag": any;
+            "sl-split-panel": any;
             "sl-button": any;
             "sl-input": any;
             "xy-tips": any;

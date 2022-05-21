@@ -23,8 +23,7 @@ export const description: ModuleDescription = {
 
 /* 创建源代码文件系统环境 */
 const createFileSystem = () => ({
-    "index.ts": `
-// Demo 使用了 add 作为导出，所以需要使用的话，需要 add 导出。
+    "index.ts": `// Demo 使用了 add 作为导出，所以需要使用的话，需要 add 导出。
 export function add(a: i32, b: i32): i32 {
     const d = "这是一个 WebAssembly 里面的文本";
     console.log(d);
@@ -52,6 +51,8 @@ const [fileStore, setStore] = createStore(createFileSystem());
 
 import "@shoelace-style/shoelace/dist/components/button/button.js";
 import "@shoelace-style/shoelace/dist/components/textarea/textarea.js";
+import "@shoelace-style/shoelace/dist/components/input/input.js";
+import "@shoelace-style/shoelace/dist/components/split-panel/split-panel.js";
 export default function () {
     let container: HTMLTextAreaElement;
     const [InputText, setInputText] = createSignal("2 3");
@@ -100,28 +101,42 @@ export default function () {
         }
     });
     return (
-        <div>
-            <sl-textarea
-                ref={container!}
-                value={fileStore["index.ts"]}
-                onInput={(e: any) =>
-                    setStore("index.ts", e.currentTarget.value)
-                }></sl-textarea>
+        <div class="flex flex-col">
+            <sl-split-panel class="h-full bg-white" position="75">
+                <sl-textarea
+                    class="p-2"
+                    slot="start"
+                    label="源代码"
+                    help-text="在 Demo 中导出必须为 add 这样才能编译成功"
+                    resize="none"
+                    rows="7"
+                    ref={container!}
+                    value={fileStore["index.ts"]}
+                    onInput={(e: any) =>
+                        setStore("index.ts", e.currentTarget.value)
+                    }></sl-textarea>
+                <div class="m-4" slot="end">
+                    <div class="my-2">输出结果</div>
+                    {runResult}
+                </div>
+            </sl-split-panel>
 
-            <div>
-                <label htmlFor="input">输入参数</label>
-                <input
+            <div class="my-4">
+                <sl-input
                     type="text"
-                    placeholder="请用空格分割你的输入参数，任何数据都会作为数值输入"
+                    label="WebAssembly 输入参数"
+                    help-text="请用空格分割你的输入参数，任何数据都会作为数值输入"
                     value={InputText()}
-                    onclick={(e) => setInputText(e.currentTarget.value)}
+                    onclick={(e: any) => setInputText(e.currentTarget.value)}
                 />
             </div>
-            <div>
-                <sl-button onclick={reBuild}>重新构建</sl-button>
-                <sl-button onclick={rerun}> 重新执行</sl-button>
+            <div class="my-4">
+                <sl-button
+                    onclick={reBuild}
+                    disable={runResult.loading || wasm.loading}>
+                    重新构建并执行代码
+                </sl-button>
             </div>
-            <div>{runResult}</div>
         </div>
     );
 }
