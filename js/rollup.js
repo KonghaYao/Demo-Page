@@ -77,6 +77,7 @@ const config = {
                 "solid-js": "solid-js@1.3.17",
                 "solid-js/web": "solid-js@1.3.17/web",
                 "solid-js/store": "solid-js@1.3.17/store",
+                "assemblyscript/dist/asc": "assemblyscript/dist/asc.js",
             },
         }),
         // 这是一种异步导入方案，使用 全局的一个外置 Server 来保证代码的正确执行

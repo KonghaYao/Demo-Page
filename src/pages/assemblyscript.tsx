@@ -20,7 +20,7 @@ const createFileSystem = () => ({
     "index.ts": `
 // Demo 使用了 add 作为导出，所以需要使用的话，需要 add 导出。
 export function add(a: i32, b: i32): i32 {
-    const d = "263723";
+    const d = "这是一个 WebAssembly 里面的文本";
     console.log(d);
     return a + b
 }`,
@@ -29,6 +29,7 @@ export function add(a: i32, b: i32): i32 {
         options: {
             importTable: false,
         },
+
         targets: {
             release: {
                 optimize: false,
@@ -43,6 +44,8 @@ export function add(a: i32, b: i32): i32 {
 });
 const [fileStore, setStore] = createStore(createFileSystem());
 
+import "@shoelace-style/shoelace/dist/components/button/button.js";
+import "@shoelace-style/shoelace/dist/components/textarea/textarea.js";
 export default function () {
     let container: HTMLTextAreaElement;
     const [InputText, setInputText] = createSignal("2 3");
@@ -66,17 +69,21 @@ export default function () {
 
     const [runResult, { refetch }] = createResource(async () => {
         if (wasm()) {
+            let Exports: any;
             return loader
                 .instantiate<any>(wasm()!, {
                     // env 内传递的变量相当于是 as 代码中的全局变量
                     env: {
                         /* @ts-ignore */
                         "console.log"(e) {
-                            console.log(e);
+                            // WASM 内部的变量需要通过 export 进行获取使用
+                            console.warn(Exports.__getString(e));
                         },
                     },
                 })
                 .then(({ exports }) => {
+                    Exports = exports;
+                    console.log(exports);
                     return exports.add(...InputParams());
                 });
         }
@@ -84,15 +91,13 @@ export default function () {
 
     return (
         <div>
-            <pre>
-                <textarea
-                    ref={container!}
-                    value={fileStore["index.ts"]}
-                    onInput={(e) =>
-                        setStore("index.ts", e.currentTarget.value)
-                    }></textarea>
-                ;
-            </pre>
+            <sl-textarea
+                ref={container!}
+                value={fileStore["index.ts"]}
+                onInput={(e: any) =>
+                    setStore("index.ts", e.currentTarget.value)
+                }></sl-textarea>
+
             <div>
                 <label htmlFor="input">输入参数</label>
                 <input
@@ -103,8 +108,8 @@ export default function () {
                 />
             </div>
             <div>
-                <button onclick={reBuild}>重新构建</button>
-                <button onclick={refetch}> 重新执行</button>
+                <sl-button onclick={reBuild}>重新构建</sl-button>
+                <sl-button onclick={refetch}> 重新执行</sl-button>
             </div>
             <div>{runResult}</div>
         </div>
