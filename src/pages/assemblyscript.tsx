@@ -1,7 +1,13 @@
 import asc, { APIOptions } from "assemblyscript/dist/asc";
 import loader from "@assemblyscript/loader"; // or require
 
-import { createMemo, createResource, createSignal } from "solid-js";
+import {
+    createEffect,
+    createMemo,
+    createResource,
+    createSignal,
+    onMount,
+} from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
 import { createStore } from "solid-js/store";
 export const description: ModuleDescription = {
@@ -67,7 +73,7 @@ export default function () {
             .then(() => fileList[0]);
     });
 
-    const [runResult, { refetch }] = createResource(async () => {
+    const [runResult, { refetch: rerun }] = createResource(async () => {
         if (wasm()) {
             let Exports: any;
             return loader
@@ -88,7 +94,11 @@ export default function () {
                 });
         }
     });
-
+    createEffect(() => {
+        if (wasm()) {
+            rerun();
+        }
+    });
     return (
         <div>
             <sl-textarea
@@ -109,7 +119,7 @@ export default function () {
             </div>
             <div>
                 <sl-button onclick={reBuild}>重新构建</sl-button>
-                <sl-button onclick={refetch}> 重新执行</sl-button>
+                <sl-button onclick={rerun}> 重新执行</sl-button>
             </div>
             <div>{runResult}</div>
         </div>
