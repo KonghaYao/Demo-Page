@@ -1,7 +1,12 @@
 import { For } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
-import spinnerNames from "../../assets/spinnerName.json";
 import "wc-spinners";
+import { getAssets } from "../utils/getAssets";
+
+const SpinnerNames: string[] = await getAssets(
+    "./assets/spinnerName.json",
+    "json"
+);
 export const description: ModuleDescription = {
     fileName: "wc-spinner",
     title: "Wc Spinners",
@@ -15,7 +20,7 @@ export const description: ModuleDescription = {
 export default function () {
     return (
         <div className="p-4 grid grid-cols-5 gap-4">
-            <For each={spinnerNames}>
+            <For each={SpinnerNames}>
                 {(Tag) => {
                     const a = document.createElement(Tag);
                     return (

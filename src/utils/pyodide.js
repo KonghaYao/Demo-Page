@@ -1,3 +1,4 @@
+// 这是一个 pyodide 的 WebWorker 文件
 importScripts("https://unpkg.com/comlink/dist/umd/comlink.js");
 importScripts("https://fastly.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js");
 let pyodide;

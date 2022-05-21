@@ -8,6 +8,7 @@ import {
 const { rm } = promises;
 import { rollup } from "rollup";
 import Babel from "@babel/core";
+import json from "@rollup/plugin-json";
 import { extname } from "path/posix";
 import path from "path";
 const files = readdirSync("./src/pages");
@@ -32,7 +33,6 @@ const processCode = (code) => {
 rollup({
     input: "./script/temp.mjs",
     plugins: [
-        ,
         {
             resolveId(thisFile, importer) {
                 const ext = extname(thisFile);

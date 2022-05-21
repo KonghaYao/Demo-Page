@@ -1,7 +1,7 @@
 import asc, { APIOptions } from "assemblyscript/dist/asc";
 import loader from "@assemblyscript/loader"; // or require
 
-import { createMemo, createResource, createSignal, onMount } from "solid-js";
+import { createMemo, createResource, createSignal } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
 import { createStore } from "solid-js/store";
 export const description: ModuleDescription = {
