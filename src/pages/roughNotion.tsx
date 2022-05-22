@@ -37,11 +37,12 @@ const styles = [
     "crossed-off",
     "bracket",
 ].map((i) => ({ type: i, ref: null } as StyleStore));
+const initColor = "#fff176";
 
 import "@shoelace-style/shoelace/dist/components/color-picker/color-picker.js";
 export default function () {
     const [selectedStyle, setSelectedStyle] = createSignal(styles[0]);
-    const [color, setColor] = createSignal("#fff176");
+    const [color, setColor] = createSignal(initColor);
     const changeStyle = (newStyle: StyleStore) => {
         const oldStyle = selectedStyle();
         if (oldStyle !== newStyle) {
@@ -113,7 +114,7 @@ export default function () {
                             selectedStyle().ref!.color = color;
                         }}
                         format="hex"
-                        value={color()}></sl-color-picker>
+                        value={initColor}></sl-color-picker>
                 </div>
             </div>
             {/* 必须要设置父级元素为 relative 才能保证绘制刚好在图中 */}
