@@ -37,25 +37,30 @@ const styles = [
     "crossed-off",
     "bracket",
 ].map((i) => ({ type: i, ref: null } as StyleStore));
-export default function () {
-    const [selectedStyle, setSelectedStyle] = createSignal("underline");
 
+import "@shoelace-style/shoelace/dist/components/color-picker/color-picker.js";
+export default function () {
+    const [selectedStyle, setSelectedStyle] = createSignal(styles[0]);
+    const [color, setColor] = createSignal("#fff176");
     const changeStyle = (newStyle: StyleStore) => {
-        const oldStyle = styles.find((i) => i.type === selectedStyle())!;
+        const oldStyle = selectedStyle();
         if (oldStyle !== newStyle) {
             oldStyle.ref!.hide();
+            newStyle.ref!.color = color();
             newStyle.ref!.show();
-            setSelectedStyle(newStyle.type);
+            setSelectedStyle(newStyle);
             console.log("更换属性 ", newStyle);
         }
     };
     let container: HTMLDivElement;
     onMount(() => {
-        styles.find((i) => i.type === selectedStyle())!.ref!.show();
         const highlighter = new Highlighter({
             $root: container,
             exceptSelectors: ["pre", "code"],
             verbose: true,
+            style: {
+                className: "tagging",
+            },
         });
         highlighter
             .on("selection:hover", ({ id }) => {})
@@ -66,34 +71,49 @@ export default function () {
                     .flat()
                     .forEach((i) => {
                         annotate(i, {
-                            type: selectedStyle() as RoughAnnotationType,
+                            type: selectedStyle().type,
                             animate: true,
+                            color: color(),
                         }).show();
                     });
             });
         highlighter.run();
+        styles.find((i) => i === selectedStyle())!.ref!.show();
     });
 
     return (
         <div>
             <div>
-                <div class="flex justify-evenly">
+                <div class="flex justify-evenly relative items-center">
                     <For each={styles}>
-                        {(styleObject) => {
-                            return (
-                                <span
-                                    onclick={() => changeStyle(styleObject)}
-                                    ref={(target) => {
+                        {(styleObject) => (
+                            <span
+                                class="flex-none"
+                                onclick={() => changeStyle(styleObject)}
+                                ref={(target) => {
+                                    //  此时 DOM 未被挂载，所以需要使用这个方式
+                                    setTimeout(() => {
                                         styleObject.ref = annotate(target, {
                                             type: styleObject.type,
                                             animate: true,
+                                            color: color(),
                                         });
-                                    }}>
-                                    {styleObject.type}
-                                </span>
-                            );
-                        }}
+                                    });
+                                }}>
+                                {styleObject.type}
+                            </span>
+                        )}
                     </For>
+                    <sl-color-picker
+                        onpointerup={(el: any) => {
+                            const color =
+                                el.srcElement.getFormattedValue("hex");
+                            // 修改颜色时直接修改上面的绘制颜色
+                            setColor(color);
+                            selectedStyle().ref!.color = color;
+                        }}
+                        format="hex"
+                        value={color()}></sl-color-picker>
                 </div>
             </div>
             {/* 必须要设置父级元素为 relative 才能保证绘制刚好在图中 */}
