@@ -1,4 +1,5 @@
 import {
+    Component,
     createEffect,
     createResource,
     createSignal,
@@ -40,9 +41,13 @@ const styles = [
 const initColor = "#fff176";
 
 import "@shoelace-style/shoelace/dist/components/color-picker/color-picker.js";
+import { Portal } from "solid-js/web";
+import { createStore } from "solid-js/store";
 export default function () {
     const [selectedStyle, setSelectedStyle] = createSignal(styles[0]);
     const [color, setColor] = createSignal(initColor);
+
+    /* 交换选择的固定样式 */
     const changeStyle = (newStyle: StyleStore) => {
         const oldStyle = selectedStyle();
         if (oldStyle !== newStyle) {
@@ -54,8 +59,10 @@ export default function () {
         }
     };
     let container: HTMLDivElement;
+    let highlighter: Highlighter;
+    const highlightMap = new Map<string, RoughAnnotation[]>();
     onMount(() => {
-        const highlighter = new Highlighter({
+        highlighter = new Highlighter({
             $root: container,
             exceptSelectors: ["pre", "code"],
             verbose: true,
@@ -64,24 +71,63 @@ export default function () {
             },
         });
         highlighter
-            .on("selection:hover", ({ id }) => {})
-            .on("selection:hover-out", ({ id }) => {})
+            .on("selection:hover", ({ id }, _, e) => {
+                const positionContainer =
+                    e instanceof MouseEvent ? e : e.touches[0];
+                const { clientX: x, clientY: y } = positionContainer;
+                setToolTipStyle({
+                    left: x + "px",
+                    top: y + "px",
+                    display: "block",
+                    id,
+                });
+            })
+            .on("selection:hover-out", ({ id }, _, e) => {
+                setToolTipStyle({
+                    display: "none",
+                });
+            })
             .on("selection:create", ({ sources }) => {
                 sources
-                    .map((i) => highlighter.getDoms(i.id))
+                    .map((i) => ({
+                        id: i.id,
+                        dom: highlighter.getDoms(i.id),
+                    }))
                     .flat()
-                    .forEach((i) => {
-                        annotate(i, {
-                            type: selectedStyle().type,
-                            animate: true,
-                            color: color(),
-                        }).show();
+                    .forEach(({ id, dom }) => {
+                        const anos = dom.map((i) => {
+                            const ano = annotate(i, {
+                                type: selectedStyle().type,
+                                animate: true,
+                                color: color(),
+                            });
+                            ano.show();
+                            return ano;
+                        });
+                        highlightMap.set(id, anos);
                     });
+            })
+            .on("selection:remove", ({ ids }) => {
+                ids.forEach((i) => {
+                    const anos = highlightMap.get(i)!;
+                    anos.forEach((i) => {
+                        i.hide();
+                        setTimeout(() => {
+                            i.remove();
+                        }, i.animationDuration);
+                    });
+                    highlightMap.delete(i);
+                });
             });
         highlighter.run();
         styles.find((i) => i === selectedStyle())!.ref!.show();
     });
-
+    const [toolTipStyle, setToolTipStyle] = createStore({
+        top: "0px",
+        left: "0px",
+        display: "none",
+        id: "",
+    });
     return (
         <div>
             <div>
@@ -123,6 +169,40 @@ export default function () {
                 class="p-8 overflow-auto select-text relative">
                 <Markdown></Markdown>
             </div>
+            <ToolTips
+                toolTipStyle={toolTipStyle}
+                onRemove={() => {
+                    if (toolTipStyle.display !== "none" && toolTipStyle.id) {
+                        highlighter.remove(toolTipStyle.id);
+                        setToolTipStyle({
+                            display: "none",
+                            id: "",
+                        });
+                    }
+                }}></ToolTips>
         </div>
     );
 }
+const ToolTips: Component<{
+    toolTipStyle: {
+        display: string;
+        top: string;
+        left: string;
+    };
+    onRemove: Function;
+}> = (props) => {
+    return (
+        <Portal mount={document.body}>
+            <div
+                class="fixed flex bg-white px-4 py-2 rounded-lg"
+                style={props.toolTipStyle}>
+                <div
+                    class="material-icons hover:bg-gray-100 p-1 rounded-lg"
+                    onclick={() => props.onRemove()}>
+                    close
+                </div>
+                <div class="material-icons">close</div>
+            </div>
+        </Portal>
+    );
+};
