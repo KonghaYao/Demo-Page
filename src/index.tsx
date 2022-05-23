@@ -37,8 +37,4 @@ const App = () => {
         </section>
     );
 };
-render(
-    () => <App />,
-
-    document.body
-);
+render(() => <App />, document.body);

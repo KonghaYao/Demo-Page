@@ -42,9 +42,9 @@ export const PageViewer: Component<{ match: Match }> = (props) => {
         );
     };
     return (
-        <section className="rounded-xl relative flex flex-col bg-white/90 text-gray-700 p-4 overflow-hidden h-full max-w-3xl m-auto z-0  backdrop-blur-2xl">
+        <section className="rounded-xl relative flex flex-col bg-white text-gray-700 p-4 overflow-hidden h-full max-w-3xl m-auto z-0 ">
             {/* 模块解析*/}
-            <div class="absolute p-2 w-full top-0 left-0 z-50 backdrop-blur-2xl">
+            <div class="absolute p-2 w-full top-0 left-0 z-50 bg-gray-100/30 backdrop-blur-md">
                 <Description description={description()}></Description>
             </div>
 
