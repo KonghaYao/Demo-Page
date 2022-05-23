@@ -74,9 +74,9 @@ const config = {
             cdn: "https://cdn.skypack.dev/",
             rename: {
                 colorthief: "colorthief@2.3.2/dist/color-thief.mjs",
-                "solid-js": "solid-js@1.3.17",
-                "solid-js/web": "solid-js@1.3.17/web",
-                "solid-js/store": "solid-js@1.3.17/store",
+                "solid-js": "solid-js@1.4.2",
+                "solid-js/web": "solid-js@1.4.2/web",
+                "solid-js/store": "solid-js@1.4.2/store",
                 "assemblyscript/dist/asc": "assemblyscript/dist/asc.js",
             },
         }),

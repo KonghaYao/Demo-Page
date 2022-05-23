@@ -6,8 +6,8 @@ import { loadLink, loadScript } from "../utils/loadScript";
 import { useGlobal } from "../utils/useGlobal";
 import { jumpTo } from "../utils/jumpTo";
 import { isLocal } from "../utils/isURLString";
-const remote = "https://fastly.jsdelivr.net/npm/prismjs/";
-await loadScript(remote + "prism.min.js");
+const PrismRemote = "https://fastly.jsdelivr.net/npm/prismjs/";
+await loadScript(PrismRemote + "prism.min.js");
 await loadLink(
     "https://fastly.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-material-light.min.css"
 );
@@ -37,20 +37,15 @@ const addLinkToURL = (
                     // 补全 后缀名
                     // 使用打包记录尝试获取有后缀名的代码即可
                     let Url = url;
-                    const reg = new RegExp(`^${url}[^\/]*`);
-                    const isBundle = MapperStore.get("default")?.some((i) => {
-                        const id = Object.keys(i.getNodeMetas()).find(
-                            (moduleId) => {
-                                return reg.test(moduleId);
-                            }
-                        );
-                        if (id) {
-                            Url = id;
+                    const findBundle = MapperStore.get("default")?.some((i) => {
+                        const nodeMetas = i.getNodeMetas();
+                        if (url in nodeMetas) {
+                            Url = nodeMetas[url].meta.id;
                             return true;
                         }
                     });
                     console.log(MapperStore.get("default"));
-                    console.log("查找打包记录 ", isBundle);
+                    console.log("查找打包记录 ", findBundle, Url);
                     e.ctrlKey || !isLocal(Url) ? jumpTo(Url) : cb(Url);
                 });
             }
@@ -76,7 +71,7 @@ class HistoryRecord {
 await loadScript(NPM + "prismjs/prism.min.js");
 await loadLink(NPM + "prismjs/themes/prism-okaidia.css");
 const Prism = useGlobal<typeof _Prism>("Prism");
-export const CodeViewer = (props: { src: string }) => {
+export const CodeViewer = (props: { src: string; onClose?: Function }) => {
     let container: HTMLPreElement;
     const history = new HistoryRecord();
     const [code, setCode] = createSignal("");
@@ -91,7 +86,7 @@ export const CodeViewer = (props: { src: string }) => {
             if (languages) {
                 const languageName = languages[0];
 
-                // 加载语言包，加载不会重复
+                // 自动加载语言包，加载不会重复
                 await languages.reverse().reduce((promise, i) => {
                     return promise.then(() =>
                         loadScript(NPM + `prismjs/components/prism-${i}.js`)
@@ -125,8 +120,8 @@ export const CodeViewer = (props: { src: string }) => {
     };
 
     return (
-        <div className="flex flex-col h-3/4 w-3/4">
-            <div className="flex justify-between p-2 text-sky-400">
+        <main className="flex flex-col h-3/4 w-3/4">
+            <header className="flex justify-between p-2 text-sky-400">
                 <span
                     className="material-icons cursor-pointer"
                     onclick={goBack}>
@@ -139,15 +134,19 @@ export const CodeViewer = (props: { src: string }) => {
                 </span>
                 <span
                     className="material-icons cursor-pointer"
-                    onclick={() => updateStore("show", !store.show)}>
+                    onclick={() => {
+                        updateStore("show", false);
+                    }}>
                     close
                 </span>
-            </div>
+            </header>
+
+            {/* 代码展示 */}
             <pre
                 ref={container!}
-                className="w-full flex-grow whitespace-pre-wrap shadow-2xl bg-white h-3/4 overflow-y-auto p-4 pt-2 rounded-2xl  ">
+                className="w-full flex-grow whitespace-pre-wrap shadow-2xl bg-white h-3/4 overflow-y-auto p-4 pt-2 rounded-2xl  select-text">
                 <code class={`prism-code`} innerHTML={code()}></code>
             </pre>
-        </div>
+        </main>
     );
 };
