@@ -5,44 +5,39 @@ import { RenderMap } from "./RenderMap";
 import { isCDNLocal } from "../../utils/isURLString";
 import { RenderFileTree } from "./RenderFileTree";
 import { ModuleStore, updateStore } from "./ModuleStore";
-import { fromEvent, map } from "rxjs";
-import { Emitter } from "mitt";
 import { getIconForFile } from "vscode-icons-js";
 import { useGlobal } from "../../utils/useGlobal";
 type NodeMeta = {
     id: string;
-    imported: { uid: string }[];
+    imported: Set<string>;
     importedBy: { uid: string }[];
 };
-const RollupHub = useGlobal<
-    Emitter<{
-        drawDependence: any;
-    }>
->("RollupHub");
-const Update = fromEvent(RollupHub, "drawDependence").pipe(
-    map(({ nodeMetas }: any) => {
-        // console.log(nodeMetas);
-        const edges: EdgeConfig[] = [];
-        const nodes = Object.entries<NodeMeta>(nodeMetas).map(
-            ([uid, value]) => {
-                edges.push(
-                    ...value.imported.map((i) => {
-                        return {
-                            source: uid,
-                            target: i.uid,
-                        };
-                    })
-                );
+const MapperStore = useGlobal<Map<string, any[]>>("MapperStore");
+export const Update = () => {
+    const mapper = MapperStore.get("default")!
+        .map(({ nodeMetas }, index) => {
+            const edges: EdgeConfig[] = [];
+            const nodes = Object.values<{ uid: string; meta: NodeMeta }>(
+                nodeMetas
+            ).map(({ uid, meta }) => {
+                const Edges = [...meta.imported.values()].map((i) => {
+                    return {
+                        source: uid,
+                        target: i.split(",")[0],
+                    };
+                });
+                edges.push(...Edges);
+
                 // 划分 两种不同的 加载模块
                 let type = "circle";
                 let fill = "blue";
                 let img = "";
-                if (isCDNLocal(value.id)) {
+                if (isCDNLocal(meta.id)) {
                     type = "local";
                     fill = "#fafafa";
                     img =
                         "https://fastly.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
-                        getIconForFile(value.id);
+                        getIconForFile(meta.id);
                 } else {
                     type = "remote";
                     fill = "#aaa";
@@ -56,21 +51,27 @@ const Update = fromEvent(RollupHub, "drawDependence").pipe(
                     icon: {
                         img,
                     },
-
-                    name: value.id,
-                    label: value.id.replace(/.*\//, ""),
+                    index,
+                    name: meta.id,
+                    label: meta.id.replace(/.*\//, ""),
                 };
-            }
+            });
+            return { nodes, edges };
+        })
+        .reduce(
+            (col, cur) => {
+                col.nodes.push(...cur.nodes);
+                col.edges.push(...cur.edges);
+                return col;
+            },
+            { nodes: [], edges: [] }
         );
-        return { nodes, edges };
-    })
-);
-Update.subscribe((mapper) => {
-    updateStore("dependence", "mapper", mapper);
-    console.log("%c 依赖记录完成");
-});
+    return mapper;
+};
+
 /** 渲染一个 依赖关系面板，但是必须要全局 RollupHub 支持 */
 export default function Dependence() {
+    updateStore("dependence", "mapper", Update());
     const fileTreeShow = createMemo(
         () => ModuleStore.dependence.renderFileTree.show
     );
