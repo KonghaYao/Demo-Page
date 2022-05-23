@@ -1,16 +1,19 @@
-import {
-    Component,
-    createEffect,
-    createResource,
-    createSignal,
-    For,
-    onMount,
-} from "solid-js";
+import { Component, createSignal, For, onMount } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
 import { annotate } from "rough-notation";
 import Highlighter from "web-highlighter";
 import Markdown from "./index";
-import { createMarkdown } from "../utils/remark";
+import "../style/markdown.css";
+import type {
+    RoughAnnotation,
+    RoughAnnotationConfig,
+    RoughAnnotationType,
+} from "rough-notation/lib/model";
+interface StyleStore {
+    type: RoughAnnotationType;
+    ref: null | RoughAnnotation;
+}
+
 export const description: ModuleDescription = {
     fileName: "roughNotion",
     title: "Rough Notation —— 动态笔记效果",
@@ -20,15 +23,6 @@ export const description: ModuleDescription = {
         "https://github.com/rough-stuff/rough-notation",
     ],
 };
-import "../style/markdown.css";
-import type {
-    RoughAnnotation,
-    RoughAnnotationType,
-} from "rough-notation/lib/model";
-interface StyleStore {
-    type: RoughAnnotationType;
-    ref: null | RoughAnnotation;
-}
 const styles = [
     "underline",
     "box",
@@ -38,7 +32,12 @@ const styles = [
     "crossed-off",
     "bracket",
 ].map((i) => ({ type: i, ref: null } as StyleStore));
-const initColor = "#fff176";
+const initColor = "#d50000";
+const defaultRoughConfig = {
+    animate: true,
+    multiline: true,
+    brackets: ["left", "right"],
+} as Partial<RoughAnnotationConfig>;
 
 import "@shoelace-style/shoelace/dist/components/color-picker/color-picker.js";
 import { Portal } from "solid-js/web";
@@ -66,6 +65,7 @@ export default function () {
             $root: container,
             exceptSelectors: ["pre", "code"],
             verbose: true,
+
             style: {
                 className: "tagging",
             },
@@ -98,7 +98,7 @@ export default function () {
                         const anos = dom.map((i) => {
                             const ano = annotate(i, {
                                 type: selectedStyle().type,
-                                animate: true,
+                                ...defaultRoughConfig,
                                 color: color(),
                             });
                             ano.show();
@@ -183,6 +183,8 @@ export default function () {
         </div>
     );
 }
+
+/* 移动的浮动窗 */
 const ToolTips: Component<{
     toolTipStyle: {
         display: string;
