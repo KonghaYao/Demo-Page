@@ -1,8 +1,11 @@
-import { Component, createSignal, For, onMount } from "solid-js";
+import { Component, createSignal, For, onCleanup, onMount } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
 import { annotate } from "rough-notation";
 import Highlighter from "web-highlighter";
 import Markdown from "./index";
+import "@shoelace-style/shoelace/dist/components/color-picker/color-picker.js";
+import { Portal } from "solid-js/web";
+import { createStore } from "solid-js/store";
 import "../style/markdown.css";
 import type {
     RoughAnnotation,
@@ -39,9 +42,6 @@ const defaultRoughConfig = {
     brackets: ["left", "right"],
 } as Partial<RoughAnnotationConfig>;
 
-import "@shoelace-style/shoelace/dist/components/color-picker/color-picker.js";
-import { Portal } from "solid-js/web";
-import { createStore } from "solid-js/store";
 export default function () {
     const [selectedStyle, setSelectedStyle] = createSignal(styles[0]);
     const [color, setColor] = createSignal(initColor);
@@ -59,6 +59,7 @@ export default function () {
     };
     let container: HTMLDivElement;
     let highlighter: Highlighter;
+    /* 用于存储 highlighter 的 id 和对应的 roughNotation 对象，用于控制动画的展示 */
     const highlightMap = new Map<string, RoughAnnotation[]>();
     onMount(() => {
         highlighter = new Highlighter({
@@ -71,6 +72,7 @@ export default function () {
             },
         });
         highlighter
+
             .on("selection:hover", ({ id }, _, e) => {
                 const positionContainer =
                     e instanceof MouseEvent ? e : e.touches[0];
@@ -85,6 +87,7 @@ export default function () {
             .on("selection:hover-out", ({ id }, _, e) => {
                 setToolTipStyle({
                     display: "none",
+                    id: "",
                 });
             })
             .on("selection:create", ({ sources }) => {
@@ -122,6 +125,10 @@ export default function () {
         highlighter.run();
         styles.find((i) => i === selectedStyle())!.ref!.show();
     });
+    onCleanup(() => {
+        highlighter.dispose();
+    });
+    /** 浮动窗样式控制 */
     const [toolTipStyle, setToolTipStyle] = createStore({
         top: "0px",
         left: "0px",
@@ -129,40 +136,39 @@ export default function () {
         id: "",
     });
     return (
-        <div>
-            <div>
-                <div class="flex justify-evenly relative items-center">
-                    <For each={styles}>
-                        {(styleObject) => (
-                            <span
-                                class="flex-none"
-                                onclick={() => changeStyle(styleObject)}
-                                ref={(target) => {
-                                    //  此时 DOM 未被挂载，所以需要使用这个方式
-                                    setTimeout(() => {
-                                        styleObject.ref = annotate(target, {
-                                            type: styleObject.type,
-                                            animate: true,
-                                            color: color(),
-                                        });
+        <main>
+            <header class="flex justify-evenly relative items-center">
+                {/* 绘制样式 */}
+                <For each={styles}>
+                    {(styleObject) => (
+                        <span
+                            class="flex-none"
+                            onclick={() => changeStyle(styleObject)}
+                            ref={(target) => {
+                                //  此时 DOM 未被挂载，所以需要使用这个方式
+                                setTimeout(() => {
+                                    styleObject.ref = annotate(target, {
+                                        type: styleObject.type,
+                                        animate: true,
+                                        color: color(),
                                     });
-                                }}>
-                                {styleObject.type}
-                            </span>
-                        )}
-                    </For>
-                    <sl-color-picker
-                        onpointerup={(el: any) => {
-                            const color =
-                                el.srcElement.getFormattedValue("hex");
-                            // 修改颜色时直接修改上面的绘制颜色
-                            setColor(color);
-                            selectedStyle().ref!.color = color;
-                        }}
-                        format="hex"
-                        value={initColor}></sl-color-picker>
-                </div>
-            </div>
+                                });
+                            }}>
+                            {styleObject.type}
+                        </span>
+                    )}
+                </For>
+                {/* 颜色选择器 */}
+                <sl-color-picker
+                    onpointerup={(el: any) => {
+                        const color = el.srcElement.getFormattedValue("hex");
+                        // 修改颜色时直接修改上面的绘制颜色
+                        setColor(color);
+                        selectedStyle().ref!.color = color;
+                    }}
+                    format="hex"
+                    value={initColor}></sl-color-picker>
+            </header>
             {/* 必须要设置父级元素为 relative 才能保证绘制刚好在图中 */}
             <div
                 ref={container!}
@@ -180,7 +186,7 @@ export default function () {
                         });
                     }
                 }}></ToolTips>
-        </div>
+        </main>
     );
 }
 
@@ -203,7 +209,7 @@ const ToolTips: Component<{
                     onclick={() => props.onRemove()}>
                     close
                 </div>
-                <div class="material-icons">close</div>
+                {props.children}
             </div>
         </Portal>
     );
