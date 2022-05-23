@@ -202,7 +202,7 @@ const ToolTips: Component<{
     return (
         <Portal mount={document.body}>
             <div
-                class="fixed flex bg-white px-4 py-2 rounded-lg"
+                class="fixed flex bg-white px-4 py-2 rounded-lg  shadow-lg shadow-gray-300"
                 style={props.toolTipStyle}>
                 <div
                     class="material-icons hover:bg-gray-100 p-1 rounded-lg"
