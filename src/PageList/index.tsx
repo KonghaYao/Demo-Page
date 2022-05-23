@@ -19,16 +19,19 @@ export const PageList = () => {
 const PageCard = (props: { data: ModuleDescription }) => {
     return (
         <div class="flex flex-col p-4 rounded-xl bg-gray-100">
-            <header class="text-lg font-sans font-bold">
-                {props.data.title}
-            </header>
+            <header class=" font-sans font-bold">{props.data.title}</header>
             <div class="flex-grow text-sm text-gray-500 line-clamp-3">
                 {props.data.desc}
             </div>
-            <footer>
+            <footer class="flex items-center">
+                <div class="flex-grow"></div>
                 <Link
                     href={`/page/${props.data.fileName}`}
-                    element={<button>跳转</button>}></Link>
+                    element={
+                        <button class="material-icons">
+                            keyboard_double_arrow_right
+                        </button>
+                    }></Link>
             </footer>
         </div>
     );
