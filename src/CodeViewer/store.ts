@@ -12,11 +12,11 @@ export const [store, updateStore] = createStore({
     language: new Map([
         ["tsx", ["tsx", "typescript", "jsx"]],
         ["ts", ["typescript"]],
-        ["css",["css"]],
+        ["css", ["css"]],
     ]),
 });
 CodeViewerEvent.on("showCode", (src) => {
-    if(src){
+    if (src) {
         updateStore({
             show: true,
             src,

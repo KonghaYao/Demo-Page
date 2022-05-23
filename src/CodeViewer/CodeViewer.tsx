@@ -73,7 +73,7 @@ class HistoryRecord {
         return this.history.pop();
     }
 }
-await loadScript(NPM + "prismjs/components/prism-core.min.js");
+await loadScript(NPM + "prismjs/prism.min.js");
 await loadLink(NPM + "prismjs/themes/prism-okaidia.css");
 const Prism = useGlobal<typeof _Prism>("Prism");
 export const CodeViewer = (props: { src: string }) => {
@@ -90,9 +90,13 @@ export const CodeViewer = (props: { src: string }) => {
             const languages = store.language.get(ext);
             if (languages) {
                 const languageName = languages[0];
-                for (let i of languages.reverse()) {
-                    await loadScript(NPM + `prismjs/components/prism-${i}.js`);
-                }
+
+                // 加载语言包，加载不会重复
+                await languages.reverse().reduce((promise, i) => {
+                    return promise.then(() =>
+                        loadScript(NPM + `prismjs/components/prism-${i}.js`)
+                    );
+                }, Promise.resolve(true));
 
                 const html = Prism.highlight(
                     code,
