@@ -39,6 +39,9 @@
             }
         }
     </script>
-
+    <script type="module">
+        import process from "https://esm.sh/process/browser.js";
+        globalThis.process = process;
+    </script>
     <script type="module" src="./js/index.js"></script>
 </html>

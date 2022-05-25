@@ -19,6 +19,7 @@ const App = () => {
     onMount(() => {
         router.navigate(window.location.hash.replace("#", ""));
     });
+
     return (
         <section className="h-screen flex flex-col relative font-song select-none ">
             <header className="flex w-full justify-center bg-white ">
@@ -37,4 +38,5 @@ const App = () => {
         </section>
     );
 };
+console.log("打包到这里");
 render(() => <App />, document.body);
