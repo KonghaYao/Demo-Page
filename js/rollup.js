@@ -1,11 +1,5 @@
 // 导入打包产物
-import {
-    useRollup,
-    web_module,
-    sky_module,
-    ModuleEval,
-    DynamicServer,
-} from "rollup-web";
+import { Compiler, sky_module } from "../rollup-web/dist/index.js";
 import "https://fastly.jsdelivr.net/npm/systemjs@6.12.1/dist/system.min.js";
 // 导入各种插件
 import { initBabel, babel } from "rollup-web/dist/plugins/babel.js";
@@ -25,24 +19,15 @@ globalThis.MapperStore = MapperStore;
 
 const isDev = () => globalThis.location.host.split(":")[0] === "127.0.0.1";
 const CDN = isDev()
-    ? globalThis.location.href
-    : "https://fastly.jsdelivr.net/gh/konghayao/Demo-Page/index.html";
+    ? globalThis.location.origin + "/"
+    : "https://fastly.jsdelivr.net/gh/konghayao/Demo-Page/";
 
 await initBabel();
 // Solid-js 配置
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
-const server = new DynamicServer("_import", CDN);
-const config = {
-    // 直接采用 src 目录下的 index.ts 进行打包实验
-    input: "./src/index.tsx",
-    output: {
-        format: "system",
-    },
+const RollupConfig = {
     plugins: [
         json(),
-        // alias({
-        //     entries: [{ find: "@", replacement: "./" }],
-        // }),
         babel({
             babelrc: {
                 presets: [
@@ -59,15 +44,7 @@ const config = {
             },
             extensions: [".tsx", ".ts", ""],
             log(id) {
-                console.log("%cbabel ==> " + id, "color:blue");
-            },
-        }),
-        web_module({
-            root: CDN,
-            // 本地打包
-            extensions: [".tsx", ".ts", ".js", ".json"],
-            log(url) {
-                console.log("%c Download ==> " + url, "color:green");
+                // console.log("%cbabel ==> " + id, "color:blue");
             },
         }),
         sky_module({
@@ -80,10 +57,9 @@ const config = {
                 "assemblyscript/dist/asc": "assemblyscript/dist/asc.js",
             },
         }),
-        // 这是一种异步导入方案，使用 全局的一个外置 Server 来保证代码的正确执行
-        server.createPlugin({}),
         {
             name: "css",
+
             async load(id) {
                 if (/\.css$/.test(id)) {
                     const text = await fetch(id).then((res) => res.text());
@@ -92,9 +68,7 @@ const config = {
                     const link = document.createElement('style')
                     link.type="text/css"
                     link.innerHTML = \`${css}\`
-                    document.head.appendChild(link)
-               
-                    `;
+                    document.head.appendChild(link)`;
                 }
             },
         },
@@ -114,8 +88,17 @@ const config = {
         }),
     ],
 };
-/** 需要在使用前注册一下这个server */
-server.registerRollupPlugins(config.plugins);
-const data = await useRollup(config);
-const result = await ModuleEval(data.output[0].code);
-console.log("初始化打包完成", result);
+
+const compiler = new Compiler(RollupConfig, {
+    // 用于为相对地址添加绝对地址
+    root: CDN,
+    // 为没有后缀名的 url 添加后缀名
+    extensions: [".tsx", ".ts", ".js", ".json", ".css"],
+    log(url) {
+        console.log("%c Download ==> " + url, "color:green");
+    },
+    // 纳入打包的 url 地址，使用 picomatch 匹配
+    bundleArea: [CDN + "**"],
+});
+const result = await compiler.evaluate("./src/index.tsx");
+console.log(result);
