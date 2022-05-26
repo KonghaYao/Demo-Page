@@ -11,6 +11,9 @@ import "wc-spinners";
 await loadLink(
     "https://unpkg.com/@shoelace-style/shoelace@2.0.0-beta.73/dist/themes/light.css"
 );
+/* Material Icon 字体图标 */
+await loadLink("https://fonts.googleapis.com/css2?family=Material Icons");
+
 import { onMount } from "solid-js";
 import { Route, router } from "./router/index";
 import { loadLink } from "./utils/loadScript";

@@ -1,5 +1,5 @@
 // 导入打包产物
-import { Compiler, sky_module } from "../rollup-web/dist/index.js";
+import { Compiler, sky_module } from "rollup-web/dist/index.js";
 import "https://fastly.jsdelivr.net/npm/systemjs@6.12.1/dist/system.min.js";
 // 导入各种插件
 import { initBabel, babel } from "rollup-web/dist/plugins/babel.js";
