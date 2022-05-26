@@ -2,6 +2,7 @@ import {
     createResource,
     createSignal,
     lazy,
+    onCleanup,
     onMount,
     Suspense,
 } from "solid-js";
@@ -42,10 +43,12 @@ export default function () {
         await book.ready.then(() => {
             console.log("电子书下载完毕");
         });
+        console.log(control);
         return { default: () => el };
     });
-    onMount(() => {
-        console.log(control);
+
+    onCleanup(() => {
+        control.destroy();
     });
     return (
         <div class="w-full h-full flex flex-col">
