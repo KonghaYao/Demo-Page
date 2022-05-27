@@ -7,9 +7,8 @@ window.location.host.split(":")[0] === "127.0.0.1" &&
         }
     });
 
+// 首页白屏的处理
 import { html, render } from "https://cdn.skypack.dev/lit-html";
-
-// This is a lit-html template function. It returns a lit-html template.
 const prepare = () =>
     // 来自 https://gitee.com/k21vin/front-end-data-visualization/blob/master/src/views/Native/PureCSS/pages/Loading/components/L71.vue
     html`<div

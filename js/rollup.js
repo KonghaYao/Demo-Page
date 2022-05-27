@@ -1,16 +1,13 @@
-// 导入打包产物
-import { Compiler, sky_module } from "rollup-web/dist/index.js";
 import "https://fastly.jsdelivr.net/npm/systemjs@6.12.1/dist/system.min.js";
-// 导入各种插件
+import { Compiler, sky_module } from "rollup-web/dist/index.js";
 import { initBabel, babel } from "rollup-web/dist/plugins/babel.js";
+import { css } from "rollup-web/dist/plugins/css.js";
 import json from "@rollup/plugin-json";
-
-// 构建一个给 Solid 内部的 打包信息渠道
 import mitt from "mitt";
+// 构建一个给 Solid 内部的 打包信息渠道
 const RollupHub = mitt();
 globalThis.RollupHub = RollupHub;
 
-import postcss from "https://esm.sh/postcss";
 import {
     drawDependence,
     MapperStore,
@@ -57,21 +54,7 @@ const RollupConfig = {
                 "assemblyscript/dist/asc": "assemblyscript/dist/asc.js",
             },
         }),
-        {
-            name: "css",
-
-            async load(id) {
-                if (/\.css$/.test(id)) {
-                    const text = await fetch(id).then((res) => res.text());
-                    const css = await postcss().process(text);
-                    return `
-                    const link = document.createElement('style')
-                    link.type="text/css"
-                    link.innerHTML = \`${css}\`
-                    document.head.appendChild(link)`;
-                }
-            },
-        },
+        css(),
 
         drawDependence({
             log(mapperTag, newestMapper) {
@@ -99,7 +82,13 @@ const compiler = new Compiler(RollupConfig, {
     },
     // 纳入打包的 url 地址，使用 picomatch 匹配
     bundleArea: [CDN + "**"],
+    useDataCache: true,
 });
+// 去除等候页面
 globalThis.PrepareDestroy();
+
+// 开始执行打包操作
+console.time("初次打包时间");
 const result = await compiler.evaluate("./src/index.tsx");
+console.timeEnd("初次打包时间");
 console.log(result);
