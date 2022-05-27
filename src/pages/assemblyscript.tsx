@@ -1,15 +1,20 @@
-import asc, { APIOptions } from "assemblyscript/dist/asc";
-import loader from "@assemblyscript/loader"; // or require
-
 import {
     createEffect,
     createMemo,
     createResource,
     createSignal,
-    onMount,
 } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
 import { createStore } from "solid-js/store";
+import "@shoelace-style/shoelace/dist/components/button/button.js";
+import "@shoelace-style/shoelace/dist/components/textarea/textarea.js";
+import "@shoelace-style/shoelace/dist/components/input/input.js";
+import "@shoelace-style/shoelace/dist/components/split-panel/split-panel.js";
+
+import asc, { APIOptions } from "assemblyscript/dist/asc";
+import loader from "@assemblyscript/loader"; // or require
+import { Notify } from "notiflix";
+
 export const description: ModuleDescription = {
     fileName: "assemblyscript",
     title: "AssemblyScript",
@@ -21,7 +26,7 @@ export const description: ModuleDescription = {
     ],
 };
 
-/* 创建源代码文件系统环境 */
+/* 创建源代码文件系统环境, asc 在浏览器端没有文件系统，所以需要提供一个 */
 const createFileSystem = () => ({
     "index.ts": `// Demo 使用了 add 作为导出，所以需要使用的话，需要 add 导出。
 export function add(a: i32, b: i32): i32 {
@@ -29,6 +34,8 @@ export function add(a: i32, b: i32): i32 {
     console.log(d);
     return a + b
 }`,
+
+    //! asc 配置文件
     "asconfig.json": JSON.stringify({
         entries: ["./index.ts"],
         options: {
@@ -49,12 +56,40 @@ export function add(a: i32, b: i32): i32 {
 });
 const [fileStore, setStore] = createStore(createFileSystem());
 
-import "@shoelace-style/shoelace/dist/components/button/button.js";
-import "@shoelace-style/shoelace/dist/components/textarea/textarea.js";
-import "@shoelace-style/shoelace/dist/components/input/input.js";
-import "@shoelace-style/shoelace/dist/components/split-panel/split-panel.js";
+/*  ASC 在编译时需要的一些文件系统环境，衔接文件系统与 ASC */
+const createAscConfig = (saveTo: (file: Uint8Array) => void) =>
+    ({
+        readFile(name, baseDir) {
+            if (name in fileStore) {
+                return (fileStore as any)[name];
+            } else {
+                return null;
+            }
+        },
+        writeFile(name, data, baseDir) {
+            console.log("wasn Build: ", name, data);
+            saveTo(data);
+        },
+        listFiles(dirname, baseDir) {
+            return [];
+        },
+        stderr: {
+            write(e) {
+                console.error(e);
+            },
+        },
+        stdout: {
+            write(e) {
+                console.info(e);
+            },
+        },
+    } as APIOptions);
+
+/* 渲染主要界面 */
 export default function () {
     let container: HTMLTextAreaElement;
+
+    // 将用户输入转化成具体的数字
     const [InputText, setInputText] = createSignal("2 3");
     const InputParams = createMemo(() => {
         return InputText()
@@ -62,6 +97,7 @@ export default function () {
             .map((i) => parseInt(i));
     });
 
+    // 编译 as
     const [wasm, { refetch: reBuild }] = createResource(async () => {
         const fileList: Uint8Array[] = [];
         return asc
@@ -71,9 +107,13 @@ export default function () {
                     fileList.push(file);
                 })
             )
-            .then(() => fileList[0]);
+            .then(() => {
+                Notify.success("编译 AssemblyScript 完成");
+                return fileList[0];
+            });
     });
 
+    // 运行 as
     const [runResult, { refetch: rerun }] = createResource(async () => {
         if (wasm()) {
             let Exports: any;
@@ -91,6 +131,7 @@ export default function () {
                 .then(({ exports }) => {
                     Exports = exports;
                     console.log(exports);
+                    Notify.success("运行 AssemblyScript 完成");
                     return exports.add(...InputParams());
                 });
         }
@@ -140,32 +181,3 @@ export default function () {
         </div>
     );
 }
-
-/*  ASC 在编译时需要的一些文件系统环境 */
-const createAscConfig = (saveTo: (file: Uint8Array) => void) =>
-    ({
-        readFile(name, baseDir) {
-            if (name in fileStore) {
-                return (fileStore as any)[name];
-            } else {
-                return null;
-            }
-        },
-        writeFile(name, data, baseDir) {
-            console.log("wasn Build: ", name, data);
-            saveTo(data);
-        },
-        listFiles(dirname, baseDir) {
-            return [];
-        },
-        stderr: {
-            write(e) {
-                console.error(e);
-            },
-        },
-        stdout: {
-            write(e) {
-                console.info(e);
-            },
-        },
-    } as APIOptions);

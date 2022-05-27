@@ -1,11 +1,5 @@
-import {
-    createResource,
-    createSignal,
-    lazy,
-    onCleanup,
-    onMount,
-    Suspense,
-} from "solid-js";
+import { Notify } from "notiflix";
+import { lazy, onCleanup, Suspense } from "solid-js";
 import { Loading } from "../components/LoadingPage/loading";
 import { ModuleDescription } from "../components/ModuleDescription";
 import { loadScript } from "../utils/loadScript";
@@ -23,13 +17,17 @@ export const description: ModuleDescription = {
 export default function () {
     let control: any;
     const Book = lazy(async () => {
+        // 加载 jszip 这个是 epub 的额外依赖
         await loadScript(
             "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"
         );
+        // 加载 epubjs
         await loadScript(
             "https://fastly.jsdelivr.net/npm/epubjs/dist/epub.min.js"
         );
         const ePub = useGlobal<any>("ePub");
+
+        // 构建 dom 与 epubjs 的代码绑定
         const el = (
             <div id="area" class="w-full h-full flex-grow overflow-auto"></div>
         );
@@ -41,7 +39,7 @@ export default function () {
         });
         control.display();
         await book.ready.then(() => {
-            console.log("电子书下载完毕");
+            Notify.success("电子书下载完毕");
         });
         console.log(control);
         return { default: () => el };
