@@ -100,5 +100,6 @@ const compiler = new Compiler(RollupConfig, {
     // 纳入打包的 url 地址，使用 picomatch 匹配
     bundleArea: [CDN + "**"],
 });
+globalThis.PrepareDestroy();
 const result = await compiler.evaluate("./src/index.tsx");
 console.log(result);

@@ -15,7 +15,7 @@ export const description: ModuleDescription = {
 };
 
 /**
- * 因为网络上的图片触发 跨域错误，但是没有触发 CORS 协议
+ * 因为网络上的图片触发 跨域错误，但是没有触发 CORS 协议，
  * 那么可以直接下载并转化为本地 URL
  */
 const url = await imageToLocalURL(
