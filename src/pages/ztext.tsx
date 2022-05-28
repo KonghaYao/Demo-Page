@@ -3,6 +3,7 @@ import { ModuleDescription } from "../components/ModuleDescription";
 import chroma from "chroma-js";
 import { loadScript } from "../utils/loadScript";
 import { useGlobal } from "../utils/useGlobal";
+import { GH } from "../global";
 export const description: ModuleDescription = {
     fileName: "ztext",
     title: "zText 3D 文字生成",
@@ -14,9 +15,7 @@ export const description: ModuleDescription = {
 };
 
 // 该插件没有 npm
-await loadScript(
-    "https://fastly.jsdelivr.net/gh/bennettfeely/ztext/src/js/ztext.min.js"
-);
+await loadScript(GH + "bennettfeely/ztext/src/js/ztext.min.js");
 
 export default function () {
     let root: HTMLHeadingElement;

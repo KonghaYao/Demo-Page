@@ -8,3 +8,4 @@ export const CDN = isDev()
 
 // NPM 插件 CDN 的根
 export const NPM = "https://fastly.jsdelivr.net/npm/";
+export const GH = "https://fastly.jsdelivr.net/gh/";

@@ -1,4 +1,5 @@
 import { For } from "solid-js";
+import { GH } from "../global";
 import { ModuleDescription } from "./ModuleDescription";
 
 /** 展示模块的组件 */
@@ -32,7 +33,7 @@ const LinkComponent = (props: { src: string }) => {
                     src={findLinkIcon(props.src)}
                     onerror={(e) =>
                         (e.currentTarget.src =
-                            "https://fastly.jsdelivr.net/gh/astrit/css.gg/icons/svg/link.svg")
+                            GH + "astrit/css.gg/icons/svg/link.svg")
                     }
                 />
             </div>
@@ -41,11 +42,10 @@ const LinkComponent = (props: { src: string }) => {
 };
 const findLinkIcon = (src: string) => {
     let url = new URL(src);
-    let name = "link";
-    if (/npm/.test(url.host)) {
-        name = "npm";
+    if (/npmjs/.test(url.host)) {
+        return GH + "astrit/css.gg/icons/svg/npm.svg";
     } else if (/github/.test(url.host)) {
-        return `https://fastly.jsdelivr.net/gh/primer/octicons/icons/mark-github-16.svg`;
+        return GH + `primer/octicons/icons/mark-github-16.svg`;
     }
     return url.origin + "/favicon.ico";
 };

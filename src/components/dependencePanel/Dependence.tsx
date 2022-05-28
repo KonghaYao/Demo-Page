@@ -7,6 +7,7 @@ import { RenderFileTree } from "./RenderFileTree";
 import { ModuleStore, updateStore } from "./ModuleStore";
 import { getIconForFile } from "vscode-icons-js";
 import { useGlobal } from "../../utils/useGlobal";
+import { GH, NPM } from "../../global";
 type NodeMeta = {
     id: string;
     imported: Set<string>;
@@ -36,13 +37,15 @@ export const Update = () => {
                     type = "local";
                     fill = "#fafafa";
                     img =
-                        "https://fastly.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/" +
+                        GH +
+                        "vscode-icons/vscode-icons/icons/" +
                         getIconForFile(meta.id);
                 } else {
                     type = "remote";
                     fill = "#aaa";
                     img =
-                        "https://fastly.jsdelivr.net/gh/vscode-icons/vscode-icons/icons/file_type_rollup.svg";
+                        GH +
+                        "vscode-icons/vscode-icons/icons/file_type_rollup.svg";
                 }
                 return {
                     id: uid,

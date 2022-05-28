@@ -5,7 +5,7 @@ import type { GPU as _GPU } from "gpu.js";
 import type { ModuleDescription } from "../components/ModuleDescription";
 import { imageToArray } from "../utils/imageToArray";
 import { animationFrames, map, Subscription } from "rxjs";
-import { NPM } from "../global";
+import { GH, NPM } from "../global";
 
 export const description: ModuleDescription = {
     fileName: "gpu-cat",
@@ -26,7 +26,7 @@ export default function () {
     let update$: Subscription;
     onMount(async () => {
         const [image, BitArray] = await imageToArray(
-            "https://fastly.jsdelivr.net/gh/tensorflow/tfjs-examples/mobilenet/cat.jpg"
+            GH + "tensorflow/tfjs-examples/mobilenet/cat.jpg"
         );
         const render = new GPU({ mode: "gpu" })
             .createKernel(function (

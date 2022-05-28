@@ -19,7 +19,7 @@ export const description: ModuleDescription = {
  * 那么可以直接下载并转化为本地 URL
  */
 const url = await imageToLocalURL(
-    "https://fastly.jsdelivr.net/gh/tensorflow/tfjs-examples/mobilenet/cat.jpg"
+    GH + "tensorflow/tfjs-examples/mobilenet/cat.jpg"
 );
 
 /** 主体 */
@@ -98,6 +98,7 @@ export default function () {
 
 import copy from "copy-to-clipboard";
 import { Notify } from "notiflix";
+import { GH } from "../global";
 /** 展示一个颜色方格 */
 export const ColorCard = (props: { color: number[]; class?: string }) => {
     const color = createMemo(
