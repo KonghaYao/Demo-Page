@@ -15,7 +15,6 @@
         "@shoelace-style/shoelace": "^2.0.0-beta.73",
         "assemblyscript": "^0.20.6",
         "chroma-js": "^2.4.2",
-        "colorthief": "^2.3.2",
         "comlink": "^4.3.1",
         "compressorjs": "^1.1.1",
         "copy-to-clipboard": "^3.3.1",
@@ -44,7 +43,9 @@
         "unified": "^10.1.2",
         "vscode-icons-js": "^11.6.1",
         "wc-spinners": "^1.1.1",
-        "web-highlighter": "^0.7.4"
+        "web-highlighter": "^0.7.4",
+        "x-data-spreadsheet": "^1.1.9",
+        "xlsx": "^0.18.5"
     },
     "devDependencies": {
         "@babel/core": "^7.17.10",

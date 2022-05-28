@@ -21,6 +21,7 @@ export const description: ModuleDescription = {
         "https://github.com/pyodide/pyodide",
     ],
 };
+
 // 注册一个 CDN， 这个 CDN 可以通过 JSDelivr 获取！
 const worker = new Worker(new URL("./src/utils/pyodide.js", CDN));
 const api = wrap<any>(worker);

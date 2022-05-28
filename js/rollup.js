@@ -82,7 +82,9 @@ const compiler = new Compiler(RollupConfig, {
     },
     // 纳入打包的 url 地址，使用 picomatch 匹配
     bundleArea: [CDN + "**"],
-    useDataCache: true,
+    useDataCache: {
+        ignore: [CDN + "src/pages/*.tsx"],
+    },
 });
 // 去除等候页面
 globalThis.PrepareDestroy();
