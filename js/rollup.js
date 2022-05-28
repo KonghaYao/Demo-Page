@@ -80,11 +80,12 @@ const compiler = new Compiler(RollupConfig, {
     log(url) {
         console.log("%c Download ==> " + url, "color:green");
     },
-    // 纳入打包的 url 地址，使用 picomatch 匹配
-    bundleArea: [CDN + "**"],
     useDataCache: {
-        ignore: [CDN + "src/pages/*.tsx"],
+        ignore: isDev
+            ? ["src/pages/*.tsx", "script/PageList.json"].map((i) => CDN + i)
+            : [],
     },
+    extraBundle: [],
 });
 // 去除等候页面
 globalThis.PrepareDestroy();

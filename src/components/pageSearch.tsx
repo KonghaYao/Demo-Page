@@ -1,18 +1,33 @@
 import { SystemEvents } from "./System";
+import "xy-ui/components/xy-select.js";
 import "xy-ui/components/xy-input.js";
+import "xy-ui/components/xy-option.js";
+import data from "../../script/PageList.json";
+import { For } from "solid-js";
+
 export function PageSearch() {
     function handle(this: { value: string }) {
         SystemEvents.emit("changePage", this.value);
     }
 
     return (
-        <div className="w-full flex bg-white rounded-xl overflow-hidden mx-4 max-w-sm">
-            <xy-input
-                className=" flex-grow"
-                type="search"
-                onsubmit={handle}
-                attr:defaultvalue={""}
-            />
+        <div class="h-full w-full">
+            <xy-select
+                placeholder="搜索仓库"
+                search
+                block
+                className="w-48  h-full bg-white rounded-xl   "
+                onchange={handle}>
+                <For each={data}>
+                    {(info) => (
+                        <xy-option
+                            attr:value={info.fileName}
+                            attr:key={[info.fileName, info.title].join("-")}>
+                            {info.title}
+                        </xy-option>
+                    )}
+                </For>
+            </xy-select>
         </div>
     );
 }

@@ -41,5 +41,4 @@ const App = () => {
         </section>
     );
 };
-console.log("打包到这里");
 render(() => <App />, document.body);

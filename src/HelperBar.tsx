@@ -45,7 +45,8 @@ export function HelperBar() {
     ];
     return (
         <nav className="flex p-2 px-12 bg-gray-100 items-center">
-            <div className="grid grid-flow-col gap-4 text-white  items-center">
+            <PageSearch></PageSearch>
+            <div className="grid grid-flow-col gap-4 text-white  items-center mx-2">
                 <For each={icons}>
                     {(item) => {
                         return (
@@ -63,7 +64,6 @@ export function HelperBar() {
                 </For>
             </div>
             <div className="flex-grow"></div>
-            <PageSearch></PageSearch>
         </nav>
     );
 }

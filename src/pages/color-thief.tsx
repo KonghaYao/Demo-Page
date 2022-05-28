@@ -3,7 +3,7 @@ import ColorThief, { ColorHex } from "colorthief";
 import { imageToLocalURL } from "../utils/imageToLocalURL";
 import { filter, fromEvent, map, Subscription, tap } from "rxjs";
 import { ModuleDescription } from "../components/ModuleDescription";
-
+import { GH } from "../global";
 export const description: ModuleDescription = {
     fileName: "color-thief",
     title: "ColorThief 颜色抽取器",
@@ -98,7 +98,7 @@ export default function () {
 
 import copy from "copy-to-clipboard";
 import { Notify } from "notiflix";
-import { GH } from "../global";
+
 /** 展示一个颜色方格 */
 export const ColorCard = (props: { color: number[]; class?: string }) => {
     const color = createMemo(
