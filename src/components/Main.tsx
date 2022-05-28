@@ -5,6 +5,7 @@ import {
     ErrorBoundary,
     lazy,
     onCleanup,
+    onMount,
     Suspense,
 } from "solid-js";
 import { CDN } from "../global";
@@ -15,6 +16,8 @@ import { ErrorPage } from "./LoadingPage/ErrorPage";
 import { Loading } from "./LoadingPage/loading";
 import { ModuleDescription } from "./ModuleDescription";
 export const PageViewer: Component<{ match: Match }> = (props) => {
+    const [message, setMessage] = createSignal("打包中...");
+
     const [description, setDescription] = createSignal({
         title: "Unknown Module",
         desc: "加载信息中。。。",
@@ -28,15 +31,19 @@ export const PageViewer: Component<{ match: Match }> = (props) => {
             console.log("%c跳转到" + pageName, "color:red");
             const module = new URL(`./src/pages/${pageName}.tsx`, CDN);
             return import(module.toString()).then((module) => {
+                setMessage(pageName + " 页面下载完成");
                 if ("description" in module) setDescription(module.description);
                 return module;
             });
+        });
+        onMount(() => {
+            setMessage("界面构建完成");
         });
         onCleanup(() => {
             console.groupEnd();
         });
         return (
-            <Suspense fallback={<Loading></Loading>}>
+            <Suspense fallback={<Loading message={message()}></Loading>}>
                 <Page></Page>
             </Suspense>
         );

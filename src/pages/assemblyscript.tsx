@@ -11,8 +11,7 @@ import "@shoelace-style/shoelace/dist/components/textarea/textarea.js";
 import "@shoelace-style/shoelace/dist/components/input/input.js";
 import "@shoelace-style/shoelace/dist/components/split-panel/split-panel.js";
 
-import asc, { APIOptions } from "assemblyscript/dist/asc";
-import loader from "@assemblyscript/loader"; // or require
+import type { APIOptions } from "assemblyscript/dist/asc";
 import { Notify } from "notiflix";
 
 export const description: ModuleDescription = {
@@ -100,6 +99,7 @@ export default function () {
     // 编译 as
     const [wasm, { refetch: reBuild }] = createResource(async () => {
         const fileList: Uint8Array[] = [];
+        const asc = await import("assemblyscript/dist/asc");
         return asc
             .main(
                 ["index.ts", "--config", "asconfig.json"],
@@ -117,6 +117,7 @@ export default function () {
     const [runResult, { refetch: rerun }] = createResource(async () => {
         if (wasm()) {
             let Exports: any;
+            const loader = await import("@assemblyscript/loader");
             return loader
                 .instantiate<any>(wasm()!, {
                     // env 内传递的变量相当于是 as 代码中的全局变量
