@@ -1,4 +1,6 @@
-import { createEffect, createMemo, createResource, onMount } from "solid-js";
+import { Notify } from "notiflix";
+import { createEffect, createMemo, createResource } from "solid-js";
+import type Spreadsheet from "x-data-spreadsheet";
 import { ModuleDescription } from "../components/ModuleDescription";
 
 export const description: ModuleDescription = {
@@ -28,24 +30,29 @@ export default function () {
     const [file, { mutate, refetch }] = createResource(
         new Uint8Array(),
         async () => {
-            return fetch("https://unpkg.com/xlsx2csv@1.0.12/sample/sample.xlsx")
-                .then((res) => res.arrayBuffer())
-                .then((res) => new Uint8Array(res));
+            return fetch(
+                "https://unpkg.com/xlsx2csv@1.0.12/sample/sample.xlsx"
+            ).then((res) => res.arrayBuffer());
         }
     );
     const wb = createMemo(() => {
         if (file()) {
+            Notify.success("加载数据完成");
             return XLSX.read(file(), {
                 type: "array",
             });
         }
     });
-
+    let s: Spreadsheet;
     createEffect(() => {
         if (wb()) {
+            if (s) {
+                s.deleteSheet();
+                container.innerHTML = "";
+            }
             const { width, height } = getComputedStyle(container);
             console.log(height);
-            const s = new x_spreadsheet(container, {
+            s = new x_spreadsheet(container, {
                 mode: "edit", // edit | read
                 showToolbar: true,
                 showGrid: true,
@@ -55,7 +62,7 @@ export default function () {
                     width: () => parseInt(width),
                 },
             })
-                .loadData(stox(wb())) // load data
+                .loadData(stox(wb()!)) // load data
                 .change((data) => {
                     // save data to db
                     console.log(data);
@@ -63,5 +70,16 @@ export default function () {
         }
     });
 
-    return <div class="h-full w-full flex-grow" ref={container!}></div>;
+    return (
+        <div class="h-full w-full flex-grow flex flex-col">
+            <input
+                type="file"
+                oninput={async (e) => {
+                    const buffer =
+                        await e.currentTarget.files![0].arrayBuffer();
+                    mutate(buffer);
+                }}></input>
+            <div class="w-full flex-grow" ref={container!}></div>
+        </div>
+    );
 }
