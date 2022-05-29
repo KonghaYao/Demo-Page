@@ -72,6 +72,17 @@ const RollupConfig = {
     ],
 };
 
+const isOutTime = (timeRange = 24 * 60 * 60 * 1000) => {
+    const time = parseInt(localStorage.getItem("lastUpdateTime"));
+    if (!isNaN(time)) {
+        if (Date.now() - time < timeRange) {
+            // 将会使用缓存
+            return false;
+        }
+    }
+    localStorage.setItem("lastUpdateTime", Date.now());
+    return true;
+};
 const compiler = new Compiler(RollupConfig, {
     // 用于为相对地址添加绝对地址
     root: CDN,
@@ -80,11 +91,15 @@ const compiler = new Compiler(RollupConfig, {
     log(url) {
         console.log("%c Download ==> " + url, "color:green");
     },
-    useDataCache: {
-        ignore: isDev
-            ? ["src/pages/*.tsx", "script/PageList.json"].map((i) => CDN + i)
-            : [],
-    },
+    useDataCache: isOutTime()
+        ? false
+        : {
+              ignore: isDev
+                  ? ["src/pages/*.tsx", "script/PageList.json"].map(
+                        (i) => CDN + i
+                    )
+                  : [],
+          },
     extraBundle: [],
 });
 // 去除等候页面
