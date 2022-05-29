@@ -48,6 +48,7 @@ import "@shoelace-style/shoelace/dist/components/image-comparer/image-comparer.j
 import "@shoelace-style/shoelace/dist/components/format-bytes/format-bytes.js";
 export default function () {
     const [url, setURL] = createSignal(
+        // 必须使用高清图片才能看得明显的差距
         "https://images.unsplash.com/photo-1517331156700-3c241d2b4d83?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80"
     );
     const [quality, setQuality] = createSignal(0.7);

@@ -96,9 +96,6 @@ export default function () {
     );
 }
 
-import copy from "copy-to-clipboard";
-import { Notify } from "notiflix";
-
 /** 展示一个颜色方格 */
 export const ColorCard = (props: { color: number[]; class?: string }) => {
     const color = createMemo(
@@ -117,8 +114,15 @@ export const ColorCard = (props: { color: number[]; class?: string }) => {
             style={{
                 "background-color": color(),
             }}
-            onclick={() => {
+            onclick={async () => {
+                const Notify = await import("notiflix").then(
+                    ({ Notify }) => Notify
+                );
+                const copy = await import("copy-to-clipboard").then(
+                    (res) => res.default
+                );
                 Notify.success("复制成功");
+
                 copy(color());
             }}>
             <span

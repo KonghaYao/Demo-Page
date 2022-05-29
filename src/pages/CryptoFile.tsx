@@ -1,13 +1,9 @@
 import type Sodium from "libsodium-wrappers";
-import { Component, For, lazy, Suspense } from "solid-js";
+import { Component, createSignal, For, lazy, Suspense } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
 
 // 在 npm 上没有 browser 版本
 // https://hat.sh/about/#technical-details
-import {
-    Encryption, // 加密数据
-    Decryption, // 解密数据
-} from "../utils/cryption";
 import { timeCounter } from "../utils/timeCounter";
 import { useGlobal } from "../utils/useGlobal";
 
@@ -19,8 +15,6 @@ export const description: ModuleDescription = {
     link: ["https://hat.sh/about/#technical-details"],
 };
 
-/** 获取全局的属性 */
-const sodium = useGlobal<typeof Sodium>("sodium");
 export interface ImageShower {
     src: string;
     description: string;
@@ -53,9 +47,19 @@ const RenderImage: Component<{
 };
 
 import { showImage } from "../utils/showImage";
+import { GH } from "../global";
 
 export default function CryptoFile() {
+    const [message, setMessage] = createSignal("加载中...");
     const AsyncCrypto = lazy(async () => {
+        setMessage("加载加密函数中...");
+        const {
+            Encryption, // 加密数据
+            Decryption, // 解密数据
+        } = await import("../utils/cryption");
+
+        /** 获取全局的属性 */
+        const sodium = useGlobal<typeof Sodium>("sodium");
         const images: ImageShower[] = [];
         const pushImage = (
             result: ArrayBuffer,
@@ -64,12 +68,14 @@ export default function CryptoFile() {
             const url = URL.createObjectURL(new Blob([result]));
             images.push({ src: url, ...options, size: result.byteLength });
         };
+        setMessage("初始化加密插件...");
         // 主要加解密功能实现
         await sodium.ready
             .then(async () => {
+                setMessage("下载图像中...");
                 timeCounter("getFile");
                 const chunk = await fetch(
-                    "https://source.unsplash.com/500x300",
+                    GH + "tensorflow/tfjs-examples/mobilenet/cat.jpg",
                     {
                         cache: "force-cache",
                     }
@@ -84,6 +90,7 @@ export default function CryptoFile() {
                 return result;
             })
             .then((chunk: Uint8Array) => {
+                setMessage("加密图像中...");
                 timeCounter("encrypt")!;
                 const result = Encryption("123456", new Uint8Array(chunk));
                 const time = timeCounter("encrypt")!;
@@ -95,6 +102,7 @@ export default function CryptoFile() {
                 return result;
             })
             .then((encryptedChunk: Uint8Array) => {
+                setMessage("解密图像中...");
                 timeCounter("decrypt")!;
                 const result = Decryption("123456", encryptedChunk);
                 const time = timeCounter("decrypt")!;
@@ -121,7 +129,7 @@ export default function CryptoFile() {
     });
 
     return (
-        <Suspense fallback={<Loading></Loading>}>
+        <Suspense fallback={<Loading message={message()}></Loading>}>
             <div className="grid gap-2 items-center space-y-3 grid-cols-3 my-4">
                 <AsyncCrypto></AsyncCrypto>
             </div>

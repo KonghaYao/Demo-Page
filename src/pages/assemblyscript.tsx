@@ -1,3 +1,4 @@
+import type { APIOptions } from "assemblyscript/dist/asc";
 import {
     createEffect,
     createMemo,
@@ -11,7 +12,6 @@ import "@shoelace-style/shoelace/dist/components/textarea/textarea.js";
 import "@shoelace-style/shoelace/dist/components/input/input.js";
 import "@shoelace-style/shoelace/dist/components/split-panel/split-panel.js";
 
-import type { APIOptions } from "assemblyscript/dist/asc";
 import { Notify } from "notiflix";
 
 export const description: ModuleDescription = {
@@ -99,7 +99,11 @@ export default function () {
     // 编译 as
     const [wasm, { refetch: reBuild }] = createResource(async () => {
         const fileList: Uint8Array[] = [];
+
+        console.time("加载 assemblyscript/dist/asc 耗时");
         const asc = await import("assemblyscript/dist/asc");
+        console.timeEnd("加载 assemblyscript/dist/asc 耗时");
+
         return asc
             .main(
                 ["index.ts", "--config", "asconfig.json"],
@@ -117,7 +121,11 @@ export default function () {
     const [runResult, { refetch: rerun }] = createResource(async () => {
         if (wasm()) {
             let Exports: any;
+
+            console.time("加载 @assemblyscript/loader 耗时");
             const loader = await import("@assemblyscript/loader");
+            console.timeEnd("加载 @assemblyscript/loader 耗时");
+
             return loader
                 .instantiate<any>(wasm()!, {
                     // env 内传递的变量相当于是 as 代码中的全局变量
