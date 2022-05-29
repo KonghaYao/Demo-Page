@@ -27,7 +27,7 @@ export const Description = (props: {
 const LinkComponent = (props: { src: string }) => {
     return (
         <a target="_blank" href={props.src}>
-            <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-100 flex justify-center items-center  hover:scale-125 transition-transform">
+            <div className="w-8 h-8 rounded-md overflow-hidden bg-gray-100 flex justify-center items-center  hover:scale-125 transition-transform">
                 <img
                     className="w-11/12 h-11/12"
                     src={findLinkIcon(props.src)}
@@ -41,11 +41,5 @@ const LinkComponent = (props: { src: string }) => {
     );
 };
 const findLinkIcon = (src: string) => {
-    let url = new URL(src);
-    if (/npmjs/.test(url.host)) {
-        return GH + "astrit/css.gg/icons/svg/npm.svg";
-    } else if (/github/.test(url.host)) {
-        return GH + `primer/octicons/icons/mark-github-16.svg`;
-    }
-    return url.origin + "/favicon.ico";
+    return `https://api.xinac.net/icon/?url=${encodeURI(src)}`;
 };

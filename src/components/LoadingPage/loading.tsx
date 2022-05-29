@@ -19,7 +19,7 @@ export const Loading: Component<{
     );
     const el = document.createElement(props.spinner!);
     const [counter, setCounter] = createSignal(0);
-    const tag = setTimeout(() => setCounter(counter() + 1), 1000);
+    const tag = setTimeout(() => setCounter((count) => count + 1), 1000);
     onCleanup(() => {
         clearTimeout(tag);
     });
@@ -27,7 +27,7 @@ export const Loading: Component<{
         <div className="h-full w-full flex-col flex justify-center items-center">
             {el}
             <span className="p-4">
-                已等候 {counter} 秒 - {props.message}
+                已等候 {counter()} 秒 - {props.message}
             </span>
         </div>
     );

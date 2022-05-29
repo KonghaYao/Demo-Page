@@ -113,7 +113,9 @@ const PackagesList: Component<{}> = (props) => {
             </For>
             <Switch>
                 <Match when={state() === State.idle}>
-                    <sl-tag onclick={() => setState(State.input)}>+</sl-tag>
+                    <sl-tag class="m-2" onclick={() => setState(State.input)}>
+                        +
+                    </sl-tag>
                 </Match>
                 <Match when={state() === State.input}>
                     <sl-input
