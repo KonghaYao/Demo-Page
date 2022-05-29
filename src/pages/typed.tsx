@@ -1,8 +1,9 @@
 import { onMount } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
-import Prism from "prismjs";
 import Typed from "typed.js";
 import { NPM } from "../global";
+import { loadLink, loadScript } from "../utils/loadScript";
+import { useGlobal } from "../utils/useGlobal";
 export const description: ModuleDescription = {
     fileName: "typed",
     title: "Typed.js —— 打字效果",
@@ -15,6 +16,9 @@ const code = await fetch(NPM + "typed.js@2.0.12/app.js").then((res) =>
     res.text()
 );
 
+await loadScript(NPM + "prismjs/prism.min.js");
+await loadLink(NPM + "prism-themes@1.9.0/themes/prism-material-light.min.css");
+const Prism = useGlobal<typeof import("prismjs")>("Prism");
 export default function () {
     /* 代码序列 */
     const codes = [code.slice(0, 50), code, code.slice(0, 100), code].map(
