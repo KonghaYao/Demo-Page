@@ -17,14 +17,13 @@ export const description: ModuleDescription = {
     ],
 };
 
-await loadScript(NPM + "gpu.js@latest/dist/gpu-browser.min.js");
-const GPU = useGlobal<typeof _GPU>("GPU");
-
 /* 下载图片并转化为 像素二进制数组 */
 
 export default function () {
     let update$: Subscription;
     onMount(async () => {
+        await loadScript(NPM + "gpu.js@latest/dist/gpu-browser.min.js");
+        const GPU = useGlobal<typeof _GPU>("GPU");
         const [image, BitArray] = await imageToArray(
             GH + "tensorflow/tfjs-examples/mobilenet/cat.jpg"
         );

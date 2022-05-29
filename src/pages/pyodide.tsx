@@ -27,14 +27,17 @@ const worker = new Worker(new URL("./src/utils/pyodide.js", CDN));
 const api = wrap<any>(worker);
 
 export default function () {
+    const [message, setMsg] = createSignal("加载中");
     const Async = lazy(async () => {
         // 预先加载 pyodide
+        setMsg("初始化 pyodide 中，需要下载包较大，请稍等");
         await api.init();
+        setMsg("加载 npmpy 插件包，请稍等");
         await api.loadPackage("numpy");
         return { default: Main };
     });
     return (
-        <Suspense fallback={<Loading></Loading>}>
+        <Suspense fallback={<Loading message={message()}></Loading>}>
             <Async></Async>
         </Suspense>
     );
@@ -42,7 +45,6 @@ export default function () {
 const Main = () => {
     return (
         <div>
-            <div>Python 安装完成</div>
             <PackagesList></PackagesList>
             <Repl></Repl>
         </div>
@@ -52,14 +54,14 @@ import { format } from "pretty-format";
 import "@shoelace-style/shoelace/dist/components/textarea/textarea.js";
 const Repl: Component<{}> = (props) => {
     let code = `
-    import numpy as np
-    def make_x_and_y(n):
-        x = np.random.randn(n)
-        y = np.random.randn(n)
-        return x, y
-    x, y = make_x_and_y(n=10)
-    x, y
-    `;
+import numpy as np
+def make_x_and_y(n):
+    x = np.random.randn(n)
+    y = np.random.randn(n)
+    return x, y
+x, y = make_x_and_y(n=10)
+x, y
+`;
     const [result, { refetch }] = createResource("", async () => {
         return api.eval(code);
     });
@@ -81,9 +83,10 @@ const Repl: Component<{}> = (props) => {
     );
 };
 
-// 模块查看器
 import "@shoelace-style/shoelace/dist/components/tag/tag.js";
 import "@shoelace-style/shoelace/dist/components/input/input.js";
+import { Notify } from "notiflix";
+/* 模块查看器 */
 const PackagesList: Component<{}> = (props) => {
     const [packages, { refetch }] = createResource([], async () => {
         const packs = await api.loadedPackages();
@@ -97,20 +100,21 @@ const PackagesList: Component<{}> = (props) => {
     const [state, setState] = createSignal<State>(State.idle);
     const loadPackage = async (packageName: string) => {
         setState(State.loading);
+        Notify.info("加载包 " + packageName);
         await api.loadPackage(packageName);
         await refetch();
         setState(State.idle);
     };
 
     return (
-        <div class="flex ">
+        <div class="flex flex-wrap">
             <For each={packages()}>
-                {([name, position]) => <sl-tag>{name}</sl-tag>}
+                {([name, position]) => <sl-tag class="m-2">{name}</sl-tag>}
             </For>
             <Switch>
                 <Match when={state() === State.idle}>
                     <sl-tag onclick={() => setState(State.input)}>+</sl-tag>
-                </Match>{" "}
+                </Match>
                 <Match when={state() === State.input}>
                     <sl-input
                         placeholder="输入需要加载的包名"
@@ -121,7 +125,7 @@ const PackagesList: Component<{}> = (props) => {
                         }></sl-input>
                 </Match>
                 <Match when={state() === State.loading}>
-                    <sl-tag>
+                    <sl-tag class="m-2">
                         <Loading></Loading>
                     </sl-tag>
                 </Match>
