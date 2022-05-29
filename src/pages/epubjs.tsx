@@ -2,6 +2,7 @@ import { Notify } from "notiflix";
 import {
     Component,
     createEffect,
+    createResource,
     createSignal,
     lazy,
     Suspense,
@@ -23,9 +24,16 @@ export const description: ModuleDescription = {
 
 export default function () {
     let control: any;
-    const [url, setURL] = createSignal<string | ArrayBuffer>(
-        "https://s3.amazonaws.com/moby-dick/moby-dick.epub"
-    );
+    const [buffer, { mutate: setBuffer, refetch }] =
+        createResource<ArrayBuffer>(async () => {
+            Notify.info("下载书籍中。。。");
+            return fetch(
+                "https://s3.amazonaws.com/moby-dick/moby-dick.epub"
+            ).then((res) => {
+                Notify.success("下载完毕");
+                return res.arrayBuffer();
+            });
+        });
 
     const LazyBook = lazy(async () => {
         // 加载 jszip 这个是 epub 的额外依赖
@@ -47,12 +55,12 @@ export default function () {
                 onchange={async (e) => {
                     const file = e.currentTarget.files![0];
                     const buffer = await file.arrayBuffer();
-                    setURL(buffer);
+                    setBuffer(buffer);
                 }}
             />
             <Suspense fallback={<Loading></Loading>}>
                 <LazyBook
-                    url={url()}
+                    buffer={buffer()}
                     ready={(inner) => {
                         if (control) control.destroy();
                         control = inner;
@@ -73,23 +81,23 @@ export default function () {
 }
 
 const Book: Component<{
-    url: string | ArrayBuffer;
+    buffer?: ArrayBuffer;
     ready?: (control: any) => void;
 }> = (props) => {
     const ePub = useGlobal<any>("ePub");
     // 构建 dom 与 epubjs 的代码绑定
     let el: HTMLDivElement;
     const rebuild = () => {
-        if (!el) return;
-        const book = ePub(props.url);
+        if (!el || !props.buffer) return;
+        const book = ePub(props.buffer);
         const control = book.renderTo(el, {
             method: "continuous",
             width: "100%",
         });
         control.display();
-        console.log(props.url);
+        console.log(props.buffer);
         book.ready.then(() => {
-            Notify.success("电子书下载完毕 ");
+            Notify.success("电子书装载完毕 ");
             if (props.ready) props.ready(control);
         });
         return control;
