@@ -21,6 +21,7 @@
         "countup.js": "^2.1.0",
         "gpu.js": "^2.15.2",
         "highlight.js": "^11.5.1",
+        "localforage": "^1.10.0",
         "mitt": "^3.0.0",
         "navigo": "^8.11.1",
         "notiflix": "^3.2.5",

@@ -72,17 +72,6 @@ const RollupConfig = {
     ],
 };
 
-const isOutTime = (timeRange = 24 * 60 * 60 * 1000) => {
-    const time = parseInt(localStorage.getItem("lastUpdateTime"));
-    if (!isNaN(time)) {
-        if (Date.now() - time < timeRange) {
-            // 将会使用缓存
-            return false;
-        }
-    }
-    localStorage.setItem("lastUpdateTime", Date.now());
-    return true;
-};
 const compiler = new Compiler(RollupConfig, {
     // 用于为相对地址添加绝对地址
     root: CDN,
@@ -99,6 +88,7 @@ const compiler = new Compiler(RollupConfig, {
                         (i) => CDN + i
                     )
                   : [],
+              maxAge: 24 * 60 * 60,
           },
     extraBundle: [],
 });
