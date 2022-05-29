@@ -11,13 +11,14 @@ export const description: ModuleDescription = {
     link: ["https://runkit.com/home"],
 };
 
-/** 加载 Runkit 脚本 */
-await loadScript("https://embed.runkit.com");
-const RunKit = useGlobal<any>("RunKit");
-
 export default function () {
+    const [message, setMsg] = createSignal("加载中");
     const [loading, setLoading] = createSignal(true);
     const NoteBook = lazy(async () => {
+        setMsg("加载 Runkit 中。。。");
+        /** 加载 Runkit 脚本 */
+        await loadScript("https://embed.runkit.com");
+        const RunKit = useGlobal<any>("RunKit");
         const div = <div></div>;
         RunKit.createNotebook({
             // runkit 的 父级元素
@@ -33,9 +34,10 @@ export default function () {
     });
 
     return (
-        <Suspense fallback={<Loading></Loading>}>
+        <Suspense fallback={<Loading message={message()}></Loading>}>
+            {/* NoteBook 需要加载到 dom 树上才能够进行操作，所以只能设置两个加载项 */}
             <Show when={loading()}>
-                <Loading></Loading>
+                <Loading message={message()}></Loading>
             </Show>
             <NoteBook />
         </Suspense>

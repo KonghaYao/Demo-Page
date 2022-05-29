@@ -19,9 +19,9 @@ export const Loading: Component<{
     );
     const el = document.createElement(props.spinner!);
     const [counter, setCounter] = createSignal(0);
-    const tag = setTimeout(() => setCounter((count) => count + 1), 1000);
+    const tag = setInterval(() => setCounter((count) => count + 1), 1000);
     onCleanup(() => {
-        clearTimeout(tag);
+        clearInterval(tag);
     });
     return (
         <div className="h-full w-full flex-col flex justify-center items-center">
