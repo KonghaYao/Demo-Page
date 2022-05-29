@@ -80,16 +80,12 @@ const compiler = new Compiler(RollupConfig, {
     log(url) {
         console.log("%c Download ==> " + url, "color:green");
     },
-    useDataCache: isOutTime()
-        ? false
-        : {
-              ignore: isDev
-                  ? ["src/pages/*.tsx", "script/PageList.json"].map(
-                        (i) => CDN + i
-                    )
-                  : [],
-              maxAge: 24 * 60 * 60,
-          },
+    useDataCache: {
+        ignore: isDev
+            ? ["src/pages/*.tsx", "script/PageList.json"].map((i) => CDN + i)
+            : [],
+        maxAge: 24 * 60 * 60,
+    },
     extraBundle: [],
 });
 // 去除等候页面
