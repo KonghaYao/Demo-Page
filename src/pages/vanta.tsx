@@ -1,6 +1,5 @@
-import { createSignal, onCleanup, onMount, For } from "solid-js";
+import { onCleanup, onMount, For } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
-import { CountUp } from "countup.js";
 import { loadScript } from "../utils/loadScript";
 import { useGlobal } from "../utils/useGlobal";
 import { NPM } from "../global";
@@ -11,10 +10,8 @@ export const description: ModuleDescription = {
     link: ["https://www.vantajs.com/", "https://github.com/tengbao/vanta"],
 };
 
-// 该插件依赖 threejs
-await loadScript(
-    "https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"
-);
+// 该插件依赖 threejs 且需要锁定版本
+await loadScript(NPM + "three@0.121.0/build/three.min.js");
 export default function () {
     const list = [
         "birds",

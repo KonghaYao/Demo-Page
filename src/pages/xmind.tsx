@@ -1,5 +1,6 @@
 import { createEffect, createResource, createSignal, onMount } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
+import { CDN } from "../global";
 
 // 修改一下 插件里面 的 iframe 地址，让其指向我的加速网页
 /** 原本仓库为  xmind-embed-viewer */
@@ -22,16 +23,18 @@ export default function () {
             return res.arrayBuffer();
         });
     });
-    createEffect(() => {
-        el.innerHTML = "";
-        new XMindEmbedViewer({
+    let Control: XMindEmbedViewer;
+    onMount(() => {
+        Control = new XMindEmbedViewer({
             el,
-            file: file(),
-            url: new URL(
-                "./assets/xmind.html",
-                window.location.href
-            ).toString(),
+            url: new URL("./assets/xmind.html", CDN).toString(),
         });
+        Control.load(file()!);
+    });
+    createEffect(() => {
+        if (Control && file()) {
+            Control.load(file()!);
+        }
     });
     return (
         <div class="flex flex-col justify-center items-center h-full w-full">
