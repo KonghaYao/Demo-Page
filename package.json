@@ -8,7 +8,7 @@
         "make": "node ./script/Compiler.mjs"
     },
     "author": "",
-    "license": "ISC",
+    "license": "Apache-2.0",
     "dependencies": {
         "@antv/g6": "^4.6.4",
         "@assemblyscript/loader": "^0.20.6",
