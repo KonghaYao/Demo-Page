@@ -3,7 +3,6 @@ import {
     Component,
     createEffect,
     createResource,
-    createSignal,
     lazy,
     Suspense,
 } from "solid-js";
