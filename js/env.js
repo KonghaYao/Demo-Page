@@ -12,7 +12,7 @@ import { html, render } from "https://cdn.skypack.dev/lit-html";
 const prepare = () =>
     // 来自 https://gitee.com/k21vin/front-end-data-visualization/blob/master/src/views/Native/PureCSS/pages/Loading/components/L71.vue
     html`<div
-        style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;width:100vw"
+        style="position:absolute;top:0;left:0;z-index:1000; display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;width:100vw"
     >
         <div class="com__box">
             <!-- loading -->

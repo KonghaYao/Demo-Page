@@ -88,10 +88,10 @@ const compiler = new Compiler(RollupConfig, {
     extraBundle: [],
 });
 // 去除等候页面
-globalThis.PrepareDestroy();
 
 // 开始执行打包操作
 console.time("初次打包时间");
 const result = await compiler.evaluate("./src/index.tsx");
 console.timeEnd("初次打包时间");
+globalThis.PrepareDestroy();
 console.log(result);
