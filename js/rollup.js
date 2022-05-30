@@ -3,15 +3,12 @@ import { Compiler, sky_module } from "rollup-web/dist/index.js";
 import { initBabel, babel } from "rollup-web/dist/plugins/babel.js";
 import { css } from "rollup-web/dist/plugins/css.js";
 import json from "@rollup/plugin-json";
-import mitt from "mitt";
-// 构建一个给 Solid 内部的 打包信息渠道
-const RollupHub = mitt();
-globalThis.RollupHub = RollupHub;
 
 import {
     drawDependence,
     MapperStore,
 } from "rollup-web/dist/plugins/drawDependence.js";
+// 注入全局，这样子内部模块可以获取
 globalThis.MapperStore = MapperStore;
 
 const isDev = () => globalThis.location.host.split(":")[0] === "127.0.0.1";
@@ -57,16 +54,7 @@ const RollupConfig = {
         css(),
 
         drawDependence({
-            log(mapperTag, newestMapper) {
-                RollupHub.emit(
-                    "drawDependence",
-                    {
-                        nodeParts: newestMapper.getNodeParts(),
-                        nodeMetas: newestMapper.getNodeMetas(),
-                    },
-                    newestMapper
-                );
-            },
+            log(mapperTag, newestMapper) {},
             mapperTag: "default",
         }),
     ],
@@ -82,7 +70,11 @@ const compiler = new Compiler(RollupConfig, {
     },
     useDataCache: {
         ignore: isDev
-            ? ["src/pages/*.tsx", "script/PageList.json"].map((i) => CDN + i)
+            ? [
+                  "src/pages/*.tsx",
+                  "script/PageList.json",
+                  ["src/components/**/*"],
+              ].map((i) => CDN + i)
             : [],
         maxAge: 24 * 60 * 60,
     },

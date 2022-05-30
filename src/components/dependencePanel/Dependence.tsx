@@ -7,69 +7,58 @@ import { RenderFileTree } from "./RenderFileTree";
 import { ModuleStore, updateStore } from "./ModuleStore";
 import { getIconForFile } from "vscode-icons-js";
 import { useGlobal } from "../../utils/useGlobal";
-import { GH, NPM } from "../../global";
+import { GH } from "../../global";
+
 type NodeMeta = {
     id: string;
     imported: Set<string>;
     importedBy: { uid: string }[];
 };
-const MapperStore = useGlobal<Map<string, any[]>>("MapperStore");
-export const Update = () => {
-    const mapper = MapperStore.get("default")!
-        .map(({ nodeMetas }, index) => {
-            const edges: EdgeConfig[] = [];
-            const nodes = Object.values<{ uid: string; meta: NodeMeta }>(
-                nodeMetas
-            ).map(({ uid, meta }) => {
-                const Edges = [...meta.imported.values()].map((i) => {
-                    return {
-                        source: uid,
-                        target: i.split(",")[0],
-                    };
-                });
-                edges.push(...Edges);
 
-                // 划分 两种不同的 加载模块
-                let type = "circle";
-                let fill = "blue";
-                let img = "";
-                if (isCDNLocal(meta.id)) {
-                    type = "local";
-                    fill = "#fafafa";
-                    img =
-                        GH +
-                        "vscode-icons/vscode-icons/icons/" +
-                        getIconForFile(meta.id);
-                } else {
-                    type = "remote";
-                    fill = "#aaa";
-                    img =
-                        GH +
-                        "vscode-icons/vscode-icons/icons/file_type_rollup.svg";
-                }
+export const Update = () => {
+    const MapperStore = useGlobal<Map<string, any>>("MapperStore");
+    const { nodeMetas } = MapperStore.get("default")!;
+    const edges: EdgeConfig[] = [];
+    const nodes = Object.values<{ uid: string; meta: NodeMeta }>(nodeMetas).map(
+        ({ uid, meta }) => {
+            const Edges = [...meta.imported.values()].map((i) => {
                 return {
-                    id: uid,
-                    type,
-                    style: { fill },
-                    icon: {
-                        img,
-                    },
-                    index,
-                    name: meta.id,
-                    label: meta.id.replace(/.*\//, ""),
+                    source: uid,
+                    target: i.split(",")[0],
                 };
             });
-            return { nodes, edges };
-        })
-        .reduce(
-            (col, cur) => {
-                col.nodes.push(...cur.nodes);
-                col.edges.push(...cur.edges);
-                return col;
-            },
-            { nodes: [], edges: [] }
-        );
-    return mapper;
+            edges.push(...Edges);
+
+            // 划分 两种不同的 加载模块
+            let type = "circle";
+            let fill = "blue";
+            let img = "";
+            if (isCDNLocal(meta.id)) {
+                type = "local";
+                fill = "#fafafa";
+                img =
+                    GH +
+                    "vscode-icons/vscode-icons/icons/" +
+                    getIconForFile(meta.id);
+            } else {
+                type = "remote";
+                fill = "#aaa";
+                img =
+                    GH + "vscode-icons/vscode-icons/icons/file_type_rollup.svg";
+            }
+            return {
+                id: uid,
+                type,
+                style: { fill },
+                icon: {
+                    img,
+                },
+                name: meta.id,
+                label: meta.id.replace(/.*\//, ""),
+            };
+        }
+    );
+    return { nodes, edges };
 };
 
 /** 渲染一个 依赖关系面板，但是必须要全局 RollupHub 支持 */
