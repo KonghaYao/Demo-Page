@@ -37,3 +37,16 @@ export const loadLink = (url: string) => {
         document.head.appendChild(script);
     });
 };
+
+/**
+ * 避免  `import 'url'; ` 被重复执行的问题
+ *
+ */
+export const loadEsmPackage = (url: string) => {
+    if (successSet.has(url)) return;
+    return import(url).then((res) => {});
+};
+/**  批量不重复 esm 代码执行 */
+export const loadEsmPackages = (...args: string[]) => {
+    return Promise.all(args.map((i) => loadEsmPackage(i)));
+};

@@ -3,7 +3,9 @@ import { ModuleDescription } from "../components/ModuleDescription";
 import { annotate } from "rough-notation";
 import Highlighter from "web-highlighter";
 import Markdown from "./index";
-import "@shoelace-style/shoelace/dist/components/color-picker/color-picker.js";
+await import(
+    "@shoelace-style/shoelace/dist/components/color-picker/color-picker.js"
+);
 import { Portal } from "solid-js/web";
 import { createStore } from "solid-js/store";
 import "../style/markdown.css";

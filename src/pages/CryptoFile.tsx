@@ -22,7 +22,7 @@ export interface ImageShower {
     size: number;
     time: number;
 }
-import "@shoelace-style/shoelace/dist/components/format-bytes/format-bytes.js";
+await import ("@shoelace-style/shoelace/dist/components/format-bytes/format-bytes.js");
 import { Loading } from "../components/LoadingPage/loading";
 /** 渲染每一个图片 */
 const RenderImage: Component<{

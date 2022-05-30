@@ -2,7 +2,14 @@ declare module "https://" {
     const a: any;
     export default a;
 }
-
+declare module "xy-ui/*" {
+    const a: any;
+    export default a;
+}
+declare module "wc-spinners" {
+    const a: any;
+    export default a;
+}
 declare module "fs" {
     const a: any;
     export default a;

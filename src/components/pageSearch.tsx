@@ -1,9 +1,9 @@
 import { SystemEvents } from "./System";
-import "xy-ui/components/xy-select.js";
-import "xy-ui/components/xy-input.js";
-import "xy-ui/components/xy-option.js";
 import data from "../../script/PageList.json";
 import { For } from "solid-js";
+await import("xy-ui/components/xy-select.js");
+await import("xy-ui/components/xy-input.js");
+await import("xy-ui/components/xy-option.js");
 
 export function PageSearch() {
     function handle(this: { value: string }) {

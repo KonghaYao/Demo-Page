@@ -5,7 +5,7 @@ import { HelperBar } from "./HelperBar";
 import { CodeViewerWrapper } from "./CodeViewerWrapper";
 import { PageList } from "./PageList/index";
 /** 加载loading 的 WebComponent */
-import "wc-spinners";
+await import("wc-spinners");
 
 /* shoelace 的样式表 */
 await loadLink(

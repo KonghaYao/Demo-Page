@@ -70,21 +70,17 @@ const compiler = new Compiler(RollupConfig, {
     },
     useDataCache: {
         ignore: isDev
-            ? [
-                  "src/pages/*.tsx",
-                  "script/PageList.json",
-                  ["src/components/**/*"],
-              ].map((i) => CDN + i)
+            ? ["src/pages/*.tsx", "script/PageList.json"].map((i) => CDN + i)
             : [],
         maxAge: 24 * 60 * 60,
     },
     extraBundle: [],
 });
-// 去除等候页面
 
 // 开始执行打包操作
 console.time("初次打包时间");
 const result = await compiler.evaluate("./src/index.tsx");
 console.timeEnd("初次打包时间");
+// 去除等候页面
 globalThis.PrepareDestroy();
 console.log(result);

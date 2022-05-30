@@ -51,7 +51,7 @@ const Main = () => {
     );
 };
 import { format } from "pretty-format";
-import "@shoelace-style/shoelace/dist/components/textarea/textarea.js";
+await import("@shoelace-style/shoelace/dist/components/textarea/textarea.js");
 const Repl: Component<{}> = (props) => {
     let code = `
 import numpy as np
@@ -83,8 +83,8 @@ x, y
     );
 };
 
-import "@shoelace-style/shoelace/dist/components/tag/tag.js";
-import "@shoelace-style/shoelace/dist/components/input/input.js";
+await import("@shoelace-style/shoelace/dist/components/tag/tag.js");
+await import("@shoelace-style/shoelace/dist/components/input/input.js");
 import { Notify } from "notiflix";
 /* 模块查看器 */
 const PackagesList: Component<{}> = (props) => {

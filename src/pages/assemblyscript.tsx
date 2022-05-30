@@ -7,10 +7,13 @@ import {
 } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
 import { createStore } from "solid-js/store";
-import "@shoelace-style/shoelace/dist/components/button/button.js";
-import "@shoelace-style/shoelace/dist/components/textarea/textarea.js";
-import "@shoelace-style/shoelace/dist/components/input/input.js";
-import "@shoelace-style/shoelace/dist/components/split-panel/split-panel.js";
+
+await import("@shoelace-style/shoelace/dist/components/button/button.js");
+await import("@shoelace-style/shoelace/dist/components/textarea/textarea.js");
+await import("@shoelace-style/shoelace/dist/components/input/input.js");
+await import(
+    "@shoelace-style/shoelace/dist/components/split-panel/split-panel.js"
+);
 
 import { Notify } from "notiflix";
 

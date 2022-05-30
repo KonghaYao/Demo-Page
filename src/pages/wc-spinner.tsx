@@ -1,6 +1,6 @@
 import { For } from "solid-js";
 import { ModuleDescription } from "../components/ModuleDescription";
-import "wc-spinners";
+await import("wc-spinners");
 import { getAssets } from "../utils/getAssets";
 
 const SpinnerNames: string[] = await getAssets(
