@@ -33,7 +33,7 @@ const App = () => {
             <HelperBar></HelperBar>
 
             <main className="flex-grow bg-gray-50 p-4 overflow-auto noise-bg">
-                <Route path="/page/:pageName" element={PageViewer}></Route>
+                <Route path="/page/:tagname" element={PageViewer}></Route>
                 <Route path="/" element={PageList}></Route>
             </main>
             <DependenceWrapper></DependenceWrapper>

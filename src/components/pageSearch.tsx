@@ -16,7 +16,7 @@ export function PageSearch() {
                 placeholder="搜索仓库"
                 search
                 block
-                className="w-48  h-full bg-white rounded-xl   "
+                className="w-48 h-full bg-white rounded-xl   "
                 onchange={handle}>
                 <For each={data}>
                     {(info) => (
