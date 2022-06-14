@@ -16,9 +16,8 @@ function wssConnect(url: string) {
             resolve(ws);
         };
         ws.onerror = (e) => {
-            console.error(e);
+            reject(e);
         };
-        console.log(ws);
     });
 }
 import { Buffer } from "buffer";
@@ -46,7 +45,6 @@ export async function getTTSData(
     </speak>
     `;
 
-    console.log("获取Token...");
     const Authorization = token || (await getAuthToken());
     const XConnectionId = uuidv4().toUpperCase();
 
@@ -55,15 +53,12 @@ export async function getTTSData(
         `wss://eastus.tts.speech.microsoft.com/cognitiveservices/websocket/v1?Authorization=${Authorization}&X-ConnectionId=${XConnectionId}`
     );
 
-    console.log("第1次上报...");
     const message_1 = `Path: speech.config\r\nX-RequestId: ${XConnectionId}\r\nX-Timestamp: ${getXTime()}\r\nContent-Type: application/json\r\n\r\n{"context":{"system":{"name":"SpeechSDK","version":"1.19.0","build":"JavaScript","lang":"JavaScript","os":{"platform":"Browser/Linux x86_64","name":"Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0","version":"5.0 (X11)"}}}}`;
     connect.send(message_1);
 
-    console.log("第2次上报...");
     const message_2 = `Path: synthesis.context\r\nX-RequestId: ${XConnectionId}\r\nX-Timestamp: ${getXTime()}\r\nContent-Type: application/json\r\n\r\n{"synthesis":{"audio":{"metadataOptions":{"sentenceBoundaryEnabled":false,"wordBoundaryEnabled":false},"outputFormat":"audio-24khz-160kbitrate-mono-mp3"}}}`;
     connect.send(message_2);
 
-    console.log("第3次上报...");
     const message_3 = `Path: ssml\r\nX-RequestId: ${XConnectionId}\r\nX-Timestamp: ${getXTime()}\r\nContent-Type: application/ssml+xml\r\n\r\n${SSML}`;
     connect.send(message_3);
 
@@ -91,7 +86,6 @@ export async function getTTSData(
                 const index = text.indexOf("Path:audio") + 12;
                 const cmbData = data.slice(index);
                 const buffer = Buffer.from(cmbData).buffer;
-                console.log(buffer);
                 blobs[temp] = buffer;
             }
         });
