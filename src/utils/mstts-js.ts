@@ -92,34 +92,22 @@ export async function getTTSData(
     });
 }
 
-const voices = {
-    CN: {
-        晓晓: "Xiaoxiao",
-        晓辰: "Xiaochen",
-        晓涵: "Xiaohan",
-        晓墨: "Xiaomo",
-        晓秋: "Xiaoqiu",
-        晓睿: "Xiaorui",
-        晓双: "Xiaoshuang",
-        晓萱: "Xiaoxuan",
-        晓颜: "Xiaoyan",
-        晓悠: "Xiaoyou",
-        云扬: "Yunyang",
-        云希: "Yunxi",
-        云野: "Yunye",
-        辽宁晓北: "LN-Xiaobei",
-        四川云希: "SC-Yunxi",
-        云皓: "Yunhao",
-        云健: "Yunjian",
-    },
-    TW: {
-        曉臻: "HsiaoChen",
-        曉雨: "HsiaoYu",
-        雲哲: "YunJhe",
-    },
-    HK: {
-        曉曼: "HiuMaan",
-        曉佳: "HiuGaai",
-        雲龍: "WanLung",
-    },
-};
+export const voices = Object.entries({
+    晓晓: "CN-Xiaoxiao",
+    晓辰: "CN-Xiaochen",
+    晓涵: "CN-Xiaohan",
+    晓墨: "CN-Xiaomo",
+    晓秋: "CN-Xiaoqiu",
+    晓睿: "CN-Xiaorui",
+    晓双: "CN-Xiaoshuang",
+    晓萱: "CN-Xiaoxuan",
+    晓颜: "CN-Xiaoyan",
+    晓悠: "CN-Xiaoyou",
+    云扬: "CN-Yunyang",
+    云希: "CN-Yunxi",
+    云野: "CN-Yunye",
+    辽宁晓北: "CN-LN-Xiaobei",
+    四川云希: "CN-SC-Yunxi",
+    云皓: "CN-Yunhao",
+    云健: "CN-Yunjian",
+});

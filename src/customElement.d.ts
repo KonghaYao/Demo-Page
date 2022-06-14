@@ -8,6 +8,7 @@ declare module "solid-js" {
             "sl-split-panel": any;
             "sl-color-picker": any;
             "sl-button": any;
+            "sl-range": any;
             "sl-input": any;
             "xy-select": any;
             "xy-option": any;
