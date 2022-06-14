@@ -1,7 +1,6 @@
 import { CodeViewerEvent } from "./CodeViewer/store";
 import { updateStore } from "./components/dependencePanel/ModuleStore";
 import { PageSearch } from "./components/pageSearch";
-import { System } from "./components/System";
 import { CDN } from "./global";
 await import("xy-ui/components/xy-tips.js");
 import { For } from "solid-js";
