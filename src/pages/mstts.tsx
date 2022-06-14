@@ -17,7 +17,9 @@ export const description: ModuleDescription = {
 import { getTTSData } from "../utils/mstts-js";
 import { loadLink } from "../utils/loadScript";
 import { NPM } from "../global";
-import { escapeString } from "types:assemblyscript/src/util";
+
+import saveAs from "file-saver";
+
 type SendContext = {
     token: string;
     voice?: string;
@@ -31,7 +33,8 @@ type ContextInStore = Omit<SendContext & { url: string }, "token">;
 
 const InfoCache = new Map<string, ContextInStore>();
 const getInfo = async (context: SendContext) => {
-    const key = JSON.stringify(context);
+    const sample = { ...context, token: "" };
+    const key = JSON.stringify(sample);
     if (InfoCache.has(key)) return InfoCache.get(key)!;
     const { text, token, voice, express, role, rate, pitch } = context;
 
@@ -52,21 +55,40 @@ const getInfo = async (context: SendContext) => {
     InfoCache.set(key, result);
     return result;
 };
-import { saveAs } from "file-saver";
 await import("@shoelace-style/shoelace/dist/components/textarea/textarea.js");
 /* 渲染主要界面 */
 export default function () {
-    const [token, setToken] = createSignal("");
+    const [token, setToken] = createSignal(
+        localStorage.getItem("__mstts_token__") || ""
+    );
     const [sounds, setSounds] = createSignal<ContextInStore[]>([
         { text: "测试中哦", url: "" },
     ]);
-    const CombileAllSounds = async () => {
-        const blobs = await Promise.all(
-            sounds().map((i) => {
-                return fetch(i.url).then((res) => res.blob());
+    /* 更新下载所有语音 */
+    const updateAll = async () => {
+        const all = await Promise.all(
+            sounds().map(async (i) => {
+                const data = await getInfo({
+                    ...i,
+                    token: token(),
+                });
+
+                return data;
             })
         );
-        saveAs(new Blob(blobs));
+        setSounds(all);
+        return all;
+    };
+    /* 结合所有语音 */
+    const CombileAllSounds = async () => {
+        const blobs = await updateAll().then((res) =>
+            Promise.all(
+                res.map((i) => {
+                    return fetch(i.url).then((res) => res.blob());
+                })
+            )
+        );
+        saveAs(new Blob(blobs), "音频文件.mp3");
     };
     return (
         <div class="h-full w-full">
@@ -75,10 +97,15 @@ export default function () {
                 <button
                     onclick={() => {
                         const token = prompt();
-                        setToken(token);
+                        console.log("设置 token", token);
+                        if (token) {
+                            setToken(token);
+                            localStorage.setItem("__mstts_token__", token);
+                        }
                     }}>
                     设置token
                 </button>
+                <button onclick={updateAll}>更新所有语音</button>
             </div>
             <For each={sounds()}>
                 {(i, index) => {
