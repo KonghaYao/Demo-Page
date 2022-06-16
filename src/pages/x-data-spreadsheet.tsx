@@ -2,6 +2,7 @@ import { Notify } from "notiflix";
 import { createEffect, createMemo, createResource } from "solid-js";
 import type Spreadsheet from "x-data-spreadsheet";
 import { ModuleDescription } from "../components/ModuleDescription";
+import { NPM } from "../global";
 
 export const description: ModuleDescription = {
     fileName: "x-data-spreadsheet",
@@ -14,13 +15,11 @@ export const description: ModuleDescription = {
 };
 import { loadLink, loadScript } from "../utils/loadScript";
 import { useGlobal } from "../utils/useGlobal";
-await loadLink(
-    "https://unpkg.com/x-data-spreadsheet@1.1.5/dist/xspreadsheet.css"
-);
-await loadScript(
-    "https://unpkg.com/x-data-spreadsheet@1.1.5/dist/xspreadsheet.js"
-);
-await loadScript("https://unpkg.com/xlsx/dist/xlsx.full.min.js");
+await Promise.all([
+    loadLink(NPM + "x-data-spreadsheet@1.1.5/dist/xspreadsheet.css"),
+    loadScript(NPM + "x-data-spreadsheet@1.1.5/dist/xspreadsheet.js"),
+    loadScript(NPM + "xlsx/dist/xlsx.full.min.js"),
+]);
 const x_spreadsheet =
     useGlobal<typeof import("x-data-spreadsheet")["default"]>("x_spreadsheet");
 const XLSX = useGlobal<typeof import("xlsx")>("XLSX");
@@ -30,9 +29,9 @@ export default function () {
     const [file, { mutate, refetch }] = createResource(
         new Uint8Array(),
         async () => {
-            return fetch(
-                "https://unpkg.com/xlsx2csv@1.0.12/sample/sample.xlsx"
-            ).then((res) => res.arrayBuffer());
+            return fetch(NPM + "xlsx2csv@1.0.12/sample/sample.xlsx").then(
+                (res) => res.arrayBuffer()
+            );
         }
     );
     const wb = createMemo(() => {

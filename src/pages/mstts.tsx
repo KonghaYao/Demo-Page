@@ -23,6 +23,12 @@ const store = await localforage.createInstance({
     driver: [localforage.INDEXEDDB],
 });
 await store.ready();
+
+await Promise.all([
+    import("@shoelace-style/shoelace/dist/components/textarea/textarea.js"),
+    import("@shoelace-style/shoelace/dist/components/range/range.js"),
+]);
+
 type SendContext = {
     token: string;
     voice?: string;
@@ -64,8 +70,7 @@ const getInfo = async (context: SendContext) => {
     Notify.success("音频返回");
     return result;
 };
-await import("@shoelace-style/shoelace/dist/components/textarea/textarea.js");
-await import("@shoelace-style/shoelace/dist/components/range/range.js");
+
 /* 渲染主要界面 */
 export default function () {
     const [token, setToken] = createSignal(

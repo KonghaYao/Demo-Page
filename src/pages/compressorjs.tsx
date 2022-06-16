@@ -44,12 +44,14 @@ const compress = (file: File, quality: number) => {
     });
 };
 
-await import(
-    "@shoelace-style/shoelace/dist/components/image-comparer/image-comparer.js"
-);
-await import(
-    "@shoelace-style/shoelace/dist/components/format-bytes/format-bytes.js"
-);
+await Promise.all([
+    import(
+        "@shoelace-style/shoelace/dist/components/image-comparer/image-comparer.js"
+    ),
+    import(
+        "@shoelace-style/shoelace/dist/components/format-bytes/format-bytes.js"
+    ),
+]);
 export default function () {
     const [url, setURL] = createSignal(
         // 必须使用高清图片才能看得明显的差距

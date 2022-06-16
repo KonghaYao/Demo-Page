@@ -16,8 +16,10 @@ const code = await fetch(NPM + "typed.js@2.0.12/app.js").then((res) =>
     res.text()
 );
 
-await loadScript(NPM + "prismjs/prism.min.js");
-await loadLink(NPM + "prism-themes@1.9.0/themes/prism-material-light.min.css");
+await Promise.all([
+    loadScript(NPM + "prismjs/prism.min.js"),
+    loadLink(NPM + "prism-themes@1.9.0/themes/prism-material-light.min.css"),
+]);
 const Prism = useGlobal<typeof import("prismjs")>("Prism");
 export default function () {
     /* 代码序列 */
