@@ -1,16 +1,9 @@
-import { Evaluator, createWorker } from "rollup-web/dist/index.js";
-import { wrap } from "https://fastly.jsdelivr.net/npm/comlink/dist/esm/comlink.mjs";
+import { Evaluator } from "https://fastly.jsdelivr.net/npm/rollup-web@3.8.0/dist/index.js";
 
-// 需要使用这种方式等候 线程结束初始化
-const worker = await createWorker("./js/bundle_worker.js", {
-    type: "module",
-});
-const compiler = wrap(worker);
 const Eval = new Evaluator();
-console.log(Eval, compiler);
-await Eval.createEnv({
-    Compiler: compiler,
-});
+await Eval.useWorker("./js/bundle_worker.js");
+console.log(Eval);
+await Eval.createEnv();
 
 // 开始执行打包操作
 console.time("初次打包时间");

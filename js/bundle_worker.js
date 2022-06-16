@@ -2,17 +2,19 @@ import {
     Compiler,
     sky_module,
     PluginLoader,
-} from "https://fastly.jsdelivr.net/npm/rollup-web@3.7.10/dist/index.js";
+} from "https://fastly.jsdelivr.net/npm/rollup-web@3.8.0/dist/index.js";
 
 // 导入各种插件
-const { default: json } = await PluginLoader.load("plugin-json");
-const { babelCore } = await PluginLoader.load("babel.core");
-const { css } = await PluginLoader.load("css");
+const [{ default: json }, { babelCore }, { css }] = await PluginLoader.loads(
+    "plugin-json",
+    "babel.core",
+    "css"
+);
 
 import {
     drawDependence,
     MapperStore,
-} from "https://fastly.jsdelivr.net/npm/rollup-web@3.7.10/dist/plugins/drawDependence.js";
+} from "https://fastly.jsdelivr.net/npm/rollup-web@3.8.0/dist/plugins/drawDependence.js";
 // 注入全局，这样子内部模块可以获取
 globalThis.MapperStore = MapperStore;
 
