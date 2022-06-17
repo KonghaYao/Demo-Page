@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "ws --http2 --spa index.html",
+        "dev": "ws --http2 -z ",
         "make": "node ./script/Compiler.mjs"
     },
     "author": "",

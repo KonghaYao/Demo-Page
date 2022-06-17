@@ -3,7 +3,7 @@ import { Evaluator } from "https://fastly.jsdelivr.net/npm/rollup-web@3.8.0/dist
 const Eval = new Evaluator();
 await Eval.useWorker("./js/bundle_worker.js");
 console.log(Eval);
-await Eval.createEnv();
+await Eval.createEnv({});
 
 // 开始执行打包操作
 console.time("初次打包时间");

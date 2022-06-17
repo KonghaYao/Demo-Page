@@ -3,6 +3,7 @@ declare module "solid-js" {
     export namespace JSX {
         // 下列是自定义的 Web Component
         export interface IntrinsicElements {
+            "model-viewer": any;
             "sl-textarea": any;
             "sl-tag": any;
             "sl-split-panel": any;
