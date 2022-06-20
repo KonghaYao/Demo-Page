@@ -1,4 +1,4 @@
-import { Evaluator } from "https://fastly.jsdelivr.net/npm/rollup-web@3.8.0/dist/index.js";
+import { Evaluator } from "rollup-web";
 
 const Eval = new Evaluator();
 await Eval.useWorker("./js/bundle_worker.js");

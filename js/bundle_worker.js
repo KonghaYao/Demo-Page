@@ -1,12 +1,10 @@
+// ! 在 worker 中不能够使用 import map
 import {
     Compiler,
     sky_module,
     PluginLoader,
-} from "https://fastly.jsdelivr.net/npm/rollup-web@3.8.0/dist/index.js";
-import {
-    drawDependence,
-    MapperStore,
-} from "https://fastly.jsdelivr.net/npm/rollup-web@3.8.0/dist/plugins/drawDependence.js";
+} from "../rollup-web/dist/index.js";
+import { drawDependence } from "../rollup-web/dist/plugins/drawDependence.js";
 import ts from "https://esm.sh/@babel/preset-typescript";
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
 
@@ -16,9 +14,7 @@ const [{ default: json }, { babelCore }, { css }] = await PluginLoader.loads(
     "babel.core",
     "css"
 );
-
-// 注入全局，这样子内部模块可以获取
-globalThis.MapperStore = MapperStore;
+console.log("加载插件完成");
 
 const isDev = () => globalThis.location.host.split(":")[0] === "127.0.0.1";
 const CDN = isDev()
@@ -65,12 +61,12 @@ const compiler = new Compiler(RollupConfig, {
     log(url) {
         console.log("%c Download ==> " + url, "color:green");
     },
-    // useDataCache: {
-    //     ignore: isDev
-    //         ? ["src/pages/*.tsx", "script/PageList.json"].map((i) => CDN + i)
-    //         : [],
-    //     maxAge: 24 * 60 * 60,
-    // },
+    useDataCache: {
+        ignore: isDev
+            ? ["src/pages/*.tsx", "script/PageList.json"].map((i) => CDN + i)
+            : [],
+        maxAge: 24 * 60 * 60,
+    },
     extraBundle: [],
 });
 compiler.useWorker();
