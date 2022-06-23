@@ -4,7 +4,7 @@ import type { EdgeConfig } from "@antv/g6";
 import { RenderMap } from "./RenderMap";
 import { isCDNLocal } from "../../utils/isURLString";
 import { RenderFileTree } from "./RenderFileTree";
-import { ModuleStore, updateStore } from "./ModuleStore";
+import { ModuleEvents, ModuleStore, updateStore } from "./ModuleStore";
 import { getIconForFile } from "vscode-icons-js";
 import { useGlobal } from "../../utils/useGlobal";
 import { GH } from "../../global";
@@ -15,9 +15,10 @@ type NodeMeta = {
     importedBy: { uid: string }[];
 };
 
-export const Update = () => {
+export const Update = async () => {
     const MapperStore = useGlobal<Map<string, any>>("MapperStore");
-    const { nodeMetas } = MapperStore.get("default")!;
+
+    const { nodeMetas } = await MapperStore.get("default")!;
     const edges: EdgeConfig[] = [];
     const nodes = Object.values<{ uid: string; meta: NodeMeta }>(nodeMetas).map(
         ({ uid, meta }) => {
@@ -63,7 +64,10 @@ export const Update = () => {
 
 /** 渲染一个 依赖关系面板，但是必须要全局 RollupHub 支持 */
 export default function Dependence() {
-    updateStore("dependence", "mapper", Update());
+    Update().then((res) => {
+        updateStore("dependence", "mapper", res);
+        ModuleEvents.emit("filterUpdate", {});
+    });
     const fileTreeShow = createMemo(
         () => ModuleStore.dependence.renderFileTree.show
     );

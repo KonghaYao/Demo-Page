@@ -12,3 +12,6 @@ console.timeEnd("初次打包时间");
 // 去除等候页面
 globalThis.PrepareDestroy();
 console.log(result);
+
+import { cache } from "rollup-web/dist/plugins/drawDependence.js";
+globalThis.MapperStore = cache;

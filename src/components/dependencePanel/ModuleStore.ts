@@ -8,7 +8,7 @@ export const ModuleEvents = mitt<{
 }>();
 
 export const baseStore = {
-    mapper: null as null | GraphData,
+    mapper: {} as GraphData,
 };
 export const [ModuleStore, updateStore] = createStore({
     dependence: {
