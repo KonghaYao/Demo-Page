@@ -34,7 +34,9 @@ export const Update = async () => {
             let type = "circle";
             let fill = "blue";
             let img = "";
-            if (isCDNLocal(meta.id)) {
+
+            const hasExt = /.*(\.\w+)$/.test(meta.id);
+            if (hasExt) {
                 type = "local";
                 fill = "#fafafa";
                 img =
