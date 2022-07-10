@@ -9,8 +9,8 @@ import {
     Compiler,
     sky_module,
     PluginLoader,
-} from "https://fastly.jsdelivr.net/npm/rollup-web@4.0.0/dist/index.js";
-import { drawDependence } from "https://fastly.jsdelivr.net/npm/rollup-web@4.0.0/dist/plugins/drawDependence.js";
+} from "https://fastly.jsdelivr.net/npm/rollup-web@4.3.3/dist/index.js";
+import { drawDependence } from "https://fastly.jsdelivr.net/npm/rollup-web@4.3.3/dist/plugins/drawDependence.js";
 import ts from "https://esm.sh/@babel/preset-typescript";
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
 // 导入各种插件
