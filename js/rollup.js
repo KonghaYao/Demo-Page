@@ -1,7 +1,9 @@
 import { Evaluator } from "rollup-web";
 
 const Eval = new Evaluator();
+console.time("构建Worker时间");
 await Eval.useWorker("./js/bundle_worker.js");
+console.timeEnd("构建Worker时间");
 console.log(Eval);
 await Eval.createEnv({});
 

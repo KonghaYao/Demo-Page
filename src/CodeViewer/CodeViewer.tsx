@@ -7,7 +7,7 @@ import { useGlobal } from "../utils/useGlobal";
 import { jumpTo } from "../utils/jumpTo";
 import { isLocal } from "../utils/isURLString";
 await loadScript(NPM + "prismjs/prism.min.js");
-await loadLink(NPM + "prism-themes@1.9.0/themes/prism-material-light.min.css");
+// await loadLink(NPM + "prism-themes@1.9.0/themes/prism-material-light.min.css");
 const MapperStore = useGlobal<Map<string, any[]>>("MapperStore");
 /** 添加代码链接 */
 const addLinkToURL = (
