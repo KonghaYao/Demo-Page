@@ -11,6 +11,7 @@ await Eval.createEnv({});
 console.time("初次打包时间");
 const result = await Eval.evaluate("./src/index.tsx");
 console.timeEnd("初次打包时间");
+
 // 去除等候页面
 globalThis.PrepareDestroy();
 console.log(result);
