@@ -1,4 +1,4 @@
-import { Evaluator } from "rollup-web";
+import { Evaluator } from "https://fastly.jsdelivr.net/npm/rollup-web@4.6.7/dist/index.js";
 
 const Eval = new Evaluator();
 console.time("构建Worker时间");
@@ -16,5 +16,5 @@ console.timeEnd("初次打包时间");
 globalThis.PrepareDestroy();
 console.log(result);
 
-import { cache } from "rollup-web/dist/plugins/drawDependence.js";
+import { cache } from "https://fastly.jsdelivr.net/npm/rollup-web@4.6.7/dist/plugins/drawDependence.js";
 globalThis.MapperStore = cache;
