@@ -1,0 +1,20 @@
+---
+import Layout from '../../../layouts/DemoLayout.astro'
+export const prerender = false; // If you holp to use SSR, set it false
+
+/* It's your input message */
+const BaseMessage = {
+    title:"crypto-file",
+    description:"前端加密文件",
+    name:"crypto-file",
+} 
+
+---
+
+<Layout title={BaseMessage.title}  description={BaseMessage.description}>
+    <!-- Write HTML  -->
+    <section class='grid '>
+
+
+    </section>
+</Layout>
