@@ -1,0 +1,16 @@
+---
+import Layout from '../../../layouts/DemoLayout.astro'
+export const prerender = false; // If you holp to use SSR, set it false
+
+/* It's your input message */
+const BaseMessage = {
+    title:"{{title}}",
+    description:"{{description}}",
+    name:"{{name}}",
+} 
+
+---
+
+<Layout title={BaseMessage.title}  description={BaseMessage.description}>
+    <!-- Write HTML  -->
+</Layout>
